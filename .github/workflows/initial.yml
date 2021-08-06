@@ -1,0 +1,61 @@
+name: Linting & Unit Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Unit Test & Linting & Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Runs dependency installation
+        run: |
+          npm install yarn lerna
+          yarn
+
+      - name: Run linting & unit testing
+        run: yarn test && yarn lint
+
+      - name: Run code coverage
+        if: ${{ success() }}
+        run: |
+          npm install codecov
+          ./node_modules/.bin/codecov
+          # ./node_modules/.bin/bundlesize
+
+  buildDeploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ success() && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - names: build and push docker images
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          yarn compose:push
+
+      - name: Deploy to staging
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          git clone https://github.com/opencrvs/opencrvs-zambia.git
+          bash deploy.sh --clear-data=no --restore-metadata=no --update-metadata=no development zambia-uat.newlegacy.digital latest opencrvs-zambia
+        env:
+          SSH_KNOWN_HOSTS: zambia-uat.newlegacy.digital
+
+  slackNotification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ always() }}
+    steps:
+      - name: Using Slack Action to Send message
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.test.result }}
+          fields: repo,message,commit,author,eventName
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

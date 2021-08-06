@@ -155,4 +155,8 @@ describe('it handles react unauthorized errors', () => {
       .hostNodes()
       .simulate('click')
   })
+
+  xit('Should create a failed test', () => {
+    expect(true).toBe(false)
+  })
 })

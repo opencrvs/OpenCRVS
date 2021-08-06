@@ -9,8 +9,9 @@
 # graphic logo are (registered/a) trademark(s) of Plan International.
 set -e
 
-yarn global add wait-on
-echo "wait-on https://register.opencrvs-staging.jembi.org/" && wait-on -l https://register.opencrvs-staging.jembi.org/
+# yarn global add wait-on
+npm install wait-on
+echo "wait-on https://register.opencrvs-staging.jembi.org/" && ./node_modules/.bin/wait-on -l https://register.opencrvs-staging.jembi.org/
 git clone https://github.com/opencrvs/opencrvs-zambia.git
 cd opencrvs-zambia
 yarn install
