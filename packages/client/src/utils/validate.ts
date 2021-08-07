@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors. OpenCRVS and the OpenCRVS
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
-import { MessageDescriptor, IntlShape } from 'react-intl'
+import { MessageDescriptor } from 'react-intl'
 import { validationMessages as messages } from '@client/i18n/messages'
 import { IFormFieldValue, IFormData } from '@opencrvs/client/src/forms'
 import {
@@ -472,7 +472,7 @@ export const isValidEnglishName = (value: string): boolean => {
   return checkNameWords(value, isValidEnglishWord)
 }
 
-const isLengthWithinRange = (value: string, min: number, max: number) =>
+export const isLengthWithinRange = (value: string, min: number, max: number) =>
   !value || (value.length >= min && value.length <= max)
 
 export const isValueWithinRange = (min: number, max: number) => (
@@ -613,7 +613,8 @@ export const isMoVisitDateAfterBirthDateAndBeforeDeathDate: Validation = (
     if (
       drafts &&
       drafts.deathEvent &&
-      (cast <= drafts.deathEvent.deathDate && cast >= drafts.deceased.birthDate)
+      cast <= drafts.deathEvent.deathDate &&
+      cast >= drafts.deceased.birthDate
     ) {
       return undefined
     } else if (

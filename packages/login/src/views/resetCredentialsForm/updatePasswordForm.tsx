@@ -294,10 +294,7 @@ class UpdatePasswordComponent extends React.Component<IFullProps, State> {
   }
 }
 
-export const UpdatePassword = connect(
-  null,
-  {
-    goToPhoneNumberVerificationForm,
-    goToSuccessPage
-  }
-)(withRouter(injectIntl(UpdatePasswordComponent)))
+export const UpdatePassword = connect(null, {
+  goToPhoneNumberVerificationForm,
+  goToSuccessPage
+})(withRouter(injectIntl(UpdatePasswordComponent)))

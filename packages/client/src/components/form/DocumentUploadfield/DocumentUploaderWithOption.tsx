@@ -213,8 +213,6 @@ class DocumentUploaderWithOptionComp extends React.Component<
         minimumProcessingTime
       ])
     } catch (error) {
-      console.error(error)
-
       this.setState({
         errorMessage:
           this.state.errorMessage ||

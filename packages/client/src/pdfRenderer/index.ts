@@ -62,7 +62,7 @@ export function createPDF(
   }
   return pdfMake.createPdf(
     JSON.parse(definitionString),
-    null,
+    undefined,
     template.fonts[intl.locale]
   )
 }

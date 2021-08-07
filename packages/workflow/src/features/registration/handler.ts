@@ -37,7 +37,7 @@ import {
 } from '@workflow/features/registration/utils'
 import { logger } from '@workflow/logger'
 import { getToken } from '@workflow/utils/authUtils'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import fetch from 'node-fetch'
 import {
   EVENT_TYPE,

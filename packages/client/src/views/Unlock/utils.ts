@@ -15,7 +15,7 @@ import { storage } from '@client/storage'
 async function loadUserPin() {
   const currentUserID = await getCurrentUserID()
   const allUserData = JSON.parse(
-    await storage.getItem('USER_DATA')
+    (await storage.getItem('USER_DATA')) as string
   ) as IUserData[]
   const currentUserData = allUserData.find(
     user => user.userID === currentUserID

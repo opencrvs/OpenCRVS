@@ -16,11 +16,11 @@ import User, { IUserModel } from '@user-mgnt/model/user'
 import { generateSaltedHash, generateHash } from '@user-mgnt/utils/hash'
 import { statuses, systemScopeMapping } from '@user-mgnt/utils/userUtils'
 import { QA_ENV } from '@user-mgnt/constants'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import * as _ from 'lodash'
 import * as Joi from 'joi'
 import { getTokenPayload, ITokenPayload } from '@user-mgnt/utils/token'
-import { unauthorized } from 'boom'
+import { unauthorized } from '@hapi/boom'
 import * as uuid from 'uuid/v4'
 import {
   createFhirPractitioner,

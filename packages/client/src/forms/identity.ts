@@ -10,7 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import { MessageDescriptor } from 'react-intl'
-import { NUMBER, TEXT, IDynamicFieldTypeMapper, BIG_NUMBER } from '.'
+import { TEXT, IDynamicFieldTypeMapper, BIG_NUMBER } from '.'
 import { formMessages as messages } from '@client/i18n/messages'
 
 export const NATIONAL_ID = 'NATIONAL_ID'

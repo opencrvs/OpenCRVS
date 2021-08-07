@@ -253,10 +253,9 @@ describe('RegistrationHome sent for approval tab related tests', () => {
       store
     )
 
-    const data = (await waitForElement(
-      testComponent.component,
-      GridTable
-    )).prop('content')
+    const data = (
+      await waitForElement(testComponent.component, GridTable)
+    ).prop('content')
     expect(data.length).toBe(0)
   })
 

@@ -46,9 +46,11 @@ describe('Form desearializer', () => {
     birth.sections[0].groups[0].fields[0].mapping!.mutation!.operation = 'non_existing_123' as any
 
     expect(() => deserializeForm(birth)).toThrow()
+    /* eslint-disable no-console */
     expect((console.error as jest.Mock).mock.calls).toHaveLength(1)
     expect((console.error as jest.Mock).mock.calls[0][0]).toMatch(
       'non_existing_123'
     )
+    /* eslint-enable no-console */
   })
 })

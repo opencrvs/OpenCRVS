@@ -601,12 +601,9 @@ const mapStateToProps = (
   }
 }
 
-export const FieldAgentHome = connect(
-  mapStateToProps,
-  {
-    goToEvents: goToEventsAction,
-    goToFieldAgentHomeTab: goToFieldAgentHomeTabAction,
-    goToApplicationDetails,
-    updateFieldAgentDeclaredApplications
-  }
-)(injectIntl(withTheme(FieldAgentHomeView)))
+export const FieldAgentHome = connect(mapStateToProps, {
+  goToEvents: goToEventsAction,
+  goToFieldAgentHomeTab: goToFieldAgentHomeTabAction,
+  goToApplicationDetails,
+  updateFieldAgentDeclaredApplications
+})(injectIntl(withTheme(FieldAgentHomeView)))

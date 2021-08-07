@@ -15,7 +15,7 @@ require('dotenv').config({
   path: `${process.cwd()}/.env`
 })
 // tslint:enable no-var-requires
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import { AUTH_HOST, AUTH_PORT } from '@auth/constants'
 import authenticateHandler, {
   requestSchema as reqAuthSchema,

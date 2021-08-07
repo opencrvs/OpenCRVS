@@ -101,9 +101,7 @@ const Field = styled.div`
     margin-bottom: 0px;
   }
 `
-const GlobalError = styled.div`
-  color: ${({ theme }) => theme.colors.error};
-`
+
 const BoxedError = styled.div`
   margin-bottom: 10px;
   display: flex;

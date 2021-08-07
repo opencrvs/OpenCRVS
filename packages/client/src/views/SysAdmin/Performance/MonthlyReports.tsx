@@ -14,7 +14,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl, WrappedComponentProps } from 'react-intl'
 import { LinkButton } from '@opencrvs/components/lib/buttons'
-import { ArrowDownBlue } from '@opencrvs/components/lib/icons'
 import {
   ListTable,
   LocationSearch,
@@ -78,11 +77,10 @@ interface IState {
 class MonthlyReportsComponent extends React.Component<Props, IState> {
   constructor(props: Props) {
     super(props)
+    const historyState = props.history.location.state as any
     this.state = {
       selectedLocation:
-        (props.history.location.state &&
-          props.history.location.state.selectedLocation) ||
-        undefined
+        (historyState && historyState.selectedLocation) || undefined
     }
   }
   getContent(eventType: Event) {
@@ -217,9 +215,6 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const MonthlyReports = connect(
-  mapStateToProps,
-  {
-    goToPerformanceReport
-  }
-)(injectIntl(MonthlyReportsComponent))
+export const MonthlyReports = connect(mapStateToProps, {
+  goToPerformanceReport
+})(injectIntl(MonthlyReportsComponent))

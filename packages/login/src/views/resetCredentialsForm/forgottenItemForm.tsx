@@ -127,10 +127,7 @@ class ForgottenItemComponent extends React.Component<Props, State> {
   }
 }
 
-export const ForgottenItem = connect(
-  null,
-  {
-    goToHome,
-    goToPhoneNumberVerificationForm
-  }
-)(injectIntl(ForgottenItemComponent))
+export const ForgottenItem = connect(null, {
+  goToHome,
+  goToPhoneNumberVerificationForm
+})(injectIntl(ForgottenItemComponent))

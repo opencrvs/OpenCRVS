@@ -42,11 +42,10 @@ interface State {
 class TeamSearchComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
+    const historyState = props.history.location.state as any
     this.state = {
       selectedLocation:
-        (props.history.location.state &&
-          props.history.location.state.selectedLocation) ||
-        undefined
+        (historyState && historyState.selectedLocation) || undefined
     }
   }
 
@@ -93,9 +92,6 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const TeamSearch = connect(
-  mapStateToProps,
-  {
-    goToTeamUserList
-  }
-)(injectIntl(TeamSearchComponent))
+export const TeamSearch = connect(mapStateToProps, {
+  goToTeamUserList
+})(injectIntl(TeamSearchComponent))

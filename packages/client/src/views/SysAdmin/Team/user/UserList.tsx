@@ -58,7 +58,7 @@ import {
   GQLQuery,
   GQLUser
 } from '@opencrvs/gateway/src/graphql/schema'
-import querystring from 'query-string'
+import { parse } from 'query-string'
 import * as React from 'react'
 import { injectIntl, WrappedComponentProps as IntlShapeProps } from 'react-intl'
 import { connect } from 'react-redux'
@@ -249,9 +249,7 @@ function UserListComponent(props: IProps) {
     location: { search }
   } = props
 
-  const { locationId, viewOnly } = (querystring.parse(
-    search
-  ) as unknown) as ISearchParams
+  const { locationId, viewOnly } = (parse(search) as unknown) as ISearchParams
 
   const [toggleActivation, setToggleActivation] = useState<
     ToggleUserActivation

@@ -103,11 +103,8 @@ class CertificationPaymentReportComponent extends React.Component<FullProps> {
   }
 }
 
-export const CertificationPaymentReports = connect(
-  (store: IStoreState) => {
-    return {
-      offlineResources: getOfflineData(store)
-    }
-  },
-  {}
-)(injectIntl(CertificationPaymentReportComponent))
+export const CertificationPaymentReports = connect((store: IStoreState) => {
+  return {
+    offlineResources: getOfflineData(store)
+  }
+}, {})(injectIntl(CertificationPaymentReportComponent))

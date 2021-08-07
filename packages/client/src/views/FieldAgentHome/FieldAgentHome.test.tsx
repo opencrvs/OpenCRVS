@@ -542,20 +542,22 @@ describe('FieldAgentHome tests', () => {
     let component: ReactWrapper
 
     beforeEach(async () => {
-      component = (await createTestComponent(
-        // @ts-ignore
-        <FieldAgentHome
-          match={{
-            params: {
-              tabId: 'review'
-            },
-            isExact: true,
-            path: '',
-            url: ''
-          }}
-        />,
-        store
-      )).component
+      component = (
+        await createTestComponent(
+          // @ts-ignore
+          <FieldAgentHome
+            match={{
+              params: {
+                tabId: 'review'
+              },
+              isExact: true,
+              path: '',
+              url: ''
+            }}
+          />,
+          store
+        )
+      ).component
     })
 
     it('renders no records text when no data in grid table', async () => {
@@ -641,20 +643,22 @@ describe('FieldAgentHome tests', () => {
     let component: ReactWrapper
 
     beforeEach(async () => {
-      component = (await createTestComponent(
-        // @ts-ignore
-        <FieldAgentHome
-          match={{
-            params: {
-              tabId: 'progress'
-            },
-            isExact: true,
-            path: '',
-            url: ''
-          }}
-        />,
-        store
-      )).component
+      component = (
+        await createTestComponent(
+          // @ts-ignore
+          <FieldAgentHome
+            match={{
+              params: {
+                tabId: 'progress'
+              },
+              isExact: true,
+              path: '',
+              url: ''
+            }}
+          />,
+          store
+        )
+      ).component
     })
 
     it('renders no records text when no data in grid table', () => {

@@ -176,10 +176,7 @@ describe('user audit action modal tests', () => {
     })
 
     it('renders responsive modal', async () => {
-      const responsiveModal = await waitForElement(
-        component,
-        '#user-audit-modal'
-      )
+      await waitForElement(component, '#user-audit-modal')
     })
 
     it('renders title for deactivation', async () => {
@@ -200,7 +197,7 @@ describe('user audit action modal tests', () => {
         '#deactivate-action'
       )
       confirmButton.hostNodes().simulate('click')
-      const formErrorText = await waitForElement(component, '#form-error')
+      await waitForElement(component, '#form-error')
     })
 
     describe('after filling mandatory data', () => {
@@ -228,16 +225,18 @@ describe('user audit action modal tests', () => {
 
   describe('in case of failed deactivate audit action', () => {
     beforeEach(async () => {
-      let [_, errorMock] = graphqlMocksOfDeactivate
-      component = (await createTestComponent(
-        <UserAuditActionModal
-          show={true}
-          user={users[0]}
-          onClose={onCloseMock}
-        />,
-        store,
-        [errorMock]
-      )).component
+      let [errorMock] = graphqlMocksOfDeactivate
+      component = (
+        await createTestComponent(
+          <UserAuditActionModal
+            show={true}
+            user={users[0]}
+            onClose={onCloseMock}
+          />,
+          store,
+          [errorMock]
+        )
+      ).component
 
       // wait for mocked data to load mockedProvider
       await new Promise(resolve => {
@@ -328,16 +327,18 @@ describe('user audit action modal tests', () => {
 
   describe('in case of failed reactivate audit action', () => {
     beforeEach(async () => {
-      let [_, errorMock] = graphqlMocksOfReactivate
-      component = (await createTestComponent(
-        <UserAuditActionModal
-          show={true}
-          user={users[1]}
-          onClose={onCloseMock}
-        />,
-        store,
-        [errorMock]
-      )).component
+      let [errorMock] = graphqlMocksOfReactivate
+      component = (
+        await createTestComponent(
+          <UserAuditActionModal
+            show={true}
+            user={users[1]}
+            onClose={onCloseMock}
+          />,
+          store,
+          [errorMock]
+        )
+      ).component
 
       // wait for mocked data to load mockedProvider
       await new Promise(resolve => {

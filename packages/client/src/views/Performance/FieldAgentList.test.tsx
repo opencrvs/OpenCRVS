@@ -15,7 +15,7 @@ import { waitForElement } from '@client/tests/wait-for-element'
 import { FETCH_FIELD_AGENTS_WITH_PERFORMANCE_DATA } from '@client/views/SysAdmin/Performance/queries'
 import { ReactWrapper } from 'enzyme'
 import { History } from 'history'
-import querystring from 'query-string'
+import { stringify, parse } from 'query-string'
 import * as React from 'react'
 import { FieldAgentList } from './FieldAgentList'
 
@@ -85,7 +85,7 @@ describe('Field agent list tests', () => {
       <FieldAgentList
         // @ts-ignore
         location={{
-          search: querystring.stringify({
+          search: stringify({
             locationId: 'bfe8306c-0910-48fe-8bf5-0db906cf3155',
             timeEnd: new Date(1487076708000).toISOString(),
             timeStart: new Date(1455454308000).toISOString()
@@ -99,7 +99,7 @@ describe('Field agent list tests', () => {
   })
 
   it('renders without crashing', async () => {
-    const header = await waitForElement(component, '#field-agent-list')
+    await waitForElement(component, '#field-agent-list')
   })
   it('toggles sorting order of the list', async () => {
     const firstRowElement = await waitForElement(component, '#row_0')
@@ -125,8 +125,7 @@ describe('Field agent list tests', () => {
   })
 
   it('changing location id from location picker updates the query params', async () => {
-    const locationIdBeforeChange = querystring.parse(history.location.search)
-      .locationId
+    const locationIdBeforeChange = parse(history.location.search).locationId
     const locationPickerElement = await waitForElement(
       component,
       '#location-range-picker-action'
@@ -147,7 +146,7 @@ describe('Field agent list tests', () => {
       '#locationOptiond3cef1d4-6187-4f0e-a024-61abd3fce9d4'
     )
     searchResultOption.hostNodes().simulate('click')
-    const newLocationId = querystring.parse(history.location.search).locationId
+    const newLocationId = parse(history.location.search).locationId
     expect(newLocationId).not.toBe(locationIdBeforeChange)
     expect(newLocationId).toBe('d3cef1d4-6187-4f0e-a024-61abd3fce9d4')
   })
@@ -156,7 +155,7 @@ describe('Field agent list tests', () => {
       <FieldAgentList
         // @ts-ignore
         location={{
-          search: querystring.stringify({
+          search: stringify({
             locationId: 'bfe8306c-0910-48fe-8bf5-0db906cf3155',
             timeEnd: new Date(1487076708000).toISOString(),
             timeStart: new Date(1455454308000).toISOString()

@@ -216,12 +216,9 @@ class SecurityQuestionComponent extends React.Component<Props, State> {
 }
 
 export const SecurityQuestion = withRouter(
-  connect(
-    null,
-    {
-      goToPhoneNumberVerificationForm,
-      goToUpdatePasswordForm,
-      goToSuccessPage
-    }
-  )(injectIntl(SecurityQuestionComponent))
+  connect(null, {
+    goToPhoneNumberVerificationForm,
+    goToUpdatePasswordForm,
+    goToSuccessPage
+  })(injectIntl(SecurityQuestionComponent))
 )

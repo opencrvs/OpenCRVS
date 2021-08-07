@@ -10,10 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import { FormFieldGenerator } from '@client/components/form'
-import {
-  roleQueries,
-  getRolesQuery
-} from '@client/forms/user/fieldDefinitions/query/queries'
+import { roleQueries } from '@client/forms/user/fieldDefinitions/query/queries'
 import { offlineDataReady } from '@client/offline/actions'
 import { createStore } from '@client/store'
 import { userQueries, GET_USER } from '@client/user/queries'
@@ -239,21 +236,23 @@ describe('create new user tests', () => {
 
   describe('when user is in create new user form', () => {
     beforeEach(async () => {
-      testComponent = (await createTestComponent(
-        <CreateNewUser
-          match={{
-            // @ts-ignore
-            params: {
-              locationId: '0d8474da-0361-4d32-979e-af91f012340a',
-              sectionId: mockOfflineData.forms.userForm.sections[0].id
-            },
-            isExact: true,
-            path: '/createUser',
-            url: ''
-          }}
-        />,
-        store
-      )).component
+      testComponent = (
+        await createTestComponent(
+          <CreateNewUser
+            match={{
+              // @ts-ignore
+              params: {
+                locationId: '0d8474da-0361-4d32-979e-af91f012340a',
+                sectionId: mockOfflineData.forms.userForm.sections[0].id
+              },
+              isExact: true,
+              path: '/createUser',
+              url: ''
+            }}
+          />,
+          store
+        )
+      ).component
     })
 
     it('clicking on confirm button with unfilled required fields shows validation errors', async () => {
@@ -318,21 +317,23 @@ describe('create new user tests', () => {
     beforeEach(async () => {
       store.dispatch(modifyUserFormData(mockCompleteFormData))
       store.dispatch(processRoles(mockCompleteFormData.registrationOffice))
-      testComponent = (await createTestComponent(
-        // @ts-ignore
-        <CreateNewUser
-          match={{
-            params: {
-              sectionId: mockOfflineData.forms.userForm.sections[1].id,
-              groupId: mockOfflineData.forms.userForm.sections[1].groups[0].id
-            },
-            isExact: true,
-            path: '/createUser',
-            url: ''
-          }}
-        />,
-        store
-      )).component
+      testComponent = (
+        await createTestComponent(
+          // @ts-ignore
+          <CreateNewUser
+            match={{
+              params: {
+                sectionId: mockOfflineData.forms.userForm.sections[1].id,
+                groupId: mockOfflineData.forms.userForm.sections[1].groups[0].id
+              },
+              isExact: true,
+              path: '/createUser',
+              url: ''
+            }}
+          />,
+          store
+        )
+      ).component
     })
 
     it('renders review header', () => {

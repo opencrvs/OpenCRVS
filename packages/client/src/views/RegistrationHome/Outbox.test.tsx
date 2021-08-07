@@ -273,10 +273,12 @@ describe('OutBox tests', () => {
       applications.push(birthApp)
     }
     it('shows pagination bar when pagination is used', async () => {
-      const testComp = (await createTestComponent(
-        <OutBox application={applications} showPaginated={true} />,
-        store
-      )).component
+      const testComp = (
+        await createTestComponent(
+          <OutBox application={applications} showPaginated={true} />,
+          store
+        )
+      ).component
       expect(testComp.exists('#pagination')).toBeTruthy()
       testComp
         .find('#pagination')
@@ -284,10 +286,12 @@ describe('OutBox tests', () => {
         .map(child => child.simulate('click'))
     })
     it('shows loadmore button when loadmore is used', async () => {
-      const testComp = (await createTestComponent(
-        <OutBox application={applications} showPaginated={false} />,
-        store
-      )).component
+      const testComp = (
+        await createTestComponent(
+          <OutBox application={applications} showPaginated={false} />,
+          store
+        )
+      ).component
       expect(testComp.exists('#load_more_button')).toBeTruthy()
       testComp
         .find('#load_more_button')

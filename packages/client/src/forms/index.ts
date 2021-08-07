@@ -598,8 +598,11 @@ export interface IFormTag {
   delimiter?: string
 }
 
-export type IDynamicFormField = ISelectFormFieldWithDynamicOptions &
-  IFormFieldWithDynamicDefinitions
+export interface IDynamicFormField
+  extends ISelectFormFieldWithDynamicOptions,
+    IFormFieldWithDynamicDefinitions {
+  type: any
+}
 
 export interface IConditional {
   action: string

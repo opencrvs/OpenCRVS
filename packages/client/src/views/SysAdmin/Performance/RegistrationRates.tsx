@@ -36,7 +36,7 @@ import {
   GQLMonthWise45DayEstimation,
   GQLMonthWiseEstimationMetrics
 } from '@opencrvs/gateway/src/graphql/schema'
-import querystring from 'query-string'
+import { parse } from 'query-string'
 import * as React from 'react'
 import { injectIntl, WrappedComponentProps } from 'react-intl'
 import { connect } from 'react-redux'
@@ -90,7 +90,7 @@ function prepareChartData(data: GQLMonthWiseEstimationMetrics) {
         if (dataDetails !== null) {
           chartData.push({
             label:
-              moment.months().indexOf(dataDetails.month) == 0 && index > 0
+              moment.months().indexOf(dataDetails.month) === 0 && index > 0
                 ? `${dataDetails.month.slice(0, 3)} ${dataDetails.year}`
                 : `${dataDetails.month.slice(0, 3)}`,
             registeredIn45Days: dataDetails.actual45DayRegistration,
@@ -119,7 +119,7 @@ function RegistrationRatesComponent(props: IRegistrationRateProps) {
     },
     goToOperationalReport
   } = props
-  const { locationId, timeStart, timeEnd, title } = (querystring.parse(
+  const { locationId, timeStart, timeEnd, title } = (parse(
     search
   ) as unknown) as ISearchParams
 
@@ -267,7 +267,7 @@ function RegistrationRatesComponent(props: IRegistrationRateProps) {
   )
 }
 
-export const RegistrationRates = connect(
-  null,
-  { goToOperationalReport, goToRegistrationRates }
-)(injectIntl(RegistrationRatesComponent))
+export const RegistrationRates = connect(null, {
+  goToOperationalReport,
+  goToRegistrationRates
+})(injectIntl(RegistrationRatesComponent))

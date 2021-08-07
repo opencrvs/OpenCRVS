@@ -22,11 +22,13 @@ describe('Report list', () => {
 
   describe('Report list with defined param', () => {
     beforeAll(async () => {
-      app = (await createTestComponent(
-        // @ts-ignore
-        <ReportList history={history} />,
-        store
-      )).component
+      app = (
+        await createTestComponent(
+          // @ts-ignore
+          <ReportList history={history} />,
+          store
+        )
+      ).component
       app.update()
     })
 
@@ -37,11 +39,13 @@ describe('Report list', () => {
 
   describe('Report list with default param', () => {
     beforeAll(async () => {
-      app = (await createTestComponent(
-        // @ts-ignore
-        <ReportList match={{ params: {} }} history={history} />,
-        store
-      )).component
+      app = (
+        await createTestComponent(
+          // @ts-ignore
+          <ReportList match={{ params: {} }} history={history} />,
+          store
+        )
+      ).component
       app.update()
     })
 

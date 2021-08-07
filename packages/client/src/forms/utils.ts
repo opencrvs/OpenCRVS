@@ -169,9 +169,9 @@ export const getFieldType = (
 
   switch (field.dynamicDefinitions.type.kind) {
     case 'dynamic':
-      return field.dynamicDefinitions.type.typeMapper(values[
-        field.dynamicDefinitions.type.dependency
-      ] as string)
+      return field.dynamicDefinitions.type.typeMapper(
+        values[field.dynamicDefinitions.type.dependency] as string
+      )
     case 'static':
     default:
       return field.dynamicDefinitions.type.staticType
@@ -185,9 +185,9 @@ export const getFieldLabel = (
   if (!field.dynamicDefinitions.label) {
     return undefined
   }
-  return field.dynamicDefinitions.label.labelMapper(values[
-    field.dynamicDefinitions.label.dependency
-  ] as string)
+  return field.dynamicDefinitions.label.labelMapper(
+    values[field.dynamicDefinitions.label.dependency] as string
+  )
 }
 
 export const getFieldHelperText = (
@@ -197,9 +197,9 @@ export const getFieldHelperText = (
   if (!field.dynamicDefinitions.helperText) {
     return undefined
   }
-  return field.dynamicDefinitions.helperText.helperTextMapper(values[
-    field.dynamicDefinitions.helperText.dependency
-  ] as string)
+  return field.dynamicDefinitions.helperText.helperTextMapper(
+    values[field.dynamicDefinitions.helperText.dependency] as string
+  )
 }
 
 export const getFieldLabelToolTip = (
@@ -209,9 +209,9 @@ export const getFieldLabelToolTip = (
   if (!field.dynamicDefinitions.tooltip) {
     return undefined
   }
-  return field.dynamicDefinitions.tooltip.tooltipMapper(values[
-    field.dynamicDefinitions.tooltip.dependency
-  ] as string)
+  return field.dynamicDefinitions.tooltip.tooltipMapper(
+    values[field.dynamicDefinitions.tooltip.dependency] as string
+  )
 }
 
 export const getFieldValidation = (

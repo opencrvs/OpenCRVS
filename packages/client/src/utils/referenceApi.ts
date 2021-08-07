@@ -15,7 +15,6 @@ import { ILocation } from '@client/offline/reducer'
 import { IPDFTemplate } from '@client/pdfRenderer/transformer/types'
 import { getToken } from '@client/utils/authUtils'
 import { ICertificateCollectorDefinition } from '@client/views/PrintCertificate/VerifyCollector'
-import * as ImageDownloader from 'image-to-base64'
 
 export interface ILocationDataResponse {
   [locationId: string]: ILocation
@@ -116,17 +115,27 @@ async function loadPilotLocations(): Promise<ILocationDataResponse> {
   return response.data
 }
 
+const toDataURL = (url: string) =>
+  fetch(url)
+    .then(response => response.blob())
+    .then(
+      blob =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve(reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(blob)
+        })
+    )
+
 async function loadAssets(): Promise<IAssetResponse> {
   const url = `${window.config.RESOURCES_URL}/assets/${window.config.COUNTRY_LOGO_FILE}`
-  const base64Logo = await ImageDownloader(url, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${getToken()}`
+
+  return toDataURL(url).then(dataUrl => {
+    return {
+      logo: `${dataUrl}`
     }
   })
-  return {
-    logo: `data:image;base64,${base64Logo}`
-  }
 }
 
 export const referenceApi = {

@@ -26,7 +26,7 @@ import {
   FETCH_MONTH_WISE_EVENT_ESTIMATIONS
 } from '@client/views/SysAdmin/Performance/queries'
 import { waitForElement } from '@client/tests/wait-for-element'
-import queryString from 'query-string'
+import { stringify, parse } from 'query-string'
 import { GraphQLError } from 'graphql'
 
 const LOCATION_DHAKA_DIVISION = {
@@ -127,26 +127,28 @@ describe('Registraion Rates tests', () => {
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <RegistrationRates
-        match={{
-          params: { eventType: 'birth' },
-          isExact: true,
-          path: EVENT_REGISTRATION_RATES,
-          url: ''
-        }}
-        // @ts-ignore
-        location={{
-          search: queryString.stringify({
-            locationId: LOCATION_DHAKA_DIVISION.id,
-            timeEnd: new Date(1487076708000).toISOString(),
-            timeStart: new Date(1455454308000).toISOString()
-          })
-        }}
-      />,
-      store,
-      graphqlMocks
-    )).component
+    component = (
+      await createTestComponent(
+        <RegistrationRates
+          match={{
+            params: { eventType: 'birth' },
+            isExact: true,
+            path: EVENT_REGISTRATION_RATES,
+            url: ''
+          }}
+          // @ts-ignore
+          location={{
+            search: stringify({
+              locationId: LOCATION_DHAKA_DIVISION.id,
+              timeEnd: new Date(1487076708000).toISOString(),
+              timeStart: new Date(1455454308000).toISOString()
+            })
+          }}
+        />,
+        store,
+        graphqlMocks
+      )
+    ).component
 
     // wait for mocked data to load mockedProvider
     await new Promise(resolve => {
@@ -162,7 +164,7 @@ describe('Registraion Rates tests', () => {
       configurable: true,
       value: 200
     })
-    const header = await waitForElement(component, '#reg-rates-header')
+    await waitForElement(component, '#reg-rates-header')
   })
 
   it('because of more than one child locations from the query, by location option arrives in dropdown', async () => {
@@ -185,7 +187,7 @@ describe('Registraion Rates tests', () => {
     backAction.hostNodes().simulate('click')
     await flushPromises()
     expect(history.location.pathname).toBe('/performance/operations')
-    expect(queryString.parse(history.location.search)).toEqual({
+    expect(parse(history.location.search)).toEqual({
       sectionId: 'OPERATIONAL',
       locationId: LOCATION_DHAKA_DIVISION.id,
       timeEnd: new Date(1487076708000).toISOString(),
@@ -243,8 +245,7 @@ describe('Registraion Rates tests', () => {
   })
 
   it('changing location id from location picker updates the query params', async () => {
-    const locationIdBeforeChange = queryString.parse(history.location.search)
-      .locationId
+    const locationIdBeforeChange = parse(history.location.search).locationId
     const locationPickerElement = await waitForElement(
       component,
       '#location-range-picker-action'
@@ -265,7 +266,7 @@ describe('Registraion Rates tests', () => {
       '#locationOptionbfe8306c-0910-48fe-8bf5-0db906cf3155'
     )
     searchResultOption.hostNodes().simulate('click')
-    const newLocationId = queryString.parse(history.location.search).locationId
+    const newLocationId = parse(history.location.search).locationId
     expect(newLocationId).not.toBe(locationIdBeforeChange)
     expect(newLocationId).toBe('bfe8306c-0910-48fe-8bf5-0db906cf3155')
   })
@@ -322,36 +323,33 @@ describe('Registraion Rates error state tests', () => {
   ]
   let component: ReactWrapper<{}, {}>
   let store: AppStore
-  let history: History<any>
-
-  beforeAll(async () => {
-    Date.now = jest.fn(() => 1487076708000)
-    const { store: testStore, history: testHistory } = await createTestStore()
-    store = testStore
-    history = testHistory
-  })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <RegistrationRates
-        match={{
-          params: { eventType: 'birth' },
-          isExact: true,
-          path: EVENT_REGISTRATION_RATES,
-          url: ''
-        }}
-        // @ts-ignore
-        location={{
-          search: queryString.stringify({
-            locationId: LOCATION_DHAKA_DIVISION.id,
-            timeEnd: new Date(1487076708000).toISOString(),
-            timeStart: new Date(1455454308000).toISOString()
-          })
-        }}
-      />,
-      store,
-      graphqlMocks
-    )).component
+    Date.now = jest.fn(() => 1487076708000)
+    const { store: testStore } = await createTestStore()
+    store = testStore
+    component = (
+      await createTestComponent(
+        <RegistrationRates
+          match={{
+            params: { eventType: 'birth' },
+            isExact: true,
+            path: EVENT_REGISTRATION_RATES,
+            url: ''
+          }}
+          // @ts-ignore
+          location={{
+            search: stringify({
+              locationId: LOCATION_DHAKA_DIVISION.id,
+              timeEnd: new Date(1487076708000).toISOString(),
+              timeStart: new Date(1455454308000).toISOString()
+            })
+          }}
+        />,
+        store,
+        graphqlMocks
+      )
+    ).component
 
     // wait for mocked data to load mockedProvider
     await new Promise(resolve => {

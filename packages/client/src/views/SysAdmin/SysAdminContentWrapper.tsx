@@ -68,9 +68,7 @@ interface HeaderProps {
 }
 
 interface SubPage extends BasePage, HeaderProps {
-  type:
-    | typeof SysAdminPageVariant.SUBPAGE
-    | SysAdminPageVariant.SUBPAGE_CENTERED
+  type: any
 }
 
 type SysAdminPage = DefaultPage | SubPage

@@ -35,7 +35,7 @@ import {
   getLocationHirarchyIDs,
   findEventLocation
 } from '@search/features/fhir/fhir-utils'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 const DECEASED_CODE = 'deceased-details'
 const INFORMANT_CODE = 'informant-details'

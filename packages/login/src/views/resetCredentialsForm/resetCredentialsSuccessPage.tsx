@@ -74,9 +74,6 @@ export class ResetCredentialsSuccessView extends React.Component<
   }
 }
 
-export const ResetCredentialsSuccessPage = connect(
-  null,
-  {
-    goToHome
-  }
-)(injectIntl(ResetCredentialsSuccessView))
+export const ResetCredentialsSuccessPage = connect(null, {
+  goToHome
+})(injectIntl(ResetCredentialsSuccessView))

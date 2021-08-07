@@ -16,7 +16,7 @@ require('dotenv').config({
 })
 // tslint:enable no-var-requires
 
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import {
   HOST,
   PORT,

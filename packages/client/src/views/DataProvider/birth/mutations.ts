@@ -17,7 +17,7 @@ import {
   appendGqlMetadataFromDraft
 } from '@client/transformer'
 
-const SUBMIT_BIRTH_APPLICATION = gql`
+export const SUBMIT_BIRTH_APPLICATION = gql`
   mutation submitMutation($details: BirthRegistrationInput!) {
     createBirthRegistration(details: $details) {
       trackingId
@@ -25,12 +25,12 @@ const SUBMIT_BIRTH_APPLICATION = gql`
     }
   }
 `
-const APPROVE_BIRTH_APPLICATION = gql`
+export const APPROVE_BIRTH_APPLICATION = gql`
   mutation submitMutation($id: ID!, $details: BirthRegistrationInput) {
     markBirthAsValidated(id: $id, details: $details)
   }
 `
-const REGISTER_BIRTH_APPLICATION = gql`
+export const REGISTER_BIRTH_APPLICATION = gql`
   mutation submitMutation($id: ID!, $details: BirthRegistrationInput) {
     markBirthAsRegistered(id: $id, details: $details) {
       id
@@ -70,7 +70,7 @@ const REGISTER_BIRTH_APPLICATION = gql`
     }
   }
 `
-const REJECT_BIRTH_APPLICATION = gql`
+export const REJECT_BIRTH_APPLICATION = gql`
   mutation submitMutation($id: String!, $reason: String!, $comment: String!) {
     markEventAsVoided(id: $id, reason: $reason, comment: $comment)
   }

@@ -27,10 +27,7 @@ import {
 } from '@client/tests/util'
 import { waitForElement, waitFor } from '@client/tests/wait-for-element'
 import { createClient } from '@client/utils/apolloClient'
-import {
-  FETCH_REGISTRATION_BY_COMPOSITION,
-  REGISTRATION_HOME_QUERY
-} from '@client/views/RegistrationHome/queries'
+import { REGISTRATION_HOME_QUERY } from '@client/views/RegistrationHome/queries'
 import {
   RegistrationHome,
   EVENT_STATUS
@@ -461,10 +458,9 @@ describe('RegistrationHome sent for review tab related tests', () => {
       store
     )
 
-    const gridTable = (await waitForElement(
-      testComponent.component,
-      GridTable
-    )).instance()
+    const gridTable = (
+      await waitForElement(testComponent.component, GridTable)
+    ).instance()
 
     gridTable.toggleExpanded('bc09200d-0160-43b4-9e2b-5b9e90424e95')
 
@@ -571,10 +567,9 @@ describe('RegistrationHome sent for review tab related tests', () => {
       store
     )
 
-    const instance = (await waitForElement(
-      testComponent.component,
-      GridTable
-    )).instance()
+    const instance = (
+      await waitForElement(testComponent.component, GridTable)
+    ).instance()
 
     instance.toggleExpanded('bc09200d-0160-43b4-9e2b-5b9e90424e95')
 

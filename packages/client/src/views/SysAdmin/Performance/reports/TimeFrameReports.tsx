@@ -165,11 +165,8 @@ class TimeFrameComponent extends React.Component<FullProps> {
   }
 }
 
-export const TimeFrameReports = connect(
-  (store: IStoreState) => {
-    return {
-      offlineResources: getOfflineData(store)
-    }
-  },
-  {}
-)(injectIntl(TimeFrameComponent))
+export const TimeFrameReports = connect((store: IStoreState) => {
+  return {
+    offlineResources: getOfflineData(store)
+  }
+}, {})(injectIntl(TimeFrameComponent))

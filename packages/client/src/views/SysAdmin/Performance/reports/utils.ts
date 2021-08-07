@@ -1,4 +1,4 @@
-import { ILocation, IOfflineData } from '@client/offline/reducer'
+import { IOfflineData } from '@client/offline/reducer'
 
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public

@@ -167,11 +167,8 @@ class GenderBasisComponent extends React.Component<FullProps> {
   }
 }
 
-export const GenderBasisReports = connect(
-  (store: IStoreState) => {
-    return {
-      offlineResources: getOfflineData(store)
-    }
-  },
-  {}
-)(injectIntl(GenderBasisComponent))
+export const GenderBasisReports = connect((store: IStoreState) => {
+  return {
+    offlineResources: getOfflineData(store)
+  }
+}, {})(injectIntl(GenderBasisComponent))

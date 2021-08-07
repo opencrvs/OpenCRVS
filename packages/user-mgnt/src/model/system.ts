@@ -24,7 +24,7 @@ export interface ISystem {
   practitionerId: string
   scope: string[]
   status: string
-  creationDate: number
+  creationDate?: number
 }
 
 export interface ISystemModel extends ISystem, Document {}

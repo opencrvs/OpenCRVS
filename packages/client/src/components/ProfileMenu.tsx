@@ -127,10 +127,7 @@ const mapStateToProps = (store: IStoreState) => {
   }
 }
 
-export const ProfileMenu = connect(
-  mapStateToProps,
-  {
-    redirectToAuthentication,
-    goToSettings
-  }
-)(injectIntl(ProfileMenuComponent))
+export const ProfileMenu = connect(mapStateToProps, {
+  redirectToAuthentication,
+  goToSettings
+})(injectIntl(ProfileMenuComponent))

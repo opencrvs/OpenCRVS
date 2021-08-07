@@ -27,7 +27,6 @@ import {
   SysAdminContentWrapper,
   SysAdminPageVariant
 } from '@client/views/SysAdmin/SysAdminContentWrapper'
-import { TertiaryButton } from '@opencrvs/components/lib/buttons'
 import { ISearchLocation } from '@opencrvs/components/lib/interface'
 import {
   GQLCertificationPaymentMetrics,
@@ -45,10 +44,6 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
 import { NoResultMessage } from './NoResultMessage'
 
-const BackButton = styled(TertiaryButton)`
-  margin-top: 24px;
-`
-
 const ReportWrapper = styled.div`
   margin-top: 16px;
 `
@@ -65,24 +60,12 @@ interface IMetricsQueryResult {
   fetchRegistrationMetrics: GQLRegistrationMetrics
 }
 
-type Props = ReportProps &
-  WrappedComponentProps &
-  RouteComponentProps<
-    {},
-    {},
-    {
-      selectedLocation: ISearchLocation
-      eventType: Event
-      timeRange: { start: Date; end: Date }
-    }
-  >
+type Props = ReportProps & WrappedComponentProps & RouteComponentProps<{}>
 
 function ReportComponent(props: Props) {
-  const [selectedLocation, setSelectedLocation] = useState<ISearchLocation>(
-    props.selectedLocation
-  )
+  const [selectedLocation] = useState<ISearchLocation>(props.selectedLocation)
 
-  const { timeRange, intl, eventType } = props
+  const { timeRange, eventType } = props
   const { start, end } = timeRange
 
   const title = moment(start).format('MMMM YYYY')
@@ -133,9 +116,9 @@ function ReportComponent(props: Props) {
                   loading={loading}
                   genderBasisMetrics={
                     (data &&
-                      (data.fetchRegistrationMetrics &&
-                        (data.fetchRegistrationMetrics
-                          .genderBasisMetrics as GQLRegistrationGenderBasisMetrics))) ||
+                      data.fetchRegistrationMetrics &&
+                      (data.fetchRegistrationMetrics
+                        .genderBasisMetrics as GQLRegistrationGenderBasisMetrics)) ||
                     {}
                   }
                 />
@@ -144,9 +127,9 @@ function ReportComponent(props: Props) {
                   loading={loading}
                   data={
                     (data &&
-                      (data.fetchRegistrationMetrics &&
-                        (data.fetchRegistrationMetrics
-                          .timeFrames as GQLRegistrationTimeFrameMetrics))) ||
+                      data.fetchRegistrationMetrics &&
+                      (data.fetchRegistrationMetrics
+                        .timeFrames as GQLRegistrationTimeFrameMetrics)) ||
                     {}
                   }
                 />
@@ -156,9 +139,9 @@ function ReportComponent(props: Props) {
                     loading={loading}
                     data={
                       (data &&
-                        (data.fetchRegistrationMetrics &&
-                          (data.fetchRegistrationMetrics
-                            .estimated45DayMetrics as GQLRegistration45DayEstimatedMetrics))) ||
+                        data.fetchRegistrationMetrics &&
+                        (data.fetchRegistrationMetrics
+                          .estimated45DayMetrics as GQLRegistration45DayEstimatedMetrics)) ||
                       {}
                     }
                   />
@@ -168,9 +151,9 @@ function ReportComponent(props: Props) {
                   loading={loading}
                   data={
                     (data &&
-                      (data.fetchRegistrationMetrics &&
-                        (data.fetchRegistrationMetrics
-                          .payments as GQLCertificationPaymentMetrics))) ||
+                      data.fetchRegistrationMetrics &&
+                      (data.fetchRegistrationMetrics
+                        .payments as GQLCertificationPaymentMetrics)) ||
                     {}
                   }
                 />
@@ -184,18 +167,18 @@ function ReportComponent(props: Props) {
 }
 
 function mapStateToProps(state: IStoreState, props: Props) {
+  const historyState = props.history.location.state as any
   return {
-    eventType: props.location.state && props.location.state.eventType,
-    timeRange: (props.location.state && props.location.state.timeRange) || {
+    eventType: historyState && historyState.eventType,
+    timeRange: (historyState && historyState.timeRange) || {
       start: new Date(),
       end: new Date()
     },
-    selectedLocation: props.location.state!.selectedLocation,
+    selectedLocation: historyState!.selectedLocation,
     offlineResources: getOfflineData(state)
   }
 }
 
-export const Report = connect(
-  mapStateToProps,
-  { goBack }
-)(injectIntl(ReportComponent))
+export const Report = connect(mapStateToProps, { goBack })(
+  injectIntl(ReportComponent)
+)

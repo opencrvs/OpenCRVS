@@ -13,7 +13,6 @@ import { AppStore } from '@client/store'
 import { createTestComponent, createTestStore } from '@client/tests/util'
 import { waitForElement } from '@client/tests/wait-for-element'
 import { ReactWrapper } from 'enzyme'
-import { History } from 'history'
 import * as React from 'react'
 import { FETCH_TIME_LOGGED_METRICS_FOR_PRACTITIONER } from '@client/user/queries'
 import { UserAuditList } from '@client/views/SysAdmin/Team/user/userProfilie/UserAuditList'
@@ -21,7 +20,6 @@ import { UserAuditList } from '@client/views/SysAdmin/Team/user/userProfilie/Use
 describe('User audit list tests', () => {
   let component: ReactWrapper<{}, {}>
   let store: AppStore
-  let history: History<any>
 
   const graphqlMock = [
     {
@@ -119,28 +117,29 @@ describe('User audit list tests', () => {
 
   beforeAll(async () => {
     Date.now = jest.fn(() => 1487076708000)
-    const { store: testStore, history: testHistory } = await createTestStore()
+    const { store: testStore } = await createTestStore()
     store = testStore
-    history = testHistory
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <UserAuditList
-        user={{
-          id: '12345',
-          name: 'Dummy User',
-          role: 'FIELD_AGENT',
-          type: 'CHA',
-          number: '01622688231',
-          status: 'active',
-          practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
-          locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
-        }}
-      />,
-      store,
-      graphqlMock
-    )).component
+    component = (
+      await createTestComponent(
+        <UserAuditList
+          user={{
+            id: '12345',
+            name: 'Dummy User',
+            role: 'FIELD_AGENT',
+            type: 'CHA',
+            number: '01622688231',
+            status: 'active',
+            practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
+            locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
+          }}
+        />,
+        store,
+        graphqlMock
+      )
+    ).component
 
     // wait for mocked data to load mockedProvider
     await new Promise(resolve => {
@@ -155,30 +154,31 @@ describe('User audit list tests', () => {
   })
 
   it('renders in loading mode', async () => {
-    const testComponent = (await createTestComponent(
-      <UserAuditList isLoading={true} />,
-      store
-    )).component
+    const testComponent = (
+      await createTestComponent(<UserAuditList isLoading={true} />, store)
+    ).component
     expect(
       await waitForElement(testComponent, '#loading-audit-list')
     ).toBeDefined()
   })
   it('renders with a error toast for graphql error', async () => {
-    const testComponent = (await createTestComponent(
-      <UserAuditList
-        user={{
-          id: '12345',
-          name: 'Dummy User',
-          role: 'FIELD_AGENT',
-          type: 'CHA',
-          number: '01622688231',
-          status: 'active',
-          practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
-          locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
-        }}
-      />,
-      store
-    )).component
+    const testComponent = (
+      await createTestComponent(
+        <UserAuditList
+          user={{
+            id: '12345',
+            name: 'Dummy User',
+            role: 'FIELD_AGENT',
+            type: 'CHA',
+            number: '01622688231',
+            status: 'active',
+            practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
+            locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
+          }}
+        />,
+        store
+      )
+    ).component
     expect(await waitForElement(testComponent, '#error-toast')).toBeDefined()
   })
   it('toggles sorting order of the list', async () => {
@@ -203,52 +203,54 @@ describe('User audit list tests', () => {
   })
 
   it('renders next page of audits after clicking load more link', async () => {
-    const testComponent = (await createTestComponent(
-      <UserAuditList
-        user={{
-          id: '12345',
-          name: 'Dummy User',
-          role: 'FIELD_AGENT',
-          type: 'CHA',
-          number: '01622688231',
-          status: 'active',
-          practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
-          locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
-        }}
-      />,
-      store,
-      [
-        graphqlMock[0],
-        {
-          request: {
-            query: FETCH_TIME_LOGGED_METRICS_FOR_PRACTITIONER,
-            variables: {
-              timeEnd: new Date(1487076708000).toISOString(),
-              timeStart: new Date(1484398308000).toISOString(),
-              practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
-              locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b',
-              count: 20
-            }
-          },
-          result: {
-            data: {
-              fetchTimeLoggedMetricsByPractitioner: {
-                totalItems: 11,
-                results: [
-                  {
-                    status: 'REGISTERED',
-                    trackingId: 'B23S555',
-                    eventType: 'BIRTH',
-                    timeSpentEditing: 50,
-                    time: '2019-03-31T18:00:00.000Z'
-                  }
-                ]
+    const testComponent = (
+      await createTestComponent(
+        <UserAuditList
+          user={{
+            id: '12345',
+            name: 'Dummy User',
+            role: 'FIELD_AGENT',
+            type: 'CHA',
+            number: '01622688231',
+            status: 'active',
+            practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
+            locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b'
+          }}
+        />,
+        store,
+        [
+          graphqlMock[0],
+          {
+            request: {
+              query: FETCH_TIME_LOGGED_METRICS_FOR_PRACTITIONER,
+              variables: {
+                timeEnd: new Date(1487076708000).toISOString(),
+                timeStart: new Date(1484398308000).toISOString(),
+                practitionerId: '94429795-0a09-4de8-8e1e-27dab01877d2',
+                locationId: '6e1f3bce-7bcb-4bf6-8e35-0d9facdf158b',
+                count: 20
+              }
+            },
+            result: {
+              data: {
+                fetchTimeLoggedMetricsByPractitioner: {
+                  totalItems: 11,
+                  results: [
+                    {
+                      status: 'REGISTERED',
+                      trackingId: 'B23S555',
+                      eventType: 'BIRTH',
+                      timeSpentEditing: 50,
+                      time: '2019-03-31T18:00:00.000Z'
+                    }
+                  ]
+                }
               }
             }
           }
-        }
-      ]
-    )).component
+        ]
+      )
+    ).component
 
     const loadMoreLink = await waitForElement(
       testComponent,

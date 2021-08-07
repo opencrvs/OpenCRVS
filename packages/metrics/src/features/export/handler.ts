@@ -10,7 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import { query, getCSV } from '@metrics/influxdb/client'
 import * as archiver from 'archiver'
 import { metricsHandler } from '@metrics/features/metrics/handler'

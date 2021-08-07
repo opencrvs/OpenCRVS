@@ -25,14 +25,16 @@ describe('Performance content wrapper', () => {
     let app: ReactWrapper
 
     beforeAll(async () => {
-      app = (await createTestComponent(
-        <SysAdminContentWrapper
-          type={SysAdminPageVariant.SUBPAGE}
-          headerTitle="Subpage"
-          backActionHandler={() => {}}
-        />,
-        store
-      )).component
+      app = (
+        await createTestComponent(
+          <SysAdminContentWrapper
+            type={SysAdminPageVariant.SUBPAGE}
+            headerTitle="Subpage"
+            backActionHandler={() => {}}
+          />,
+          store
+        )
+      ).component
       app.update()
     })
 

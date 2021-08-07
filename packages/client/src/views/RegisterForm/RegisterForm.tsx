@@ -14,7 +14,7 @@ import { FormikTouched, FormikValues } from 'formik'
 import { WrappedComponentProps as IntlShapeProps, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router'
-import { isNull, isUndefined, merge, flatten, isEqual } from 'lodash'
+import { isNull, isUndefined, merge, flatten } from 'lodash'
 import debounce from 'lodash/debounce'
 import {
   ICON_ALIGNMENT,
@@ -954,16 +954,13 @@ export const RegisterForm = connect<
   DispatchProps,
   FullProps,
   IStoreState
->(
-  mapStateToProps,
-  {
-    writeApplication,
-    modifyApplication,
-    deleteApplication,
-    goToPageGroup: goToPageGroupAction,
-    goBack: goBackAction,
-    goToHome,
-    goToHomeTab,
-    toggleDraftSavedNotification
-  }
-)(injectIntl<'intl', FullProps>(RegisterFormView))
+>(mapStateToProps, {
+  writeApplication,
+  modifyApplication,
+  deleteApplication,
+  goToPageGroup: goToPageGroupAction,
+  goBack: goBackAction,
+  goToHome,
+  goToHomeTab,
+  toggleDraftSavedNotification
+})(injectIntl<'intl', FullProps>(RegisterFormView))

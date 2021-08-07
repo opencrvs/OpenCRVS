@@ -10,7 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import fetch from 'node-fetch'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 export const verifyToken = async (token: string, authUrl: string) => {
   const res = await fetch(`${authUrl}/verifyToken`, {

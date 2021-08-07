@@ -84,8 +84,9 @@ class DocumentListPreviewComponent extends React.Component<IProps> {
             >
               <PaperClip />
               <span>
-                {this.getFormattedLabelForDocType(document
-                  .optionValues[1] as string) || document.optionValues[1]}
+                {this.getFormattedLabelForDocType(
+                  document.optionValues[1] as string
+                ) || document.optionValues[1]}
               </span>
             </PreviewLink>
           ))}

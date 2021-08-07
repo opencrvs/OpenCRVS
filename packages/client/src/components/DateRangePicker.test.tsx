@@ -43,10 +43,7 @@ describe('date picker tests', () => {
 
   describe('on desktop', () => {
     it('renders without crashing', async () => {
-      const pickerButtonElement = await waitForElement(
-        component,
-        '#date-range-picker-action'
-      )
+      await waitForElement(component, '#date-range-picker-action')
     })
   })
 
@@ -69,10 +66,7 @@ describe('date picker tests', () => {
     })
 
     it('renders modal for smaller device', async () => {
-      const modalContainerForSmallDevice = await waitForElement(
-        component,
-        '#picker-modal-mobile'
-      )
+      await waitForElement(component, '#picker-modal-mobile')
     })
 
     it('clicking on any preset item triggers onDatesChange with preset dates', async () => {

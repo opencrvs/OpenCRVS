@@ -191,7 +191,9 @@ export const offlineTransformers: IFunctionTransformer = {
       }
       return value
     } catch (error) {
+      /* eslint-disable no-console */
       console.error(error)
+      /* eslint-enable no-console */
       return ''
     }
   }

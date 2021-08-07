@@ -181,6 +181,7 @@ function mapStatetoProps(
   const application = state.applicationsState.applications.find(
     ({ id, review }) => id === match.params.applicationId && review === true
   )
+  const historyState = history.location.state as any
   return {
     application,
     scope: getScope(state),
@@ -188,7 +189,7 @@ function mapStatetoProps(
     event: getEvent(match.params.event),
     registerForm: form,
     pageRoute: REVIEW_EVENT_PARENT_FORM_PAGE_GROUP,
-    duplicate: history.location.state && history.location.state.duplicate
+    duplicate: historyState && historyState.duplicate
   }
 }
 

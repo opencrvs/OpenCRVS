@@ -183,13 +183,10 @@ const mapStateToProps = (
   }
 }
 
-export const SelectPrimaryApplicant = connect(
-  mapStateToProps,
-  {
-    goBack,
-    goToHome,
-    goToBirthContactPoint,
-    goToBirthRegistrationAsParent,
-    modifyApplication
-  }
-)(injectIntl(SelectPrimaryApplicantView))
+export const SelectPrimaryApplicant = connect(mapStateToProps, {
+  goBack,
+  goToHome,
+  goToBirthContactPoint,
+  goToBirthRegistrationAsParent,
+  modifyApplication
+})(injectIntl(SelectPrimaryApplicantView))

@@ -252,10 +252,7 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const PrintTab = connect(
-  mapStateToProps,
-  {
-    goToPrintCertificate,
-    goToApplicationDetails
-  }
-)(injectIntl(withTheme(PrintTabComponent)))
+export const PrintTab = connect(mapStateToProps, {
+  goToPrintCertificate,
+  goToApplicationDetails
+})(injectIntl(withTheme(PrintTabComponent)))

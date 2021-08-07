@@ -37,11 +37,13 @@ const fastResponseLink = new ApolloLink((operation: Operation) => {
     new Promise(resolve => {
       setTimeout(() => resolve({ response: true }), 100)
     }).then(res =>
-      observer.next(res as FetchResult<
-        { [key: string]: any },
-        Record<string, any>,
-        Record<string, any>
-      >)
+      observer.next(
+        res as FetchResult<
+          { [key: string]: any },
+          Record<string, any>,
+          Record<string, any>
+        >
+      )
     )
   })
 })
@@ -51,11 +53,13 @@ const slowResponseLink = new ApolloLink((operation: Operation) => {
     new Promise(resolve => {
       setTimeout(() => resolve({ response: true }), 300)
     }).then(res =>
-      observer.next(res as FetchResult<
-        { [key: string]: any },
-        Record<string, any>,
-        Record<string, any>
-      >)
+      observer.next(
+        res as FetchResult<
+          { [key: string]: any },
+          Record<string, any>,
+          Record<string, any>
+        >
+      )
     )
   })
 })

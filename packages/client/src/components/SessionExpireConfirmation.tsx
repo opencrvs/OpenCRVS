@@ -69,9 +69,6 @@ export const SessionExpireConfirmation = connect<
   IProps,
   SessionExpireProps & IProps,
   IStoreState
->(
-  mapStateToProps,
-  {
-    redirectToAuthentication
-  }
-)(injectIntl(SessionExpireComponent)) as any
+>(mapStateToProps, {
+  redirectToAuthentication
+})(injectIntl(SessionExpireComponent)) as any

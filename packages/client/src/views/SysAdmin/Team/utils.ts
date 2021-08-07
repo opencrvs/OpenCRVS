@@ -36,7 +36,6 @@ import {
 import { GQLRole, GQLUser } from '@opencrvs/gateway/src/graphql/schema'
 import { MessageDescriptor } from 'react-intl'
 import { messages } from '@client/i18n/messages/views/userSetup'
-import { ColumnContentAlignment } from '@client/../../components/lib/interface'
 
 export enum UserStatus {
   ACTIVE,
@@ -550,6 +549,7 @@ export async function alterRolesBasedOnUserRole(primaryOfficeId: string) {
 
   const roleList = [] as Array<GQLRole>
 
+  /* eslint-disable array-callback-return */
   roles.map(role => {
     if (
       role.value === ROLE_FIELD_AGENT ||
@@ -573,6 +573,8 @@ export async function alterRolesBasedOnUserRole(primaryOfficeId: string) {
       roleList.push(role)
     }
   })
+
+  /* eslint-enable array-callback-return */
   return roleList
 }
 

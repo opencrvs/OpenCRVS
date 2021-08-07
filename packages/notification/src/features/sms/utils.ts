@@ -10,11 +10,11 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import { NON_UNICODED_LANGUAGES, RESOURCES_URL } from '@notification/constants'
-import { internal } from 'boom'
+import { internal } from '@hapi/boom'
 import { sendSMS } from '@notification/features/sms/service'
 import fetch from 'node-fetch'
 import * as Handlebars from 'handlebars'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import { getDefaultLanguage } from '@notification/i18n/utils'
 interface ISendSMSPayload {
   name?: string

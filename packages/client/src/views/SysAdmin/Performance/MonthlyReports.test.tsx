@@ -23,10 +23,9 @@ describe('Monthly report', () => {
   let app: ReactWrapper
 
   beforeAll(async () => {
-    app = (await createTestComponent(
-      <MonthlyReports history={history} />,
-      store
-    )).component
+    app = (
+      await createTestComponent(<MonthlyReports history={history} />, store)
+    ).component
     app.update()
   })
 

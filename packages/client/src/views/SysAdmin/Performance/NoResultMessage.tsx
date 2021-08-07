@@ -98,9 +98,6 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const NoResultMessage = connect(
-  mapStateToProps,
-  {
-    goToOperationalReport
-  }
-)(injectIntl(NoResultMessageComponent))
+export const NoResultMessage = connect(mapStateToProps, {
+  goToOperationalReport
+})(injectIntl(NoResultMessageComponent))

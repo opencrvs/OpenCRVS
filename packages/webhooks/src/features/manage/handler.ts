@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors. OpenCRVS and the OpenCRVS
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import * as Joi from 'joi'
 import {
   getTokenPayload,
@@ -18,7 +18,7 @@ import {
   ITokenPayload,
   generateChallenge
 } from '@webhooks/features/manage/service'
-import { internal } from 'boom'
+import { internal } from '@hapi/boom'
 import Webhook, { TRIGGERS } from '@webhooks/model/webhook'
 import { logger } from '@webhooks/logger'
 import * as uuid from 'uuid/v4'

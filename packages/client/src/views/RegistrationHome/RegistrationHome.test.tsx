@@ -12,8 +12,6 @@
 import {
   createApplication,
   storeApplication,
-  getApplicationsOfCurrentUser,
-  deleteApplication,
   IUserData
 } from '@client/applications'
 import { Event } from '@client/forms'

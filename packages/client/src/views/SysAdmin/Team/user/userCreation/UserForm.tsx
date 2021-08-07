@@ -149,13 +149,10 @@ class UserFormComponent extends React.Component<IFullProps> {
   }
 }
 
-export const UserForm = connect(
-  undefined,
-  {
-    modifyUserFormData,
-    goToCreateUserSection,
-    goToUserReviewForm,
-    goBack,
-    clearUserFormData
-  }
-)(injectIntl(UserFormComponent))
+export const UserForm = connect(undefined, {
+  modifyUserFormData,
+  goToCreateUserSection,
+  goToUserReviewForm,
+  goBack,
+  clearUserFormData
+})(injectIntl(UserFormComponent))

@@ -10,7 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 
-import { PERFORMANCE_HOME, TEAM_SEARCH } from '@client/navigation/routes'
+import { TEAM_SEARCH } from '@client/navigation/routes'
 import { AppStore } from '@client/store'
 import {
   createTestApp,
@@ -20,7 +20,7 @@ import {
 } from '@client/tests/util'
 import { ReactWrapper } from 'enzyme'
 import { History } from 'history'
-import querystring from 'query-string'
+import { parse } from 'query-string'
 import * as React from 'react'
 import { TeamSearch } from './TeamSearch'
 
@@ -84,7 +84,7 @@ describe('Team search test', () => {
       app.update()
       flushPromises()
 
-      expect(querystring.parse(history.location.search)).toEqual({
+      expect(parse(history.location.search)).toEqual({
         locationId: '0d8474da-0361-4d32-979e-af91f012340a'
       })
       expect(history.location.pathname).toContain('/team/users')

@@ -126,18 +126,6 @@ const DetailText = styled.div`
   color: ${({ theme }) => theme.colors.copy};
 `
 
-const DetailTextSplitContainer = styled(DetailText)`
-  display: flex;
-  justify-content: stretch;
-  cursor: pointer;
-`
-
-const Link = styled.a`
-  ${({ theme }) => theme.fonts.bodyStyle};
-  color: ${({ theme }) => theme.colors.primary};
-  text-decoration: underline;
-`
-
 const TagContainer = styled.div`
   display: flex;
 `
@@ -253,13 +241,7 @@ class DuplicateDetailsClass extends React.Component<
 
   render() {
     const currentStatus = this.props.data.regStatusHistory.slice(-1)[0].action
-    const {
-      data,
-      intl,
-      notDuplicateHandler,
-      rejectHandler,
-      duplicateContextId
-    } = this.props
+    const { data, intl, notDuplicateHandler, rejectHandler } = this.props
 
     return (
       <DetailsBox id={`detail_box_${data.id}`} currentStatus={currentStatus}>
@@ -317,9 +299,11 @@ class DuplicateDetailsClass extends React.Component<
         <TagContainer>
           <Chip
             status={<StatusGray />}
-            text={intl.formatHTMLMessage(
-              dynamicConstantsMessages[data.event.toLowerCase()]
-            )}
+            text={
+              intl.formatMessage(
+                dynamicConstantsMessages[data.event.toLowerCase()]
+              ) as string
+            }
           />
           <Chip
             status={this.renderStatusIcon(currentStatus)}

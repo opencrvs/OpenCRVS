@@ -239,13 +239,10 @@ const mapStateToProps = (state: IStoreState, props: Props) => {
   }
 }
 
-export const CreateNewUser = connect(
-  mapStateToProps,
-  {
-    goBack,
-    storeUserFormData,
-    clearUserFormData,
-    fetchAndStoreUserData,
-    processRoles
-  }
-)(injectIntl(withApollo(CreateNewUserComponent)))
+export const CreateNewUser = connect(mapStateToProps, {
+  goBack,
+  storeUserFormData,
+  clearUserFormData,
+  fetchAndStoreUserData,
+  processRoles
+})(injectIntl(withApollo(CreateNewUserComponent)))

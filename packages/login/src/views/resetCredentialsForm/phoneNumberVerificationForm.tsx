@@ -177,11 +177,8 @@ class PhoneNumberVerificationComponent extends React.Component<Props, State> {
   }
 }
 
-export const PhoneNumberVerification = connect(
-  null,
-  {
-    goToForgottenItemForm,
-    goToRecoveryCodeEntryForm,
-    goToSecurityQuestionForm
-  }
-)(withRouter(injectIntl(PhoneNumberVerificationComponent)))
+export const PhoneNumberVerification = connect(null, {
+  goToForgottenItemForm,
+  goToRecoveryCodeEntryForm,
+  goToSecurityQuestionForm
+})(withRouter(injectIntl(PhoneNumberVerificationComponent)))

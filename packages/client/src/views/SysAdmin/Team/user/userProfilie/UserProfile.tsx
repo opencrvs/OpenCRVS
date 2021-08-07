@@ -117,12 +117,6 @@ const HeaderMenuHolder = styled.div`
   }
 `
 
-const HeaderMenu = styled(ToggleMenu)`
-  @media (max-width: ${({ theme }) => theme.grid.breakpoints.lg}px) {
-    display: none;
-  }
-`
-
 interface ISearchParams {
   userId: string
 }

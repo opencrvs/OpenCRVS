@@ -11,7 +11,7 @@
  */
 import { defineMessages, MessageDescriptor } from 'react-intl'
 
-interface IConstantsMessages {
+interface IConstantsMessages extends Record<string, MessageDescriptor> {
   address: MessageDescriptor
   allEvents: MessageDescriptor
   allStatuses: MessageDescriptor

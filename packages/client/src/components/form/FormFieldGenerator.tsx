@@ -94,7 +94,7 @@ import { DocumentUploaderWithOption } from './DocumentUploadfield/DocumentUpload
 import {
   WrappedComponentProps as IntlShapeProps,
   injectIntl,
-  FormattedHTMLMessage,
+  FormattedMessage,
   MessageDescriptor
 } from 'react-intl'
 import {
@@ -406,7 +406,7 @@ function GeneratedInputField({
 
     return (
       <Paragraph fontSize={fieldDefinition.fontSize}>
-        <FormattedHTMLMessage
+        <FormattedMessage
           {...label}
           values={{
             [fieldDefinition.name]: value as any

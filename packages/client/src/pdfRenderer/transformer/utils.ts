@@ -51,6 +51,7 @@ export function getValueFromApplicationDataByKey(
         : (valueObject as IFormSectionData)[keyNode]
   })
   if (valueObject === null) {
+    // eslint-disable-next-line no-console
     console.error(`Given value key structure is not valid: ${valueKey}`)
   }
   return valueObject
@@ -126,7 +127,9 @@ export function getMatchedCondition(
         ) || ''
       )
     } catch (error) {
-      console.info(`FOR_INFO_ONLY: ${error}`)
+      /* eslint-disable no-console */
+      console.info(`PDF UTILS ERROR: ${error}`)
+      /* eslint-enable no-console */
       return false
     }
   })

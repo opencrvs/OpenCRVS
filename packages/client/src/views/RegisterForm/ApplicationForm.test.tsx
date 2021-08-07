@@ -13,7 +13,6 @@ import {
   createTestApp,
   flushPromises,
   userDetails,
-  goToEndOfForm,
   goToDocumentsSection,
   goToFatherSection,
   goToMotherSection,

@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors. OpenCRVS and the OpenCRVS
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import * as Joi from 'joi'
 import {
   verifyUser,
@@ -20,7 +20,7 @@ import {
 } from '@auth/features/retrievalSteps/verifyUser/service'
 import { generateAndSendVerificationCode } from '@auth/features/authenticate/service'
 import { generateNonce } from '@auth/features/verifyCode/service'
-import { unauthorized } from 'boom'
+import { unauthorized } from '@hapi/boom'
 
 interface IVerifyUserPayload {
   mobile: string

@@ -65,7 +65,7 @@ async function extractMessages() {
       })
       const contentfulKeysToMigrate: string[] = []
       const englishTranslations = client.data.find(
-        (obj: ILanguage) => obj.lang === 'en-US'
+        (obj: ILanguage) => obj.lang === 'en-US' || obj.lang === 'en'
       ).messages
       let missingKeys = false
 

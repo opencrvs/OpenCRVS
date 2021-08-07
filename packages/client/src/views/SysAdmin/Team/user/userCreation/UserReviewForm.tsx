@@ -245,12 +245,11 @@ const mapDispatchToProps = (dispatch: Dispatch, props: IFullProps) => {
     }
   }
 }
-export const UserReviewForm = connect(
-  (store: IStoreState) => {
-    return {
-      userFormSection: store.userForm.userForm!.sections[0],
-      offlineResources: getOfflineData(store)
-    }
-  },
-  mapDispatchToProps
-)(injectIntl<'intl', IFullProps & IDispatchProps>(UserReviewFormComponent))
+export const UserReviewForm = connect((store: IStoreState) => {
+  return {
+    userFormSection: store.userForm.userForm!.sections[0],
+    offlineResources: getOfflineData(store)
+  }
+}, mapDispatchToProps)(
+  injectIntl<'intl', IFullProps & IDispatchProps>(UserReviewFormComponent)
+)

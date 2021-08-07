@@ -88,24 +88,23 @@ function EventInfoComponet(props: IFullProps) {
         throw new Error(`Unknown eventType ${eventType}`)
     }
   }
-
   switch (eventType) {
     case Event.BIRTH:
       topBarTitle = constantsMessages.newBirthRegistration
-      listItems = ((messages.birthBulletListItems as unknown) as MessageDescriptor[]).map(
-        message => intl.formatMessage(message)
+      listItems = messages.birthBulletListItems.map(message =>
+        intl.formatMessage(message.index)
       )
       break
     case Event.DEATH:
       topBarTitle = constantsMessages.newDeathRegistration
-      listItems = ((messages.deathBulletListItems as unknown) as MessageDescriptor[]).map(
-        message => intl.formatMessage(message)
+      listItems = messages.deathBulletListItems.map(message =>
+        intl.formatMessage(message.index)
       )
       break
     default:
       topBarTitle = constantsMessages.newBirthRegistration
-      listItems = ((messages.birthBulletListItems as unknown) as MessageDescriptor[]).map(
-        message => intl.formatMessage(message)
+      listItems = messages.birthBulletListItems.map(message =>
+        intl.formatMessage(message.index)
       )
   }
 
@@ -133,7 +132,10 @@ function EventInfoComponet(props: IFullProps) {
   )
 }
 
-export const EventInfo = connect(
-  null,
-  { goBack, goToHome, storeApplication, goToBirthInformant, goToDeathInformant }
-)(injectIntl(EventInfoComponet))
+export const EventInfo = connect(null, {
+  goBack,
+  goToHome,
+  storeApplication,
+  goToBirthInformant,
+  goToDeathInformant
+})(injectIntl(EventInfoComponet))

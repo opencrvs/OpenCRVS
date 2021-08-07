@@ -15,7 +15,6 @@ import { GridTable } from '@opencrvs/components/lib/interface'
 import { IApplication } from '@client/applications'
 import { WrappedComponentProps as IntlShapeProps, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
-import { sentenceCase } from '@client/utils/data-formatting'
 import moment from 'moment'
 import { goToApplicationDetails } from '@client/navigation'
 import { withTheme, ITheme } from '@client/styledComponents'
@@ -23,7 +22,6 @@ import {
   constantsMessages as messages,
   dynamicConstantsMessages
 } from '@client/i18n/messages'
-import { LANG_EN } from '@client/utils/constants'
 import { getDraftApplicantFullName } from '@client/utils/draftUtils'
 import { LoadingIndicator } from '@client/views/RegistrationHome/LoadingIndicator'
 import { formattedDuration } from '@client/utils/date-formatting'
@@ -173,7 +171,6 @@ class InProgressComponent extends React.Component<IFullProps, IState> {
   }
 }
 
-export const InProgress = connect(
-  null,
-  { goToApplicationDetails }
-)(injectIntl(withTheme(InProgressComponent)))
+export const InProgress = connect(null, { goToApplicationDetails })(
+  injectIntl(withTheme(InProgressComponent))
+)

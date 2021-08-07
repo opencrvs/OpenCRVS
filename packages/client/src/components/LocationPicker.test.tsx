@@ -30,15 +30,17 @@ describe('location picker tests', () => {
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <LocationPicker
-        selectedLocationId="bfe8306c-0910-48fe-8bf5-0db906cf3155"
-        onChangeLocation={onChangeLocationMock}
-      />,
-      store,
-      null,
-      { attachTo: document.body }
-    )).component
+    component = (
+      await createTestComponent(
+        <LocationPicker
+          selectedLocationId="bfe8306c-0910-48fe-8bf5-0db906cf3155"
+          onChangeLocation={onChangeLocationMock}
+        />,
+        store,
+        null,
+        { attachTo: document.body }
+      )
+    ).component
   })
 
   afterEach(() => {

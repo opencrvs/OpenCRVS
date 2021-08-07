@@ -32,7 +32,7 @@ import {
   storeVerificationCode
 } from '@auth/features/verifyCode/service'
 import { logger } from '@auth/logger'
-import { unauthorized } from 'boom'
+import { unauthorized } from '@hapi/boom'
 
 const cert = readFileSync(CERT_PRIVATE_KEY_PATH)
 const publicCert = readFileSync(CERT_PUBLIC_KEY_PATH)

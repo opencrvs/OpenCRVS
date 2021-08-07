@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors. OpenCRVS and the OpenCRVS
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import { writePoints } from '@metrics/influxdb/client'
 import {
   generateInCompleteFieldPoints,
@@ -21,7 +21,7 @@ import {
   generateTimeLoggedPoint,
   generateRejectedPoints
 } from '@metrics/features/registration/pointGenerator'
-import { internal } from 'boom'
+import { internal } from '@hapi/boom'
 import { populateBundleFromPayload } from '@metrics/features/registration/utils'
 import { Events } from '@metrics/features/metrics/constants'
 import { IPoints } from '@metrics/features/registration'

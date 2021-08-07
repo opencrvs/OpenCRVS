@@ -11,8 +11,8 @@
  */
 import { upsertEvent } from '@search/features/registration/birth/service'
 import { logger } from '@search/logger'
-import { internal } from 'boom'
-import * as Hapi from 'hapi'
+import { internal } from '@hapi/boom'
+import * as Hapi from '@hapi/hapi'
 
 export async function birthEventHandler(
   request: Hapi.Request,

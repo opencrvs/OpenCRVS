@@ -12,7 +12,6 @@
 import * as React from 'react'
 import { ReactWrapper } from 'enzyme'
 import { createTestStore, createTestComponent } from '@client/tests/util'
-import { AppStore } from '@client/store'
 import { EventInfo } from '@client/views/EventInfo/EventInfo'
 import { Event } from '@client/forms'
 import { waitForElement } from '@client/tests/wait-for-element'
@@ -20,7 +19,6 @@ import { History } from 'history'
 
 describe('EventInfo tests', () => {
   let component: ReactWrapper<{}, {}>
-  let store: AppStore
   let history: History<any>
 
   describe('For birth event', () => {
@@ -33,7 +31,6 @@ describe('EventInfo tests', () => {
         testStore
       )
       component = testComponent.component
-      store = testComponent.store
       history = testHistory
     })
 
@@ -61,7 +58,6 @@ describe('EventInfo tests', () => {
         testStore
       )
       component = testComponent.component
-      store = testComponent.store
       history = testHistory
     })
 
@@ -89,7 +85,6 @@ describe('EventInfo tests', () => {
         testStore
       )
       component = testComponent.component
-      store = testComponent.store
       history = testHistory
     })
 

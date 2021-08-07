@@ -66,6 +66,7 @@
         minute: "0"
         hour: "0"
         job: "cd / && bash /tmp/compose/infrastructure/emergency-backup-metadata.sh {{ external_backup_server_user }} {{ external_backup_server_ip }} {{ external_backup_server_ssh_port }} {{ manager_production_server_ip }} {{ external_backup_server_remote_directory }} >> /var/log/opencrvs-backup.log 2>&1"
+      when: external_backup_server_ip is defined
 
     - name: "Check file for encrypted file system exists"
       stat:
@@ -134,7 +135,7 @@
     - name: "Save system logs to Papertrail"
       register: papaertrailSystemLogs
       shell: ' cd / && wget -qO - --header="X-Papertrail-Token: {{ papertrail_token }}" \ https://papertrailapp.com/destinations/16712142/setup.sh | sudo bash >> /var/log/papertrail.log 2>&1'
-
+      when: papertrail_token is defined
     # Docker swarm ports - Note: all published docker container port will override UFW rules!
     - name: "Allow secure docker client communication"
       ufw:

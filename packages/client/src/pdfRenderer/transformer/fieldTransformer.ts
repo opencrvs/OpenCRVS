@@ -127,7 +127,7 @@ export const fieldTransformers: IFunctionTransformer = {
       - key: Mendatory field. It will be able to traverse through the object structure
       and fetch the appropriate value if found otherwise will throw exception. Ex: 'child.dob'
       - condition: Optional field. ex: "(!draftData || !draftData.informant || draftData.informant.relationship == \"OTHER\")"
-      - messageDescriptors: Optional field. This option will allow you to configure 
+      - messageDescriptors: Optional field. This option will allow you to configure
       a list message descriptors for fetched value against given key from application data.
       ex: 'child.gender' key will return a value like: 'male' which will be presented as 'Male' through message descriptor
   */
@@ -141,6 +141,7 @@ export const fieldTransformers: IFunctionTransformer = {
       throw new Error('No payload found for this transformer')
     }
     // this is needed for eval fn to evalute the data against the given condition
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const draftData = templateData.application.data
     // eslint-disable-next-line no-eval
     if (key.condition && !eval(key.condition)) {
@@ -202,7 +203,7 @@ export const fieldTransformers: IFunctionTransformer = {
     @params:
       - formattedKeys: Mendatory field. It will be able to traverse through the object structure
       and fetch the appropriate value if found otherwise will throw exception.
-      Ex: '{child.firstName}, {child.lastName}'      
+      Ex: '{child.firstName}, {child.lastName}'
   */
   FormattedFieldValue: (
     templateData: TemplateTransformerData,

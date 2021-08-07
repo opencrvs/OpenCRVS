@@ -40,11 +40,13 @@ describe('Settings page tests', () => {
         })
       )
     )
-    const comp = (await createTestComponent(
-      // @ts-ignore
-      <SettingsPage />,
-      store
-    )).component
+    const comp = (
+      await createTestComponent(
+        // @ts-ignore
+        <SettingsPage />,
+        store
+      )
+    ).component
     expect(
       comp
         .find('#English-name')

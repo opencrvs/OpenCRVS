@@ -11,7 +11,7 @@
  */
 import { COMPOSITION_ID } from '@metrics/features/getTimeLogged/constants'
 import { query } from '@metrics/influxdb/client'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 export async function getEventDurationHandler(
   request: Hapi.Request,

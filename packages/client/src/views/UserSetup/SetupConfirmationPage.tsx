@@ -72,9 +72,6 @@ export class SetupConfirmationView extends React.Component<
   }
 }
 
-export const SetupConfirmationPage = connect(
-  null,
-  {
-    redirectToAuthentication
-  }
-)(injectIntl(SetupConfirmationView))
+export const SetupConfirmationPage = connect(null, {
+  redirectToAuthentication
+})(injectIntl(SetupConfirmationView))

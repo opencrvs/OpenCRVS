@@ -64,10 +64,10 @@ import verifyUserHandler, {
   requestSchema as reqVerifyUserSchema,
   responseSchema as resVerifyUserSchema
 } from '@user-mgnt/features/verifyUser/handler'
+import * as Hapi from '@hapi/hapi'
 import resendSMSInviteHandler, {
   requestSchema as resendSMSRequestSchema
 } from '@user-mgnt/features/resendSMSInvite/handler'
-import * as Hapi from 'hapi'
 
 const enum RouteScope {
   DECLARE = 'declare',

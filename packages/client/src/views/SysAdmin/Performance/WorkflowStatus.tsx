@@ -53,7 +53,7 @@ import {
 } from '@opencrvs/gateway/src/graphql/schema'
 import { orderBy } from 'lodash'
 import moment from 'moment'
-import querystring from 'query-string'
+import { parse } from 'query-string'
 import * as React from 'react'
 import { injectIntl, WrappedComponentProps } from 'react-intl'
 import { connect } from 'react-redux'
@@ -129,7 +129,7 @@ interface WorkflowStatusProps
     WrappedComponentProps {}
 function WorkflowStatusComponent(props: WorkflowStatusProps) {
   const { intl } = props
-  const { locationId, status, event } = (querystring.parse(
+  const { locationId, status, event } = (parse(
     props.location.search
   ) as unknown) as ISearchParams
   const [currentPageNumber, setCurrentPageNumber] = useState<number>(1)
@@ -140,10 +140,12 @@ function WorkflowStatusComponent(props: WorkflowStatusProps) {
     .subtract(1, 'years')
     .toDate()
   let timeEnd = moment().toDate()
+  const historyState = props.history.location.state as any
+
   if (props.location.state) {
-    sectionId = props.location.state.sectionId
-    timeStart = props.location.state.timeStart
-    timeEnd = props.location.state.timeEnd
+    sectionId = historyState.sectionId
+    timeStart = historyState.timeStart
+    timeEnd = historyState.timeEnd
   }
 
   function toggleSort(key: keyof SortMap) {
@@ -636,7 +638,7 @@ function WorkflowStatusComponent(props: WorkflowStatusProps) {
   )
 }
 
-export const WorkflowStatus = connect(
-  null,
-  { goToOperationalReport, goToWorkflowStatus }
-)(injectIntl(WorkflowStatusComponent))
+export const WorkflowStatus = connect(null, {
+  goToOperationalReport,
+  goToWorkflowStatus
+})(injectIntl(WorkflowStatusComponent))

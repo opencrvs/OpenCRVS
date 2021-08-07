@@ -12,11 +12,7 @@
 import { IApplication } from '@client/applications'
 import { IUserDetails } from '@client/utils/userUtils'
 import { IntlShape, MessageDescriptor } from 'react-intl'
-import {
-  TDocumentDefinitions,
-  TFontFamily,
-  TFontFamilyTypes
-} from 'pdfmake/build/pdfmake'
+import { TDocumentDefinitions, TFontFamilyTypes } from 'pdfmake/interfaces'
 import { IOfflineData } from '@client/offline/reducer'
 import { IAvailableCountries } from '@client/views/PrintCertificate/utils'
 
@@ -25,7 +21,7 @@ export type OptionalData = IAvailableCountries[]
 export interface IPDFTemplate {
   definition: TDocumentDefinitions
   fonts: { [language: string]: { [name: string]: TFontFamilyTypes } }
-  vfs: TFontFamily
+  vfs: { [file: string]: string }
   transformers?: IFieldTransformer[]
 }
 

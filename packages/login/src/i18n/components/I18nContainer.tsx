@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 
 import { getLanguage, getMessages } from '@login/i18n/selectors'
-import { IStoreState } from '@login/i18n/../store'
+import { IStoreState } from '@login/store'
 import { IntlMessages } from '@login/i18n/reducer'
 
 type StateProps = {

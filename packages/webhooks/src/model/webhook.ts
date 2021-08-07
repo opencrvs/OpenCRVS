@@ -30,7 +30,7 @@ export interface IWebhook {
   webhookId: string
   address: string
   createdBy: IClient
-  createdAt: number | string
+  createdAt?: number | string
   sha_secret: string
   trigger: string
 }

@@ -10,8 +10,8 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import { logger } from '@webhooks/logger'
-import { internal } from 'boom'
-import * as Hapi from 'hapi'
+import { internal } from '@hapi/boom'
+import * as Hapi from '@hapi/hapi'
 import Webhook, { TRIGGERS, IWebhookModel } from '@webhooks/model/webhook'
 import { getQueue } from '@webhooks/queue'
 import { Queue } from 'bullmq'

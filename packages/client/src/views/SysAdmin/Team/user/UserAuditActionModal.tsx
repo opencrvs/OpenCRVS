@@ -38,9 +38,7 @@ import {
 } from '@client/notification/actions'
 import { TOAST_MESSAGES } from '@client/user/userReducer'
 import { RefetchQueryDescription } from 'apollo-client/core/watchQueryOptions'
-import ApolloClient from 'apollo-client'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { draftToGqlTransformer } from '@client/transformer'
 
 const { useState, useEffect } = React
 

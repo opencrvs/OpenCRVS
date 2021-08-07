@@ -816,11 +816,8 @@ function mapStateToProps(
   }
 }
 
-export const Details = connect(
-  mapStateToProps,
-  {
-    goToPage: goToPageAction,
-    goBack: goBackAction,
-    goToPrintCertificate: goToPrintCertificateAction
-  }
-)(injectIntl(withTheme(DetailView)))
+export const Details = connect(mapStateToProps, {
+  goToPage: goToPageAction,
+  goBack: goBackAction,
+  goToPrintCertificate: goToPrintCertificateAction
+})(injectIntl(withTheme(DetailView)))

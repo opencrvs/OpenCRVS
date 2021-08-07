@@ -17,7 +17,6 @@ import {
   createTestComponent,
   flushPromises
 } from '@client/tests/util'
-import { History } from 'history'
 import { ForgotPIN } from '@client/views/Unlock/ForgotPIN'
 import { waitForElement } from '@client/tests/wait-for-element'
 import { setUserDetails } from '@client/profile/profileActions'
@@ -30,7 +29,6 @@ import { SECURITY_PIN_EXPIRED_AT } from '@client/utils/constants'
 describe('ForgotPIN tests', () => {
   let component: ReactWrapper
   let store: AppStore
-  let history: History
   const goBackMock: jest.Mock = jest.fn()
   const onVerifyPasswordMock = jest.fn()
   userQueries.verifyPasswordById = jest.fn()
@@ -38,7 +36,6 @@ describe('ForgotPIN tests', () => {
   beforeAll(async () => {
     const testStore = await createTestStore()
     store = testStore.store
-    history = testStore.history
 
     store.dispatch(
       setUserDetails({
@@ -94,10 +91,15 @@ describe('ForgotPIN tests', () => {
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <ForgotPIN goBack={goBackMock} onVerifyPassword={onVerifyPasswordMock} />,
-      store
-    )).component
+    component = (
+      await createTestComponent(
+        <ForgotPIN
+          goBack={goBackMock}
+          onVerifyPassword={onVerifyPasswordMock}
+        />,
+        store
+      )
+    ).component
 
     // wait for mocked data to load mockedProvider
     await new Promise(resolve => {

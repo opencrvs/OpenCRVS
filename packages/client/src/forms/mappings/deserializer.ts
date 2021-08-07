@@ -98,7 +98,9 @@ function configurationError(
 ) {
   const error = `Cannot find a ${operationLabel} with a name ${descriptor.operation}.
     This is a configuration error in your country specific resource package's form field definitions.`
+  /* eslint-disable no-console */
   console.error(error)
+  /* eslint-enable no-console */
   return new Error(error)
 }
 

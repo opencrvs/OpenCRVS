@@ -115,7 +115,7 @@ class SecurityQuestionView extends React.Component<IProps, IState> {
     questionKeys.forEach((value: string) => {
       result.push({
         value,
-        label: this.props.intl.formatHTMLMessage(userMessages[value])
+        label: this.props.intl.formatMessage(userMessages[value])
       })
     })
 

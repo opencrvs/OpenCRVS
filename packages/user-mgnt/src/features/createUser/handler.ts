@@ -30,7 +30,7 @@ import {
   hasDemoScope
 } from '@user-mgnt/utils/userUtils'
 import { QA_ENV } from '@user-mgnt/constants'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import * as _ from 'lodash'
 
 export default async function createUser(

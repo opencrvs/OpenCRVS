@@ -191,10 +191,7 @@ function ExternalValidationTabComponent(props: IProps) {
   )
 }
 
-export const ExternalValidationTab = connect(
-  null,
-  {
-    goToPage,
-    goToApplicationDetails
-  }
-)(injectIntl(withTheme(ExternalValidationTabComponent)))
+export const ExternalValidationTab = connect(null, {
+  goToPage,
+  goToApplicationDetails
+})(injectIntl(withTheme(ExternalValidationTabComponent)))

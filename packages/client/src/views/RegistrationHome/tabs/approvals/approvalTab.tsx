@@ -245,10 +245,7 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const ApprovalTab = connect(
-  mapStateToProps,
-  {
-    goToPage,
-    goToApplicationDetails
-  }
-)(injectIntl(withTheme(ApprovalTabComponent)))
+export const ApprovalTab = connect(mapStateToProps, {
+  goToPage,
+  goToApplicationDetails
+})(injectIntl(withTheme(ApprovalTabComponent)))

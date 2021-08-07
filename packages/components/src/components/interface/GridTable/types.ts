@@ -33,7 +33,7 @@ type ReactText = string | number
 type ReactChild = React.ReactNodeArray | ReactText
 
 export interface IColumn {
-  label?: string | ReactChild
+  label?: string | React.ReactNode
   width: number
   key: string
   errorValue?: string

@@ -224,11 +224,8 @@ function mapStatetoProps(
   }
 }
 
-export const Payment = connect(
-  mapStatetoProps,
-  {
-    goBack: goBackAction,
-    modifyApplication,
-    goToReviewCertificate: goToReviewCertificateAction
-  }
-)(injectIntl(withTheme(PaymentComponent)))
+export const Payment = connect(mapStatetoProps, {
+  goBack: goBackAction,
+  modifyApplication,
+  goToReviewCertificate: goToReviewCertificateAction
+})(injectIntl(withTheme(PaymentComponent)))

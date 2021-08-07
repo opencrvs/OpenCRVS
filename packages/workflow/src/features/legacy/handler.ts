@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors. OpenCRVS and the OpenCRVS
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 import {
   REG_STATUS_REGISTERED,
   CHILD_SECTION_CODE,
@@ -27,7 +27,7 @@ import {
   getDeathRegistrationNumber
 } from '@workflow/features/registration/fhir/fhir-utils'
 import { logger } from '@workflow/logger'
-import { unauthorized } from 'boom'
+import { unauthorized } from '@hapi/boom'
 
 /**
  *  This handler is responsible for updating

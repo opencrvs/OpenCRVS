@@ -11,11 +11,7 @@
  */
 import * as React from 'react'
 import styled from '@client/styledComponents'
-import {
-  ActionPage,
-  Box,
-  ResponsiveModal
-} from '@opencrvs/components/lib/interface'
+import { ResponsiveModal } from '@opencrvs/components/lib/interface'
 import { FormFieldGenerator } from '@client/components/form'
 import { IFormSectionData, Event, Action } from '@client/forms'
 import { hasFormError } from '@client/forms/utils'

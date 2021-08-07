@@ -19,10 +19,7 @@ import * as React from 'react'
 import { WrappedComponentProps as IntlShapeProps, injectIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import {
-  constantsMessages,
-  dynamicConstantsMessages
-} from '@client/i18n/messages'
+import { constantsMessages } from '@client/i18n/messages'
 
 const ExpansionContent = styled.div`
   background: ${({ theme }) => theme.colors.white};
@@ -55,15 +52,7 @@ const StyledValue = styled.span`
   ${({ theme }) => theme.fonts.bodyStyle};
   text-transform: capitalize !important;
 `
-const ValueContainer = styled.div`
-  display: inline-flex;
-  flex-wrap: wrap;
-  & span:not(:last-child) {
-    border-right: 1px solid ${({ theme }) => theme.colors.placeholder};
-    margin-right: 10px;
-    padding-right: 10px;
-  }
-`
+
 const HistoryWrapper = styled.div`
   padding: 10px 25px;
   margin: 20px 0px;
@@ -82,16 +71,6 @@ function LabelValue({ label, value }: { label: string; value: string }) {
       <StyledLabel>{label}:</StyledLabel>
       <StyledValue>{value}</StyledValue>
     </div>
-  )
-}
-
-function ValuesWithSeparator(props: { strings: string[] }): JSX.Element {
-  return (
-    <ValueContainer>
-      {props.strings.map((value, index) => (
-        <span key={index}>{value}</span>
-      ))}
-    </ValueContainer>
   )
 }
 
@@ -156,22 +135,6 @@ class LocalInProgressDataDetailsComponent extends React.Component<
     const timestamp = moment(transformedData.draftStartedOn).format(
       CERTIFICATE_DATE_FORMAT
     )
-
-    function getInformantText() {
-      const { informantRelation } = transformedData
-
-      if (!informantRelation) {
-        return ''
-      }
-
-      const message = dynamicConstantsMessages[informantRelation]
-
-      if (!message) {
-        return informantRelation
-      }
-
-      return intl.formatMessage(dynamicConstantsMessages[informantRelation])
-    }
 
     return (
       <ExpansionContent>

@@ -57,13 +57,15 @@ describe('Registration rates report', () => {
           femalePercentage: 0
         }
       }
-      component = (await createTestComponent(
-        <RegistrationRatesReport
-          data={data}
-          onClickEventDetails={onDetailsClickMock}
-        />,
-        store
-      )).component
+      component = (
+        await createTestComponent(
+          <RegistrationRatesReport
+            data={data}
+            onClickEventDetails={onDetailsClickMock}
+          />,
+          store
+        )
+      ).component
     })
     it('renders reports', async () => {
       expect(

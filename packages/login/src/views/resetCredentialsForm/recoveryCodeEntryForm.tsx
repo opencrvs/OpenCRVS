@@ -174,10 +174,7 @@ class RecoveryCodeEntryComponent extends React.Component<Props, State> {
   }
 }
 
-export const RecoveryCodeEntry = connect(
-  null,
-  {
-    goToPhoneNumberVerificationForm,
-    goToSecurityQuestionForm
-  }
-)(withRouter(injectIntl(RecoveryCodeEntryComponent)))
+export const RecoveryCodeEntry = connect(null, {
+  goToPhoneNumberVerificationForm,
+  goToSecurityQuestionForm
+})(withRouter(injectIntl(RecoveryCodeEntryComponent)))

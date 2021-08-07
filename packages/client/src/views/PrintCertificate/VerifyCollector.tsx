@@ -185,12 +185,9 @@ const mapStateToProps = (
   }
 }
 
-export const VerifyCollector = connect(
-  mapStateToProps,
-  {
-    goBack,
-    modifyApplication,
-    goToReviewCertificate,
-    goToPrintCertificatePayment
-  }
-)(injectIntl(VerifyCollectorComponent))
+export const VerifyCollector = connect(mapStateToProps, {
+  goBack,
+  modifyApplication,
+  goToReviewCertificate,
+  goToPrintCertificatePayment
+})(injectIntl(VerifyCollectorComponent))

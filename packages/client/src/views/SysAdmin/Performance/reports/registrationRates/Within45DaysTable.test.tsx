@@ -57,15 +57,17 @@ describe('Within45DaysTable tests for over time option', () => {
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <Within45DaysTable
-        loading={false}
-        base={{ baseType: REG_RATE_BASE.TIME }}
-        eventType={Event.BIRTH}
-        data={mockData}
-      />,
-      store
-    )).component
+    component = (
+      await createTestComponent(
+        <Within45DaysTable
+          loading={false}
+          base={{ baseType: REG_RATE_BASE.TIME }}
+          eventType={Event.BIRTH}
+          data={mockData}
+        />,
+        store
+      )
+    ).component
   })
 
   it('runs without crashing', async () => {
@@ -132,18 +134,20 @@ describe('Within45DaysTable tests for by location option', () => {
   })
 
   beforeEach(async () => {
-    component = (await createTestComponent(
-      <Within45DaysTable
-        loading={false}
-        base={{
-          baseType: REG_RATE_BASE.LOCATION,
-          locationJurisdictionType: 'UNION'
-        }}
-        eventType={Event.BIRTH}
-        data={mockData}
-      />,
-      store
-    )).component
+    component = (
+      await createTestComponent(
+        <Within45DaysTable
+          loading={false}
+          base={{
+            baseType: REG_RATE_BASE.LOCATION,
+            locationJurisdictionType: 'UNION'
+          }}
+          eventType={Event.BIRTH}
+          data={mockData}
+        />,
+        store
+      )
+    ).component
   })
 
   it('runs without crashing', async () => {

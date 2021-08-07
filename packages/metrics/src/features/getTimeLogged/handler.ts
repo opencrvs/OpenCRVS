@@ -26,7 +26,7 @@ import {
   getTimeLoggedForPractitioner,
   countTimeLoggedForPractitioner
 } from '@metrics/features/getTimeLogged/utils'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 export async function getTimeLoggedHandler(
   request: Hapi.Request,

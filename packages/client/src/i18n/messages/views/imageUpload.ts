@@ -11,7 +11,7 @@
  */
 import { defineMessages, MessageDescriptor } from 'react-intl'
 
-interface IImageUploadMessages {
+interface IImageUploadMessages extends Record<string, MessageDescriptor> {
   uploadError: MessageDescriptor
   documentTypeRequired: MessageDescriptor
   overSized: MessageDescriptor

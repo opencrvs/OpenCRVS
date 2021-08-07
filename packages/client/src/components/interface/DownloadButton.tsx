@@ -120,7 +120,6 @@ function DownloadButtonComponent(props: DownloadButtonProps & HOCProps) {
   )
 }
 
-export const DownloadButton = connect(
-  null,
-  { downloadApplication }
-)(injectIntl(withApollo(DownloadButtonComponent)))
+export const DownloadButton = connect(null, { downloadApplication })(
+  injectIntl(withApollo(DownloadButtonComponent))
+)

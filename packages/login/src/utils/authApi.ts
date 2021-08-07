@@ -132,7 +132,8 @@ export type IVerifySecurityAnswerResponse = { nonce: string } & (
       matched: false
       securityQuestionKey: QUESTION_KEYS
     }
-  | { matched: true })
+  | { matched: true }
+)
 
 const verifySecurityAnswer = (
   nonce: string,

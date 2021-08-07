@@ -11,7 +11,7 @@
  */
 import * as React from 'react'
 import { ReactWrapper } from 'enzyme'
-import { createTestComponent, flushPromises, wait } from '@client/tests/util'
+import { createTestComponent, flushPromises } from '@client/tests/util'
 import { createStore } from '@client/store'
 import { Unlock } from '@client/views/Unlock/Unlock'
 import { storage } from '@client/storage'

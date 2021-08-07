@@ -18,7 +18,7 @@ function configStorage(dbName: string) {
   })
 }
 
-async function getItem(key: string): Promise<string> {
+async function getItem(key: string): Promise<string | null> {
   return await localForage.getItem<string>(key)
 }
 

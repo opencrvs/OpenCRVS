@@ -272,11 +272,8 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const RejectTab = connect(
-  mapStateToProps,
-  {
-    goToPage,
-    goToReviewDuplicate,
-    goToApplicationDetails
-  }
-)(injectIntl(withTheme(RejectTabComponent)))
+export const RejectTab = connect(mapStateToProps, {
+  goToPage,
+  goToReviewDuplicate,
+  goToApplicationDetails
+})(injectIntl(withTheme(RejectTabComponent)))

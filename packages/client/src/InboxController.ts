@@ -25,6 +25,8 @@ import ApolloClient, { ApolloError } from 'apollo-client'
 import { getRegisterForm } from './forms/register/application-selectors'
 import { gqlToDraftTransformer } from './transformer'
 import { getQueryMapping } from './views/DataProvider/QueryProvider'
+import { RequestHandler } from 'mock-apollo-client'
+import { DocumentNode } from 'apollo-link'
 
 const INTERVAL_TIME = 5000
 const MAX_RETRY_ATTEMPT = 3
@@ -51,8 +53,10 @@ const SUCCESS_DOWNLOAD_STATUS: IActionList = {
 
 export class InboxController {
   private store: AppStore
-  private client: ApolloClient<{}>
-  private syncRunning: boolean = false
+  public client: ApolloClient<{}> & {
+    setRequestHandler: (query: DocumentNode, handler: RequestHandler) => void // used for mocking in tests
+  }
+  public syncRunning: boolean = false
 
   constructor(store: AppStore) {
     this.store = store
@@ -76,7 +80,7 @@ export class InboxController {
     )
   }
 
-  private sync = async () => {
+  public sync = async () => {
     if (this.syncRunning) {
       return
     }
@@ -117,20 +121,22 @@ export class InboxController {
     this.store.dispatch(modifyApplication(application))
     this.store.dispatch(writeApplication(application))
 
-    try {
-      const queryResult = await this.client.query({
-        query,
-        variables: {
-          id: application.id
-        }
-      })
-      this.onSuccess(
-        application,
-        forms[application.event],
-        queryResult.data[dataKey as string]
-      )
-    } catch (exception) {
-      this.onError(application, exception)
+    if (query) {
+      try {
+        const queryResult = await this.client.query({
+          query,
+          variables: {
+            id: application.id
+          }
+        })
+        this.onSuccess(
+          application,
+          forms[application.event],
+          queryResult.data[dataKey as string]
+        )
+      } catch (exception) {
+        this.onError(application, exception)
+      }
     }
   }
 

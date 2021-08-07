@@ -26,7 +26,6 @@ import { messages } from '@client/i18n/messages/views/notifications'
 import { getTheme } from '@opencrvs/components/lib/theme'
 import styled from '@client/styledComponents'
 import { IApplication, SUBMISSION_STATUS } from '@client/applications'
-import { sentenceCase } from '@client/utils/data-formatting'
 import { getDefaultLanguage } from '@client/i18n/utils'
 const Container = styled(BodyContent)`
   padding-top: 32px;

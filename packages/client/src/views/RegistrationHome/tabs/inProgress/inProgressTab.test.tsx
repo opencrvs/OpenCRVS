@@ -34,7 +34,6 @@ import {
   mockUserResponse,
   resizeWindow
 } from '@client/tests/util'
-import { FETCH_REGISTRATION_BY_COMPOSITION } from '@client/views/RegistrationHome/queries'
 import { merge } from 'lodash'
 import moment from 'moment'
 import * as React from 'react'
@@ -669,10 +668,9 @@ describe('In Progress tab', () => {
       })
       testComponent.component.update()
 
-      const instance = (await waitForElement(
-        testComponent.component,
-        GridTable
-      )).instance()
+      const instance = (
+        await waitForElement(testComponent.component, GridTable)
+      ).instance()
 
       instance.toggleExpanded('956281c9-1f47-4c26-948a-970dd23c4094')
       const element = await waitForElement(

@@ -11,7 +11,8 @@
  */
 import { defineMessages, MessageDescriptor } from 'react-intl'
 
-interface IConfirmationScreenMessages {
+interface IConfirmationScreenMessages
+  extends Record<string, MessageDescriptor> {
   backButton: MessageDescriptor
   boxHeaderDesc: MessageDescriptor
   trackingSectionTitle: MessageDescriptor

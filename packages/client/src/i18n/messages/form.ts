@@ -11,7 +11,7 @@
  */
 import { defineMessages, MessageDescriptor } from 'react-intl'
 
-interface IFormMessages {
+interface IFormMessages extends Record<string, MessageDescriptor> {
   accountDetails: MessageDescriptor
   addressLine1: MessageDescriptor
   addressLine2: MessageDescriptor

@@ -12,7 +12,6 @@
 
 import * as React from 'react'
 import { ReactWrapper } from 'enzyme'
-import { AppStore } from '@client/store'
 import {
   createTestComponent,
   createTestStore,
@@ -73,7 +72,6 @@ const birthEventSearchSet: GQLBirthEventSearchSet = {
 
 describe('Registrar home external validation tab tests', () => {
   let component: ReactWrapper<{}, {}>
-  let store: AppStore
   let history: History<any>
 
   beforeEach(async () => {
@@ -92,7 +90,6 @@ describe('Registrar home external validation tab tests', () => {
       testStore
     )
     component = testComponent.component
-    store = testStore
     history = testHistory
   })
 

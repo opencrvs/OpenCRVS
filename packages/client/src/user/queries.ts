@@ -11,7 +11,6 @@
  */
 import gql from 'graphql-tag'
 import { client } from '@client/utils/apolloClient'
-import { RefetchQueryDescription } from 'apollo-client/core/watchQueryOptions'
 
 export const SEARCH_USERS = gql`
   query($count: Int, $skip: Int, $primaryOfficeId: String) {

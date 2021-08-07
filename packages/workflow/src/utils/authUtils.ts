@@ -10,7 +10,7 @@
  * graphic logo are (registered/a) trademark(s) of Plan International.
  */
 import * as decode from 'jwt-decode'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 export enum USER_SCOPE {
   DECLARE = 'declare',

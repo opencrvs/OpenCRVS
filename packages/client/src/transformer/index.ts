@@ -87,10 +87,12 @@ export const draftToGqlTransformer = (
           (draftData[section.id][fieldDef.name] === undefined ||
             draftData[section.id][fieldDef.name] === '')
         ) {
+          /* eslint-disable no-console */
           console.error(
             `Data is missing for a required field: ${fieldDef.name}` +
               `on section ${section.id}`
           )
+          /* eslint-enable no-console */
           inCompleteFieldList.push(
             `${section.id}/${groupDef.id}/${fieldDef.name}`
           )

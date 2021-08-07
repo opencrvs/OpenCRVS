@@ -316,11 +316,8 @@ function mapStateToProps(state: IStoreState) {
   }
 }
 
-export const ReviewTab = connect(
-  mapStateToProps,
-  {
-    goToPage,
-    goToReviewDuplicate,
-    goToApplicationDetails
-  }
-)(injectIntl(withTheme(ReviewTabComponent)))
+export const ReviewTab = connect(mapStateToProps, {
+  goToPage,
+  goToReviewDuplicate,
+  goToApplicationDetails
+})(injectIntl(withTheme(ReviewTabComponent)))

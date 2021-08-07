@@ -41,7 +41,7 @@ import {
   getLocationHirarchyIDs
 } from '@search/features/fhir/fhir-utils'
 import { logger } from '@search/logger'
-import * as Hapi from 'hapi'
+import * as Hapi from '@hapi/hapi'
 
 const MOTHER_CODE = 'mother-details'
 const FATHER_CODE = 'father-details'
