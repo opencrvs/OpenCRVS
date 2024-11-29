@@ -1,0 +1,32 @@
+# Overwriting https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
+namespaceOverride: "traefik"
+logs:
+  general:
+    level: "INFO" # FIXME: Change to WARNING
+    format: "common" # FIXME: json in remote
+ingressRoute:
+  dashboard:
+    enabled: true
+    entryPoints: ["websecure"]
+    matchRule: Host(`traefik.localhost`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+# Be explicit that we only use CRDs, not ingress/gw support
+providers: 
+  kubernetesCRD:
+    enabled: true
+  kubernetesIngress:
+    enabled: false
+  kubernetesGateway:
+    enabled: false
+service:
+  enabled: true
+  single: false
+  type: LoadBalancer
+  spec:
+    loadBalancerIP: "10.12.13.1"
+ports:
+  traefik:
+    hostPort: 8080
+  web:
+    hostPort: 8000
+  websecure:
+    hostPort: 8443

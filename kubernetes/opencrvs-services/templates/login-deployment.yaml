@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: login
+  name: login
+spec:
+  ports:
+    - port: 3020
+      targetPort: 80
+  selector:
+    app: login
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: login-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: 'Host(`login.{{ .Values.hostname }}`)'
+    kind: Rule
+    services:
+    - name: login
+      namespace: opencrvs-services-dev
+      port: 3020
+    middlewares:
+      - name: sts-and-basic-response-headers
+      - name: enable-compression
+  tls:
+    certResolver: myresolver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: login
+  name: login
+spec:
+  replicas: {{ .Values.login.replicas }}
+  selector:
+    matchLabels:
+      app: login
+  template:
+    metadata:
+      labels:
+        app: login
+    spec:
+      containers:
+        - name: login
+          image: "opencrvs/ocrvs-login:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80 #FIXME: non-low end port
+              protocol: TCP
+          env:
+            - name: AUTH_API_URL
+              value: https://auth.localhost # FIXME: harcoded
+      restartPolicy: Always

@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: elasticsearch-backup
+  name: elasticsearch-backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+spec:
+  ports:
+    - name: '9200'
+      port: 9200
+      targetPort: 9200
+    - name: '9300'
+      port: 9300
+      targetPort: 9300
+  selector:
+    app: elasticsearch
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  serviceName: 'elasticsearch'
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - env:
+            - name: ES_JAVA_OPTS
+              value: -Xms1024m -Xmx1024m
+            - name: bootstrap.system_call_filter
+              value: 'false'
+            - name: cluster.routing.allocation.disk.threshold_enabled
+              value: 'false'
+            - name: discovery.type
+              value: single-node
+            - name: path.repo
+              value: /data/backups/elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.17.19
+          name: elasticsearch
+          ports:
+            - containerPort: 9200
+              protocol: TCP
+            - containerPort: 9300
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: elasticsearch
+            - mountPath: /data/backups/elasticsearch
+              name: elasticsearch-backup
+      restartPolicy: Always
+      volumes:
+        - name: elasticsearch
+          persistentVolumeClaim:
+            claimName: elasticsearch
+        - name: elasticsearch-backup
+          persistentVolumeClaim:
+            claimName: elasticsearch-backup

@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  public-key.pem: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv059YTjfnJm39xCqpQY0
+    O8UZPCeaFQaV/cF05WMRhCFPc7NXtPCXjXEfh860zjv6Qxc5qfwA7P/Xz9apZzCu
+    vgltXeSkzz+0307eAERGu18KNE9mfGLag/55Eo86xcvpZSMKWI3fsKwg5PuBm7yW
+    zNjcQvSXgeAgHCQgQOeJpEErI/jhM7LLGfIMjDRX9O2HYWR7OIj2S7NOuXSv9ohk
+    MdVsw4KsFv3wPBJx399wHxxYd40hUkdXr+AktouTBmy9VhqTDb2fLMLncnER6v8N
+    7HRpis3+XPXE9DHuBJa/MrjrrB4/2BpEibGdRotz8EeAjty8SXxywz/uOY61OhC5
+    6QIDAQAB
+    -----END PUBLIC KEY-----
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: 'true'
+  labels:
+    app: hearth
+  name: hearth-cm-public-key

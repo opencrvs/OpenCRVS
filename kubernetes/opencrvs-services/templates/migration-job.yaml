@@ -1,0 +1,45 @@
+# FIXME: This is likely not gonna work as expected and is naive implementation
+# see also https://github.com/opencrvs/opencrvs-core/issues/7451
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: migration
+  name: migration
+spec:
+  template:
+    metadata:
+      labels:
+        app: migration
+    spec:
+      containers:
+        - name: migration
+          image: "opencrvs/ocrvs-migration:{{ .Values.image.tag }}"
+          env:
+            - name: APPLICATION_CONFIG_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/application-config
+            - name: PERFORMANCE_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/performance
+            - name: ES_HOST
+              value: elasticsearch.opencrvs-deps-dev.svc.cluster.local:9200
+            - name: SEARCH_URL
+              value: http://search.opencrvs-services-dev.svc.cluster.local:9090/ # FIXME: harcoded
+            - name: HEARTH_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/hearth-dev
+            - name: INFLUX_DB
+              value: ocrvs
+            - name: INFLUX_HOST
+              value: influxdb.opencrvs-deps-dev.svc.cluster.local
+            - name: INFLUX_PORT
+              value: "8086"
+            - name: MINIO_HOST
+              value: "minio-0.minio.opencrvs-deps-dev.svc.cluster.local"
+            - name: OPENHIM_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/openhim-dev
+            - name: USER_MGNT_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/user-mgnt
+            - name: WAIT_HOSTS
+              value: mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local:27017,influxdb.opencrvs-deps-dev.svc.cluster.local:8086,minio-0.minio.opencrvs-deps-dev.svc.cluster.local:3535,elasticsearch.opencrvs-deps-dev.svc.cluster.local:9200
+      completions: 1 # Run the job once
+      backoffLimit: 0 # Don't retry if the job fails
+      restartPolicy: "OnFailure"

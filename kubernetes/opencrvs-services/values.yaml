@@ -1,0 +1,37 @@
+client:
+  replicas: 1
+auth:
+  replicas: 1
+components:
+  replicas: 1
+config:
+  replicas: 1
+countryconfig:
+  image:
+    name: opencrvs/ocrvs-farajaland
+    tag: latest
+  replicas: 1
+dashboards:
+  replicas: 1
+documents:
+  replicas: 1
+gateway:
+  replicas: 1
+login:
+  replicas: 1
+metrics:
+  replicas: 1
+notification:
+  replicas: 1
+search:
+  replicas: 1
+userMgnt:
+  replicas: 1
+webhooks:
+  replicas: 1
+workflow:
+  replicas: 1
+events:
+  replicas: 1
+
+hostname: farajaland.com

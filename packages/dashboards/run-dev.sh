@@ -21,7 +21,7 @@
 
 echo 'OpenCRVS Metabase development environment'
 
-METABASE_VERSION="v0.46.6.1"
+METABASE_VERSION="v0.46.6.4"
 METABASE_JAR="./$METABASE_VERSION-metabase.jar"
 
 # enable job control

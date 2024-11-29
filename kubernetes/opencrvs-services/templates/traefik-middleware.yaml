@@ -1,0 +1,31 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: sts-and-basic-response-headers
+spec:
+  headers:
+    customResponseHeaders:
+      Pragma: "no-cache"
+      Cache-control: "no-store"
+      X-Robots-Tag: "none"
+    stsSeconds: 31536000
+    stsIncludeSubdomains: true
+    stsPreload: true
+---
+# Enable compression
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: enable-compression
+spec:
+  compress: {} # XXX: use all defaults - note this has zstd in 3.0 vs just gzip in 2.0
+---
+# Enable compression
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: block-internal-routes
+spec:
+  ipAllowList:
+    sourceRange:
+      - 255.255.255.255

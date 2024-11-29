@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: config
+  name: config
+spec:
+  ports:
+    - port: 2021
+      targetPort: 2021
+  selector:
+    app: config
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: config-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: 'Host(`config.{{ .Values.hostname }}`)'
+    kind: Rule
+    services:
+    - name: config
+      namespace: opencrvs-services-dev
+      port: 2021
+    middlewares:
+      - name: sts-and-basic-response-headers
+  tls:
+    certResolver: myresolver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: config
+  name: config
+spec:
+  replicas: {{ .Values.config.replicas }}
+  selector:
+    matchLabels:
+      app: config
+  template:
+    metadata:
+      labels:
+        app: config
+    spec:
+      containers:
+        - name: config
+          image: "opencrvs/ocrvs-config:{{ .Values.image.tag }}"
+          env:
+            - name: HOST
+              value: 0.0.0.0
+            - name: CHECK_INVALID_TOKEN
+              value: "true"
+            - name: PORT
+              value: "2021"
+            - name: AUTH_URL
+              value: http://auth.opencrvs-services-dev.svc.cluster.local:4040 # FIXME: harcoded
+            - name: COUNTRY_CONFIG_URL_INTERNAL
+              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+            - name: DOCUMENTS_URL
+              value: http://documents.opencrvs-services-dev.svc.cluster.local:9050 # FIXME: harcoded
+            - name: FHIR_URL
+              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+            - name: GATEWAY_URL
+              value: http://gateway.opencrvs-services-dev.svc.cluster.local:7070/ # FIXME: harcoded
+            - name: METRICS_URL
+              value: http://metrics.opencrvs-services-dev.svc.cluster.local:1050 # FIXME: harcoded
+            - name: MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/application-config # FIXME: harcoded
+            - name: SEARCH_URL
+              value: http://search.opencrvs-deps-dev.svc.cluster.local:9090/ # FIXME: harcoded
+            - name: USER_MANAGEMENT_URL
+              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030/ # FIXME: hardcoded
+            - name: CERT_PUBLIC_KEY_PATH
+              value: /secrets/public-key.pem
+          ports:
+            - containerPort: 2021
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /secrets/public-key.pem
+              name: public-key
+              subPath: public-key.pem
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: public-key.pem
+                path: public-key.pem
+            name: public-key
+          name: public-key

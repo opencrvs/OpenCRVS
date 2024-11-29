@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: influxdb
+  name: influxdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: influxdb
+  name: influxdb-backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+data:
+  influxdb.conf: |+
+    [meta]
+      dir = "/var/lib/influxdb/meta"
+
+    [data]
+      dir = "/var/lib/influxdb/data"
+      engine = "tsm1"
+      wal-dir = "/var/lib/influxdb/wal"
+
+    [http]
+    flux-enabled=true
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: 'true'
+  labels:
+    app: influxdb
+  name: influxdb-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: influxdb
+  name: influxdb
+spec:
+  ports:
+    - name: '8086'
+      port: 8086
+      targetPort: 8086
+  selector:
+    app: influxdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: influxdb
+  name: influxdb
+spec:
+  serviceName: influxdb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+        - image: influxdb:1.8.10
+          name: influxdb
+          ports:
+            - containerPort: 8086
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/influxdb
+              name: influxdb
+            - mountPath: /data/backups/influxdb
+              name: influxdb-backup
+            - mountPath: /etc/influxdb/influxdb.conf
+              name: influxdb-config
+              subPath: influxdb.conf
+      restartPolicy: Always
+      volumes:
+        - name: influxdb
+          persistentVolumeClaim:
+            claimName: influxdb
+        - name: influxdb-backup
+          persistentVolumeClaim:
+            claimName: influxdb-backup
+        - configMap:
+            items:
+              - key: influxdb.conf
+                path: influxdb.conf
+            name: influxdb-config
+          name: influxdb-config

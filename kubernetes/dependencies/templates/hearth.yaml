@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose -f docker-compose.deps.yml -f docker-compose.dev-deps.yml convert
+    kompose.version: 1.34.0 (HEAD)
+  labels:
+    app: hearth
+  name: hearth
+spec:
+  ports:
+    - name: '3447'
+      port: 3447
+      targetPort: 3447
+  selector:
+    app: hearth
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: hearth
+  name: hearth
+spec:
+  serviceName: hearth
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hearth
+  template:
+    metadata:
+      labels:
+        app: hearth
+    spec:
+      containers:
+        - env:
+            - name: authentication__type
+              value: disabled
+            - name: idGenerator
+              value: uuidv4
+            - name: logger__level
+              value: warn
+            - name: mongodb__url
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/hearth-dev
+            - name: server__fhirVersion
+              value: stu3
+          image: opencrvs/hearth:1.1.0
+          name: hearth
+          ports:
+            - containerPort: 3447
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /secrets/public-key.pem
+              name: hearth-cm-public-key
+              subPath: public-key.pem
+            - mountPath: /src/hearth/lib/plugins/checkDuplicateTask.js
+              name: hearth-cm-checkduplicetask
+              subPath: checkDuplicateTask.js
+            - mountPath: /src/hearth/config/queryparam-extensions.json
+              name: hearth-cm-queryparam-extensions
+              subPath: queryparam-extensions.json
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: public-key.pem
+                path: public-key.pem
+            name: hearth-cm-public-key
+          name: hearth-cm-public-key
+        - configMap:
+            items:
+              - key: checkDuplicateTask.js
+                path: checkDuplicateTask.js
+            name: hearth-cm-checkduplicetask
+          name: hearth-cm-checkduplicetask
+        - configMap:
+            items:
+              - key: hearth-queryparam-extensions.json
+                path: queryparam-extensions.json
+            name: hearth-cm-queryparam-extensions
+          name: hearth-cm-queryparam-extensions

@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: countryconfig
+  name: countryconfig
+spec:
+  ports:
+    - port: 3040
+      targetPort: 3040
+  selector:
+    app: countryconfig
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: countryconfig-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: 'Host(`countryconfig.{{ .Values.hostname }}`) && !Path(`/email`) && !Path(`/notification`) && !Path(`/dashboards/queries.json`)'
+    kind: Rule
+    services:
+    - name: countryconfig
+      namespace: opencrvs-services-dev
+      port: 3040
+    middlewares:
+      - name: sts-and-basic-response-headers
+      - name: enable-compression
+  - match: 'Host(`countryconfig.{{ .Values.hostname }}`) && Path(`/email`)'
+    kind: Rule
+    services:
+    - name: countryconfig
+      namespace: opencrvs-services-dev
+      port: 3040
+    middlewares:
+      - name: block-internal-routes
+  - match: 'Host(`countryconfig.{{ .Values.hostname }}`) && Path(`/notification`)'
+    kind: Rule
+    services:
+    - name: countryconfig
+      namespace: opencrvs-services-dev
+      port: 3040
+    middlewares:
+      - name: block-internal-routes
+  - match: 'Host(`countryconfig.{{ .Values.hostname }}`) && Path(`/dashboards/queries.json`)'
+    kind: Rule
+    services:
+    - name: countryconfig
+      namespace: opencrvs-services-dev
+      port: 3040
+    middlewares:
+      - name: block-internal-routes
+  tls:
+    certResolver: myresolver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: countryconfig
+  name: countryconfig
+spec:
+  replicas: {{ .Values.countryconfig.replicas }}
+  selector:
+    matchLabels:
+      app: countryconfig
+  template:
+    metadata:
+      labels:
+        app: countryconfig
+    spec:
+      containers:
+        - name: countryconfig
+          image: "{{ .Values.countryconfig.image.name }}:{{ .Values.countryconfig.image.tag }}"
+          env:
+            - name: AUTH_URL
+              value: http://auth.opencrvs-services-dev.svc.cluster.local:4040 # FIXME: harcoded
+            - name: CERT_PUBLIC_KEY_PATH
+              value: /secrets/public-key.pem
+            - name: CHECK_INVALID_TOKEN
+              value: "true"
+            - name: CONFIRM_REGISTRATION_URL
+              value: http://workflow.opencrvs-services-dev.svc.cluster.local:5050/confirm/registration
+            - name: FHIR_URL
+              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+            - name: MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/user-mgnt
+            - name: NODE_ENV
+              value: development
+          ports:
+            - containerPort: 3040
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /secrets/public-key.pem
+              name: public-key
+              subPath: public-key.pem
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: public-key.pem
+                path: public-key.pem
+            name: public-key
+          name: public-key

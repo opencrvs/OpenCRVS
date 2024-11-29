@@ -1,0 +1,4 @@
+image:
+  tag: local
+
+hostname: localhost

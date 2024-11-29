@@ -4,9 +4,9 @@ FROM opencrvs/ocrvs-base:${BRANCH}
 USER node
 
 WORKDIR /app/packages/events
-COPY --chown=node:node packages/events/*.json /app/packages/events/
+COPY --chown=node:node *.json /app/packages/events/
 RUN yarn install --frozen-lockfile
-COPY --chown=node:node packages/events /app/packages/events
+COPY --chown=node:node . .
 RUN yarn build
 
 CMD [ "yarn", "start:prod" ]

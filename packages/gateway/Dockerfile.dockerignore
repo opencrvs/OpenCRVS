@@ -3,20 +3,14 @@
 *.yaml
 .vscode
 **/.git
-**/test
 
 # From root
 **/node_modules
+**/lib
+**/build
 **/coverage
 **/.DS_Store
 **/.env
 **/*.log
 .secrets/*
-data
-grafana
 
-# Exclude unused packages
-packages/
-!packages/commons
-!packages/gateway
-!packages/events

@@ -110,7 +110,7 @@ echo -e "\033[32m:::::::::::::::: PLEASE WAIT FOR THE OPEN CRVS LOGO TO APPEAR :
 echo
 sleep_if_non_ci 5
 
-  echo -e "\033[32m:::::::::::::::::::::: Checking your operating system ::::::::::::::::::::::\033[0m"
+  echo -e "\033[32m:::::::::::::::::::::: Checking your operating systFem ::::::::::::::::::::::\033[0m"
   echo
 
 wslKernelWithUbuntu=false
@@ -170,18 +170,17 @@ echo
 nvmVersion=$(cat .nvmrc | tr -d '[:space:]')
 
 dependencies=( "docker" "node" "yarn" "tmux")
-
 for i in "${dependencies[@]}"
 do
    :
-    if which $i >/dev/null; then
+    if which "$i" >/dev/null; then
 
         echo -e "✅ $i \033[32minstalled!\033[0m :)"
 
         sleep_if_non_ci 1
     else
         echo -e "OpenCRVS thinks $i is not installed.\r"
-        if [ $i == "docker" ] ; then
+        if [ "$i" == "docker" ] ; then
             if [ $OS == "UBUNTU" ]; then
                 echo "You need to install Docker, or if you did, we can't find it and perhaps it is not in your PATH. Please fix your docker installation."
                 echo "Please follow the documentation here: https://docs.docker.com/engine/install/ubuntu/"
@@ -190,8 +189,16 @@ do
                 echo "Please follow the documentation here: https://docs.docker.com/desktop/mac/install/"
             fi
         fi
-
-        if [ $i == "node" ] ; then
+        if [ "$i" == "docker compose" ] ; then
+            if [ $OS == "UBUNTU" ]; then
+                echo "You need to install Docker Compose, or if you did, we can't find it and perhaps it is not in your PATH. Please fix your docker compose installation."
+                echo "Please follow the documentation here: https://docs.docker.com/compose/install/"
+            else
+                echo "You need to install Docker Desktop for Mac, or if you did, we can't find it and perhaps it is not in your PATH. Please fix your docker installation."
+                echo "Please follow the documentation here: https://docs.docker.com/desktop/mac/install/"
+            fi
+        fi
+        if [ "$i" == "node" ] ; then
             echo "You need to install Node, or if you did, we can't find it and perhaps it is not in your PATH. Please fix your node installation."
             echo "We recommend you install Node $nvmVersion as this release has been tested on that version."
             echo "There are various ways you can install Node.  The easiest way to get Node running with the version of your choice is using Node Version Manager."
@@ -209,13 +216,13 @@ do
             echo
             echo "nvm alias default $nvmVersion"
         fi
-        if [ $i == "yarn" ] ; then
+        if [ "$i" == "yarn" ] ; then
            echo "You need to install the Yarn Package Manager for Node."
            echo "The documentation is here: https://classic.yarnpkg.com/en/docs/install"
         fi
-        if [ $i == "tmux" ] ; then
+        if [ "$i" == "tmux" ] ; then
           if [ $OS == "UBUNTU" ]; then
-              echo "OpenCRVS requires multiple terminal windows open in order to run OpenCRVS Core alongside the default country configuration."
+              echo "OpenCRVS requires multiple terminal windows open in orderRFF to run OpenCRVS Core alongside the default country configuration."
               echo -e "\033[32m::::::::::::: We want to install the tool tmux to do this. :::::::::::::\033[0m"
               echo
               echo -e "\033[32m::::::::::::: Run this command: sudo apt-get install tmux :::::::::::::\033[0m"
@@ -309,19 +316,6 @@ done
 
 echo
 echo -e "\033[32m:::::::::::::::::::::: Initialising Docker ::::::::::::::::::::::\033[0m"
-
-echo
-
-if [ $OS == "UBUNTU" ]; then
-  echo
-  echo -e "\033[32m::::::::::::::::: Giving Docker user sudo privileges :::::::::::::::::\033[0m"
-  echo
-  echo -e "\033[32m::::::::::: Please enter your sudo password when prompted :::::::::::\033[0m"
-  echo
-  sudo chmod 666 /var/run/docker.sock
-  sudo usermod -aG docker $USER
-fi
-
 
 echo -e "\033[32m:::::::::::::::::: Installing some Node dependencies ::::::::::::::::::\033[0m"
 echo

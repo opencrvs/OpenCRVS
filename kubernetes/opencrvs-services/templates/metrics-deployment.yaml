@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: metrics
+  name: metrics
+spec:
+  ports:
+    - port: 1050
+      targetPort: 1050
+  selector:
+    app: metrics
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: metrics
+  name: metrics
+spec:
+  replicas:  {{ .Values.metrics.replicas }}
+  selector:
+    matchLabels:
+      app: metrics
+  template:
+    metadata:
+      labels:
+        app: metrics
+    spec:
+      containers:
+        - image: "opencrvs/ocrvs-metrics:{{ .Values.image.tag }}"
+          name: metrics
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: CERT_PUBLIC_KEY_PATH
+              value: /secrets/public-key.pem
+            - name: CONFIG_API_URL
+              value: http://config.opencrvs-services-dev.svc.cluster.local:2021 # FIXME: harcoded
+            - name: COUNTRY_CONFIG_URL
+              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded/
+            - name: DOCUMENTS_URL
+              value: http://documents.opencrvs-services-dev.svc.cluster.local:9050 # FIXME: harcoded
+            - name: FHIR_URL
+              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+            - name: SEARCH_URL
+              value: http://search.opencrvs-deps-dev.svc.cluster.local:9090/ # FIXME: harcoded
+            - name: USER_MANAGEMENT_URL
+              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030 # FIXME: harcoded
+            - name: DASHBOARD_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/performance
+            - name: HEARTH_MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/hearth-dev
+            - name: MONGO_URL
+              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/metrics
+            - name: INFLUX_DB
+              value: ocrvs
+            - name: INFLUX_HOST
+              value: influxdb-0.influxdb.opencrvs-deps-dev.svc.cluster.local
+            - name: INFLUX_PORT
+              value: "8086"
+            - name: METRICS_PORT
+              value: "1050"
+          ports:
+            - containerPort: 1050
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /secrets/public-key.pem
+              name: public-key
+              subPath: public-key.pem
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: public-key.pem
+                path: public-key.pem
+            name: public-key
+          name: public-key

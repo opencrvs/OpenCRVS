@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: minio
+  name: minio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: minio
+  name: minio
+spec:
+  clusterIP: None
+  ports:
+    - name: '3535'
+      port: 3535
+      targetPort: 3535
+    - name: '3536'
+      port: 3536
+      targetPort: 3536
+  selector:
+    app: minio
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: minio
+  name: minio
+spec:
+  serviceName: minio
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - args:
+            - server
+            - --address
+            - :3535
+            - --console-address
+            - :3536
+            - /data
+          image: quay.io/minio/minio:RELEASE.2023-09-16T01-01-47Z.fips
+          name: minio
+          ports:
+            - containerPort: 3535
+              protocol: TCP
+            - containerPort: 3536
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: minio
+      restartPolicy: Always
+      volumes:
+        - name: minio
+          persistentVolumeClaim:
+            claimName: minio

@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  ports:
+    - port: 7070
+      targetPort: 7070
+  selector:
+    app: gateway
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gateway-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: 'Host(`gateway.{{ .Values.hostname }}`)'
+    kind: Rule
+    services:
+    - name: gateway
+      namespace: opencrvs-services-dev
+      port: 7070
+    middlewares:
+      - name: sts-and-basic-response-headers
+      - name: enable-compression
+  tls:
+    certResolver: myresolver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  replicas: {{ .Values.gateway.replicas }}
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: "opencrvs/ocrvs-gateway:{{ .Values.image.tag }}"
+          env:
+            - name: APPLICATION_CONFIG_URL
+              value: http://config.opencrvs-services-dev.svc.cluster.local:2021 # FIXME: harcoded/
+            - name: AUTH_URL
+              value: http://auth.opencrvs-services-dev.svc.cluster.local:4040 # FIXME: harcoded
+            - name: CERT_PUBLIC_KEY_PATH
+              value: /secrets/public-key.pem
+            - name: CHECK_INVALID_TOKEN
+              value: "true"
+            - name: CONFIG_SMS_CODE_EXPIRY_SECONDS
+              value: "600"
+            - name: CONFIG_TOKEN_EXPIRY_SECONDS
+              value: "604800"
+            - name: COUNTRY_CONFIG_URL
+              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+            - name: DOCUMENTS_URL
+              value: http://documents.opencrvs-services-dev.svc.cluster.local:9050 # FIXME: harcoded
+            - name: FHIR_URL
+              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+            - name: METRICS_URL
+              value: http://metrics.opencrvs-services-dev.svc.cluster.local:1050 # FIXME: harcoded
+            - name: MINIO_BUCKET
+              value: ocrvs
+            - name: NODE_ENV
+              value: development
+            - name: NOTIFICATION_URL
+              value: http://notification.opencrvs-services-dev.svc.cluster.local:2020/
+            - name: REDIS_HOST
+              value: redis.opencrvs-deps-dev.svc.cluster.local # FIXME: harcoded
+            - name: SEARCH_URL
+              value: http://search.opencrvs-services-dev.svc.cluster.local:9090/ # FIXME: harcoded
+            - name: USER_MANAGEMENT_URL
+              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030/ # FIXME: hardcoded
+            - name: WEBHOOKS_URL
+              value: http://webhooks.opencrvs-services-dev.svc.cluster.local:2525/
+            - name: WORKFLOW_URL
+              value: http://workflow.opencrvs-services-dev.svc.cluster.local:5050/
+          ports:
+            - containerPort: 7070
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /secrets/public-key.pem
+              name: public-key
+              subPath: public-key.pem
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: public-key.pem
+                path: public-key.pem
+            name: public-key
+          name: public-key

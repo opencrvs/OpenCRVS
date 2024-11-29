@@ -1,0 +1,46 @@
+apiVersion: v1
+data:
+  hearth-queryparam-extensions.json: |
+    {
+        "Task": {
+          "location": {
+            "extension": true,
+            "url": "http://opencrvs.org/specs/extension/regLastLocation",
+            "path": "valueReference",
+            "type": "reference",
+            "propertyDef": {
+              "min": 0,
+              "max": "1",
+              "types": [
+                {
+                  "code": "reference"
+                }
+              ]
+            }
+          }
+        },
+        "Location": {
+          "parentRef": {
+            "extension": true,
+            "url": "http://opencrvs.org/extension/parent-location-reference",
+            "path": "valueString",
+            "type": "string",
+            "propertyDef": {
+              "min": 0,
+              "max": "1",
+              "types": [
+                {
+                  "code": "string"
+                }
+              ]
+            }
+          }
+        }
+      }
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: 'true'
+  labels:
+    app: hearth
+  name: hearth-cm-queryparam-extensions

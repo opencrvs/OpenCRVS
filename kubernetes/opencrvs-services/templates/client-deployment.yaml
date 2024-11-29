@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: client
+  name: client
+spec:
+  ports:
+    - port: 3000
+      targetPort: 80
+  selector:
+    app: client
+  type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: client-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: 'Host(`register.{{ .Values.hostname }}`) || Host(`{{ .Values.hostname }}`)'
+    kind: Rule
+    services:
+    - name: client
+      namespace: opencrvs-services-dev
+      port: 3000
+    middlewares:
+      - name: sts-and-basic-response-headers
+      - name: enable-compression
+  tls:
+    certResolver: myresolver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: client
+  name: client
+spec:
+  replicas: {{ .Values.client.replicas }}
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - image: "opencrvs/ocrvs-client:{{ .Values.image.tag }}"
+          env:
+            - name: COUNTRY_CONFIG_URL_INTERNAL
+              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+          name: client
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 80
+      restartPolicy: Always
