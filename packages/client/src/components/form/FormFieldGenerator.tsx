@@ -612,9 +612,12 @@ const GeneratedInputField = React.memo<GeneratedInputFieldProps>(
     if (fieldDefinition.type === REDIRECT) {
       return (
         <RedirectField
-          to={fieldDefinition.options.url}
           form={values}
           draft={draftData}
+          fieldDefinition={fieldDefinition}
+          fields={fields}
+          setFieldValue={setFieldValue}
+          isDisabled={disabled}
         />
       )
     }

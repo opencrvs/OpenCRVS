@@ -8,34 +8,86 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { IFormData, IFormSectionData } from '@client/forms'
+import {
+  IFormData,
+  IFormField,
+  IFormFieldValue,
+  IFormSectionData,
+  IHttpFormField,
+  Ii18nRedirectFormField
+} from '@client/forms'
 import { evalExpressionInFieldDefinition } from '@client/forms/utils'
 import { getOfflineData } from '@client/offline/selectors'
 import { getUserDetails } from '@client/profile/profileSelectors'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Link } from '@opencrvs/components'
+import { useHttp } from '@client/components/form/http'
 
 export const RedirectField = ({
-  to,
+  fields,
   form,
-  draft
+  draft,
+  fieldDefinition,
+  setFieldValue,
+  isDisabled
 }: {
-  to: string
+  fields: IFormField[]
   form: IFormSectionData
   draft: IFormData
+  fieldDefinition: Ii18nRedirectFormField
+  setFieldValue: (name: string, value: IFormFieldValue) => void
+  isDisabled?: boolean
 }) => {
   const config = useSelector(getOfflineData)
   const user = useSelector(getUserDetails)
+  const {
+    options: {
+      url: to,
+      callback: { params }
+    }
+  } = fieldDefinition
+  const evalPath = evalExpressionInFieldDefinition(
+    '`' + to + '`',
+    form,
+    config,
+    draft,
+    user
+  )
+  const trigger = fields.find(
+    (f) => f.name === fieldDefinition.options.callback.trigger
+  )!
+  const onChange: Parameters<typeof useHttp>[1] = ({ data, error, loading }) =>
+    setFieldValue(trigger.name, { loading, data, error } as IFormFieldValue)
+
+  const { call } = useHttp<string>(
+    trigger as IHttpFormField,
+    onChange,
+    form,
+    config,
+    draft,
+    user
+  )
+
+  useEffect(() => {
+    const hasRequestBeenMade = Boolean(form[trigger.name])
+    function checkParamsPresentInURL() {
+      const urlParams = new URLSearchParams(window.location.search)
+      for (const [key, value] of Object.entries(params)) {
+        if (urlParams.get(key) !== value) {
+          return false
+        }
+      }
+      return true
+    }
+    if (checkParamsPresentInURL() && !hasRequestBeenMade) {
+      call()
+    }
+  }, [call, params, form, trigger])
+
   return (
-    <Redirect
-      to={evalExpressionInFieldDefinition(
-        '`' + to + '`',
-        form,
-        config,
-        draft,
-        user
-      )}
-    />
+    <Link disabled={isDisabled}>
+      <a href={evalPath}>{fieldDefinition.label}</a>
+    </Link>
   )
 }
