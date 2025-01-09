@@ -33,7 +33,7 @@
     "influx": "^5.0.7",
     "is-svg": "^4.3.2",
     "lodash-es": "^4.17.21",
-    "migrate-mongo": "^10.0.0",
+    "migrate-mongo": "^11.0.0",
     "minio": "^7.0.33",
     "mongoose": "^6.11.3",
     "tsx": "^4.15.7",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/fhir": "0.0.30",
-    "mongodb": "^4.17.1",
+    "mongodb": "6.11.0",
     "prettier": "^2.5.0",
     "rimraf": "^5.0.0",
     "typescript": "5.6.3"

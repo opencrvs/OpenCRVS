@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import { Db, MongoClient } from 'mongodb'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 import { isEmpty } from 'lodash-es'
 
 function derivePartOfFromAddress(address: fhir.Address) {
@@ -57,7 +57,7 @@ export const up = async (db: Db, client: MongoClient) => {
     })
 
     patients.updateOne(
-      { _id: patient._id },
+      { _id: new ObjectId(patient._id as string) },
       { $set: { address: updatedAddresses } }
     )
   })
@@ -73,7 +73,7 @@ export const up = async (db: Db, client: MongoClient) => {
 
     if (partOf) {
       locations.updateOne(
-        { _id: location._id },
+        { _id: new ObjectId(location._id as string) },
         { $set: { partOf: { reference: `Location/${partOf}` } } }
       )
     }
@@ -103,7 +103,7 @@ export const down = async (db: Db, client: MongoClient) => {
     })
 
     patients.updateOne(
-      { _id: patient._id },
+      { _id: new ObjectId(patient._id as string) },
       { $set: { address: updatedAddresses } }
     )
   })

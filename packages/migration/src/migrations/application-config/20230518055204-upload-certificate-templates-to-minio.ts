@@ -11,7 +11,7 @@
 import isSvg from 'is-svg'
 import { uploadSvgToMinio } from '../../utils/minio-helper.js'
 import { ICertificateTemplateData } from '../../utils/migration-interfaces.js'
-import { Db, MongoClient } from 'mongodb'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 
 export const up = async (db: Db, client: MongoClient) => {
   const session = client.startSession()
@@ -32,7 +32,7 @@ export const up = async (db: Db, client: MongoClient) => {
           const uri = await uploadSvgToMinio(svgCode)
           await db
             .collection('certificates')
-            .updateOne({ _id }, { $set: { svgCode: uri } })
+            .updateOne({ _id: new ObjectId(_id) }, { $set: { svgCode: uri } })
         } catch (err) {
           console.log(`Saving certificate template failed with error: ${err}`)
         }

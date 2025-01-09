@@ -10,7 +10,7 @@ volumes:
   metricbeat:
 services:
   mongo1:
-    image: mongo:4.4
+    image: mongo:5.0
     restart: unless-stopped
 
   redis:

@@ -30,7 +30,7 @@
     "joi": "^17.3.0",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.0.0",
-    "mongodb": "4.17.2",
+    "mongodb": "6.11.0",
     "node-fetch": "^2.6.7",
     "pino": "^7.0.0",
     "short-uid": "^0.1.0",

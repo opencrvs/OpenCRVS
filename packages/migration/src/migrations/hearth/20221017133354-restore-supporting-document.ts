@@ -60,7 +60,7 @@ export const up = async (db: Db, client: MongoClient) => {
           )
           if (hasDocumentSection) {
             await db
-              .collection('Composition')
+              .collection<fhir.Composition>('Composition')
               .updateOne(
                 { id: compositionHistory[correctionIndex].id },
                 { $push: { section: hasDocumentSection } }

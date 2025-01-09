@@ -21,7 +21,7 @@
     "@trpc/server": "^11.0.0-rc.532",
     "app-module-path": "^2.2.0",
     "envalid": "^8.0.0",
-    "mongodb": "6.9.0",
+    "mongodb": "6.11.0",
     "superjson": "1.9.0-0",
     "tsconfig-paths": "^3.13.0",
     "zod": "^3.23.8"

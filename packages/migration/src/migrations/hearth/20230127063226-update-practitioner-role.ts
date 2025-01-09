@@ -114,21 +114,23 @@ export const up = async (db: Db, client: MongoClient) => {
                 { $set: { 'code.1.coding.0.code': titleCase(typeCode) } }
               )
           } else {
-            await db.collection('PractitionerRole').updateOne(
-              { id: practitionerRole?.id },
-              {
-                $push: {
-                  code: {
-                    coding: [
-                      {
-                        system: 'http://opencrvs.org/specs/types',
-                        code: JSON.stringify(usersLabels[roleCode])
-                      }
-                    ]
+            await db
+              .collection<fhir.PractitionerRole>('PractitionerRole')
+              .updateOne(
+                { id: practitionerRole?.id },
+                {
+                  $push: {
+                    code: {
+                      coding: [
+                        {
+                          system: 'http://opencrvs.org/specs/types',
+                          code: JSON.stringify(usersLabels[roleCode])
+                        }
+                      ]
+                    }
                   }
                 }
-              }
-            )
+              )
           }
         }
         skip += limit

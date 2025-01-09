@@ -80,7 +80,7 @@ export async function addRouteToChannel(
   route: Route
 ) {
   await db
-    .collection('channels')
+    .collection<Channel>('channels')
     .updateOne({ name: channelName }, { $push: { routes: route } })
 }
 
@@ -90,7 +90,7 @@ export async function removeRouteFromChannel(
   routeName: string
 ) {
   await db
-    .collection('channels')
+    .collection<Channel>('channels')
     .updateOne(
       { name: channelName },
       { $pull: { routes: { name: routeName } } }

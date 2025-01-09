@@ -22,6 +22,6 @@ export const up = async (db: Db, client: MongoClient) => {
 
 export const down = async (db: Db, client: MongoClient) => {
   await db
-    .collection('users')
+    .collection<fhir.Practitioner>('users')
     .updateOne({ username: 'o.admin' }, { $pull: { scope: 'bypassratelimit' } })
 }

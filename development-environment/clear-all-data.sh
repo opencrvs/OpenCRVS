@@ -15,7 +15,7 @@ print_usage_and_exit () {
 DIR=$(pwd)
 
 # It's fine if these fail as it might be that the databases do not exist at this point
-docker run --rm --network=opencrvs_default mongo:4.4 mongo --host mongo1 --eval "\
+docker run --rm --network=opencrvs_default mongo:5.0 mongo --host mongo1 --eval "\
 db.getSiblingDB('hearth-dev').dropDatabase();\
 db.getSiblingDB('openhim-dev').dropDatabase();\
 db.getSiblingDB('user-mgnt').dropDatabase();\

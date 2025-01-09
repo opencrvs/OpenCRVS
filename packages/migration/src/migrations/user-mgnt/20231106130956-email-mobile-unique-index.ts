@@ -17,7 +17,7 @@ export const up = async (db: Db, client: MongoClient) => {
     await session.withTransaction(async () => {
       console.log('Checking if mobile field already have indices')
       const indexes = Object.keys(
-        (await db.collection('users').stats()).indexSizes
+        (await db.command({ collStats: 'users' })).indexSizes
       )
       const mobileHasIndex = indexes.some(
         (index) => index.split('_')[0] === ('mobile' as const)

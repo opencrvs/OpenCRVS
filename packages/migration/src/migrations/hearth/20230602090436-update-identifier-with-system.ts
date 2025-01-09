@@ -8,14 +8,12 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import { Db, MongoClient } from 'mongodb'
-import * as mongoose from 'mongoose'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 
 const USER_MGNT_MONGO_URL =
   process.env.USER_MGNT_MONGO_URL || 'mongodb://localhost/user-mgnt'
 
 export const up = async (db: Db, client: MongoClient) => {
-  const ObjectId = mongoose.Types.ObjectId
   const session = client.startSession()
   const userManagementClient = new MongoClient(USER_MGNT_MONGO_URL)
   const connectedUserManagementClient = await userManagementClient.connect()
