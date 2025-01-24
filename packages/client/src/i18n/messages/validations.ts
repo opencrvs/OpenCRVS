@@ -30,6 +30,8 @@ interface IValidationMessages
   isMoVisitBeforeBirth: MessageDescriptor
   isMoVisitAfterDeath: MessageDescriptor
   isInformantOfLegalAge: MessageDescriptor
+  isAgeInYearsBetween: MessageDescriptor
+  invalidAge: MessageDescriptor
   illegalMarriageAge: MessageDescriptor
   maxLength: MessageDescriptor
   minLength: MessageDescriptor
@@ -160,6 +162,18 @@ const messagesToDefine: IValidationMessages = {
     description:
       'The error message appears when the informant is not old enough to register an event',
     id: 'validations.isInformantOfLegalAge'
+  },
+  isAgeInYearsBetween: {
+    defaultMessage: 'Informant is not of legal age',
+    description:
+      "The error message appears when the informant's age is not within the required range to register an event",
+    id: 'validations.isAgeInYearsBetween'
+  },
+  invalidAge: {
+    defaultMessage: 'Invalid age value provided',
+    description:
+      'The error message appears when the given value for age is not valid',
+    id: 'validations.invalidAge'
   },
   illegalMarriageAge: {
     defaultMessage: 'Illegal age of marriage',

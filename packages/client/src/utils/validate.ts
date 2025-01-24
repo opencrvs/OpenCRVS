@@ -725,7 +725,14 @@ export const isMoVisitDateAfterBirthDateAndBeforeDeathDate: Validation = (
   }
 }
 
+/**
+ * @deprecated This validator is deprecated and will be removed in future releases. Use `isAgeInYearsBetween` instead
+ */
 export const isInformantOfLegalAge: Validation = (value: IFormFieldValue) => {
+  if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
+    console.warn(messages.isAgeInYearsBetween.defaultMessage)
+  }
   if (value) {
     if (
       minAgeGapExist(
@@ -740,6 +747,32 @@ export const isInformantOfLegalAge: Validation = (value: IFormFieldValue) => {
         message: messages.isInformantOfLegalAge
       }
     }
+  }
+}
+
+export const isAgeInYearsBetween: Validation = (age: IFormFieldValue) => {
+  // Ensure the value is a number
+  const parsedAge = typeof age === 'number' ? age : Number(age)
+
+  // Validate the parsed value
+  if (isNaN(parsedAge)) {
+    return {
+      message: messages.invalidAge // Add a specific message for invalid values
+    }
+  }
+
+  // Access minimum and maximum age from the configuration
+  const minAge = window.config.INFORMANT_MINIMUM_AGE
+  const maxAge = window.config.INFORMANT_MAXIMUM_AGE
+
+  // Check if the age is within the valid range
+  if (parsedAge >= minAge && parsedAge <= maxAge) {
+    return undefined
+  }
+
+  // Return a message for invalid ranges
+  return {
+    message: messages.isAgeInYearsBetween
   }
 }
 
