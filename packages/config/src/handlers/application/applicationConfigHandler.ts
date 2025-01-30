@@ -133,6 +133,7 @@ export async function getLoginConfigHandler(
     'PHONE_NUMBER_PATTERN',
     'LOGIN_BACKGROUND',
     'USER_NOTIFICATION_DELIVERY_METHOD',
+    'LIMIT_RECORD_PER_LOCATION',
     'INFORMANT_NOTIFICATION_DELIVERY_METHOD'
   ])
   return { config: refineConfigResponse }
@@ -209,6 +210,7 @@ const applicationConfigResponseValidation = Joi.object({
     INFORMANT_SIGNATURE_REQUIRED: Joi.boolean().required()
   },
   USER_NOTIFICATION_DELIVERY_METHOD: Joi.string().allow('').optional(),
+  LIMIT_RECORD_PER_LOCATION: Joi.boolean().optional(),
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: Joi.string().allow('').optional(),
   SIGNATURE_REQUIRED_FOR_ROLES: Joi.array().items(
     Joi.string().valid(...SystemRoleType)

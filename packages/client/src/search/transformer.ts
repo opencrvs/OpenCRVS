@@ -150,7 +150,11 @@ export const transformData = (
           assignedReg.registration &&
           (assignedReg.registration.modifiedAt ||
             assignedReg.registration.createdAt),
-        operationHistories: assignedReg.operationHistories as ITaskHistory[]
+        operationHistories: assignedReg.operationHistories as ITaskHistory[],
+        registeredLocationId:
+          (assignedReg.registration &&
+            assignedReg.registration.registeredLocationId) ||
+          ''
       }
     })
 }

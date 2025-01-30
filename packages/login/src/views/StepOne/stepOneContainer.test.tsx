@@ -50,6 +50,7 @@ describe('Login app step one', () => {
             },
             SENTRY: '',
             USER_NOTIFICATION_DELIVERY_METHOD: 'sms',
+            LIMIT_RECORD_PER_LOCATION: false,
             INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'sms'
           }
         })

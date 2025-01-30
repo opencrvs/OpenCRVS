@@ -1142,45 +1142,6 @@ type OIDPUserInfo {
   updated_at: Int
 }
 
-input PersonInput {
-  _fhirID: ID
-  identifier: [IdentityInput]
-  name: [HumanNameInput]
-  telecom: [ContactPointInput]
-  gender: Gender
-  birthDate: PlainDate
-  age: Float
-  maritalStatus: String
-  occupation: String
-  detailsExist: Boolean
-  reasonNotApplying: String
-  dateOfMarriage: PlainDate
-  multipleBirth: Int
-  address: [AddressInput]
-  photo: [AttachmentInput!]
-  deceased: DeceasedInput
-  nationality: [String]
-  educationalAttainment: String
-  ageOfIndividualInYears: Int
-}
-
-input LocationInput {
-  _fhirID: ID
-  identifier: [ID]
-  status: String
-  name: String
-  alias: [String]
-  description: String
-  partOf: String
-  type: String
-  telecom: [ContactPointInput]
-  address: AddressInput
-  longitude: Float
-  latitude: Float
-  altitude: Float
-  geoData: String
-}
-
 input AttachmentInput {
   _fhirID: ID
   contentType: String
@@ -1209,6 +1170,23 @@ input CorrectionValueInput {
   fieldName: String!
   oldValue: FieldValue
   newValue: FieldValue!
+}
+
+input LocationInput {
+  _fhirID: ID
+  identifier: [ID]
+  status: String
+  name: String
+  alias: [String]
+  description: String
+  partOf: String
+  type: String
+  telecom: [ContactPointInput]
+  address: AddressInput
+  longitude: Float
+  latitude: Float
+  altitude: Float
+  geoData: String
 }
 
 input FHIRIDMap {
@@ -1245,6 +1223,28 @@ input RegistrationInput {
   location: LocationInput
   correction: CorrectionInput
   changedValues: [CorrectionValueInput!]
+}
+
+input PersonInput {
+  _fhirID: ID
+  identifier: [IdentityInput]
+  name: [HumanNameInput]
+  telecom: [ContactPointInput]
+  gender: Gender
+  birthDate: PlainDate
+  age: Float
+  maritalStatus: String
+  occupation: String
+  detailsExist: Boolean
+  reasonNotApplying: String
+  dateOfMarriage: PlainDate
+  multipleBirth: Int
+  address: [AddressInput]
+  photo: [AttachmentInput!]
+  deceased: DeceasedInput
+  nationality: [String]
+  educationalAttainment: String
+  ageOfIndividualInYears: Int
 }
 
 input RelatedPersonInput {
@@ -1624,46 +1624,6 @@ type OIDPUserAddress {
   country: String
 }
 
-input IdentityInput {
-  id: ID
-  type: String
-  otherType: String
-  fieldsModifiedByIdentity: [String]
-}
-
-input ContactPointInput {
-  system: TelecomSystem
-  value: String
-  use: TelecomUse
-}
-
-enum Gender {
-  male
-  female
-  other
-  unknown
-}
-
-input AddressInput {
-  use: AddressUse
-  type: AddressType
-  text: String
-  line: [String!]
-  city: String
-  district: String
-  state: String
-  postalCode: String
-  country: String
-  from: Date
-  to: Date
-  partOf: String
-}
-
-input DeceasedInput {
-  deceased: Boolean
-  deathDate: PlainDate
-}
-
 enum AttachmentInputStatus {
   approved
   validated
@@ -1681,6 +1641,27 @@ enum PaymentOutcomeType {
 }
 
 scalar FieldValue
+
+input ContactPointInput {
+  system: TelecomSystem
+  value: String
+  use: TelecomUse
+}
+
+input AddressInput {
+  use: AddressUse
+  type: AddressType
+  text: String
+  line: [String!]
+  city: String
+  district: String
+  state: String
+  postalCode: String
+  country: String
+  from: Date
+  to: Date
+  partOf: String
+}
 
 input ObservationFHIRIDS {
   maleDependentsOfDeceased: String
@@ -1714,6 +1695,25 @@ input CertificateInput {
   hasShowedVerifiedDocument: Boolean
   payments: [PaymentInput]
   data: String
+}
+
+input IdentityInput {
+  id: ID
+  type: String
+  otherType: String
+  fieldsModifiedByIdentity: [String]
+}
+
+enum Gender {
+  male
+  female
+  other
+  unknown
+}
+
+input DeceasedInput {
+  deceased: Boolean
+  deathDate: PlainDate
 }
 
 input LabelInput {

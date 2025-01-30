@@ -723,6 +723,7 @@ export interface GQLApplicationConfiguration {
   INFORMANT_SIGNATURE?: boolean
   INFORMANT_SIGNATURE_REQUIRED?: boolean
   USER_NOTIFICATION_DELIVERY_METHOD?: string
+  LIMIT_RECORD_PER_LOCATION?: boolean
   INFORMANT_NOTIFICATION_DELIVERY_METHOD?: string
   DATE_OF_BIRTH_UNKNOWN?: boolean
   LOGIN_BACKGROUND?: GQLLoginBackground
@@ -742,6 +743,7 @@ export interface GQLApplicationConfigurationInput {
   INFORMANT_SIGNATURE?: boolean
   INFORMANT_SIGNATURE_REQUIRED?: boolean
   USER_NOTIFICATION_DELIVERY_METHOD?: string
+  LIMIT_RECORD_PER_LOCATION?: boolean
   INFORMANT_NOTIFICATION_DELIVERY_METHOD?: string
   DATE_OF_BIRTH_UNKNOWN?: boolean
   LOGIN_BACKGROUND?: GQLLoginBackgroundInput
@@ -5185,6 +5187,7 @@ export interface GQLApplicationConfigurationTypeResolver<TParent = any> {
   INFORMANT_SIGNATURE?: ApplicationConfigurationToINFORMANT_SIGNATUREResolver<TParent>
   INFORMANT_SIGNATURE_REQUIRED?: ApplicationConfigurationToINFORMANT_SIGNATURE_REQUIREDResolver<TParent>
   USER_NOTIFICATION_DELIVERY_METHOD?: ApplicationConfigurationToUSER_NOTIFICATION_DELIVERY_METHODResolver<TParent>
+  LIMIT_RECORD_PER_LOCATION?: ApplicationConfigurationToLIMIT_RECORD_PER_LOCATIONResolver<TParent>
   INFORMANT_NOTIFICATION_DELIVERY_METHOD?: ApplicationConfigurationToINFORMANT_NOTIFICATION_DELIVERY_METHODResolver<TParent>
   DATE_OF_BIRTH_UNKNOWN?: ApplicationConfigurationToDATE_OF_BIRTH_UNKNOWNResolver<TParent>
   LOGIN_BACKGROUND?: ApplicationConfigurationToLOGIN_BACKGROUNDResolver<TParent>
@@ -5268,6 +5271,13 @@ export interface ApplicationConfigurationToNID_NUMBER_PATTERNResolver<
 }
 
 export interface ApplicationConfigurationToINFORMANT_SIGNATUREResolver<
+  TParent = any,
+  TResult = any
+> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult
+}
+
+export interface ApplicationConfigurationToLIMIT_RECORD_PER_LOCATIONResolver<
   TParent = any,
   TResult = any
 > {

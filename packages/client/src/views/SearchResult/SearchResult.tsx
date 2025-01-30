@@ -246,7 +246,19 @@ class SearchResultView extends React.Component<
       this.props.outboxDeclarations
     )
 
+    const { match, userDetails } = this.props
+    const officeLocationId =
+      userDetails?.primaryOffice?.id?.split('-')[0] ?? 'NO OFFICE ID'
+
     return transformedData
+      .filter(
+        (_transformeData) =>
+          window.config.LIMIT_RECORD_PER_LOCATION
+            ? _transformeData.registeredLocationId
+                .toUpperCase()
+                .includes(officeLocationId.toUpperCase())
+            : true // Keep all records if the condition is false
+      )
       .filter(({ id }) => !processingDeclarationIds.includes(id))
       .map((reg, index) => {
         const foundDeclaration = this.props.outboxDeclarations.find(

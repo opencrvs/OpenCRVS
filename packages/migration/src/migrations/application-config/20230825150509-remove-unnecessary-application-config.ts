@@ -29,7 +29,8 @@ export const up = async (db: Db, client: MongoClient) => {
               INFORMANT_SIGNATURE_REQUIRED: '',
               MARRIAGE_REGISTRATION: '',
               INFORMANT_NOTIFICATION_DELIVERY_METHOD: '',
-              USER_NOTIFICATION_DELIVERY_METHOD: ''
+              USER_NOTIFICATION_DELIVERY_METHOD: '',
+              LIMIT_RECORD_PER_LOCATION: false
             }
           }
         )

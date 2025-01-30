@@ -127,6 +127,7 @@ export interface IApplicationConfig {
   NID_NUMBER_PATTERN: RegExp
   LOGIN_BACKGROUND: ILoginBackground
   USER_NOTIFICATION_DELIVERY_METHOD: string
+  LIMIT_RECORD_PER_LOCATION: boolean
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: string
 }
 export interface IApplicationConfigResponse {

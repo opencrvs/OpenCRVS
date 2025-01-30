@@ -17,7 +17,8 @@ const config = {
   CLIENT_APP_URL: 'http://localhost:3000/',
   COUNTRY_CONFIG_URL: 'http://localhost:3040',
   CONFIG_API_URL: 'http://localhost:2021',
-  USER_NOTIFICATION_DELIVERY_METHOD: 'sms'
+  USER_NOTIFICATION_DELIVERY_METHOD: 'sms',
+  LIMIT_RECORD_PER_LOCATION: false
 }
 
 vi.stubGlobal('config', config)

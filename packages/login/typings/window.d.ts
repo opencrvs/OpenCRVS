@@ -16,6 +16,7 @@ interface Window {
     COUNTRY: string
     LANGUAGES: string
     USER_NOTIFICATION_DELIVERY_METHOD: 'sms' | 'email'
+    LIMIT_RECORD_PER_LOCATION: boolean
     INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'sms' | 'email'
     CLIENT_APP_URL: string
     PHONE_NUMBER_PATTERN: RegExp

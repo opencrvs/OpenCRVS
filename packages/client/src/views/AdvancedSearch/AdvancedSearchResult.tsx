@@ -82,6 +82,7 @@ import { omitBy } from 'lodash'
 import { BookmarkAdvancedSearchResult } from '@client/views/AdvancedSearch/BookmarkAdvancedSearchResult'
 import { useWindowSize } from '@opencrvs/components/lib/hooks'
 import { UserDetails } from '@client/utils/userUtils'
+import { getUserLocation } from '@client/utils/userUtils'
 
 const SearchParamContainer = styled.div`
   margin: 16px 0px;
@@ -215,7 +216,18 @@ const AdvancedSearchResultComp = (props: IFullProps) => {
       props.outboxDeclarations
     )
 
+    const { match, userDetails } = props
+    const officeLocationId = userDetails ? getUserLocation(userDetails).id : ''
+
     return transformedData
+      .filter(
+        (_transformeData) =>
+          window.config.LIMIT_RECORD_PER_LOCATION
+            ? _transformeData.registeredLocationId
+                .toUpperCase()
+                .includes(officeLocationId.toUpperCase())
+            : true // Keep all records if the condition is false
+      )
       .filter(({ id }) => !processingDeclarationIds.includes(id))
       .map((reg, index) => {
         const foundDeclaration = props.outboxDeclarations.find(

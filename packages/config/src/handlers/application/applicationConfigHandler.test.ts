@@ -89,6 +89,7 @@ const mockConfig = {
   DECLARATION_AUDIT_LOCATIONS: 'WARD,UNION,MUNICIPALITY',
   EXTERNAL_VALIDATION_WORKQUEUE: true, // this flag will decide whether to show external validation workqueue on registrar home
   USER_NOTIFICATION_DELIVERY_METHOD: 'email',
+  LIMIT_RECORD_PER_LOCATION: false,
   INFORMANT_NOTIFICATION_DELIVERY_METHOD: 'email'
 } as unknown as IApplicationConfigurationModel
 
