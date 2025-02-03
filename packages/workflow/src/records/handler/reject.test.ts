@@ -23,6 +23,10 @@ import {
 } from '@opencrvs/commons/types'
 import { READY_FOR_REVIEW_BIRTH_RECORD } from '@test/mocks/records/readyForReview'
 import { SCOPES } from '@opencrvs/commons/authentication'
+import { invokeWebhooks } from '@workflow/records/webhooks'
+import { getEventType } from '@workflow/features/registration/utils'
+
+jest.mock('@workflow/records/webhooks')
 
 function getReasonFromTask(task: SavedTask) {
   return task.statusReason?.text
@@ -93,6 +97,14 @@ describe('Reject record endpoint', () => {
       headers: {
         Authorization: `Bearer ${token}`
       }
+    })
+
+    expect(invokeWebhooks).toHaveBeenCalledWith({
+      bundle: READY_FOR_REVIEW_BIRTH_RECORD,
+      token,
+      event: getEventType(READY_FOR_REVIEW_BIRTH_RECORD),
+      isNotRegistered: true,
+      statusType: 'rejected'
     })
 
     const task = getTaskFromSavedBundle(

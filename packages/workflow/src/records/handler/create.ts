@@ -282,7 +282,6 @@ export default async function createRecordHandler(
     requestSchema,
     request.payload
   )
-
   const existingDeclarationIds =
     recordDetails.registration?.draftId &&
     (await findExistingDeclarationIds(recordDetails.registration.draftId))
@@ -335,6 +334,7 @@ export default async function createRecordHandler(
     record = await toWaitingForExternalValidationState(record, token)
     await auditEvent('waiting-external-validation', record, token)
   }
+
   const eventAction = getEventAction(record)
   await indexBundle(record, token)
 

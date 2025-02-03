@@ -30,6 +30,7 @@ export const SCOPES = {
   NATIONALID: 'nationalId',
   NOTIFICATION_API: 'notification-api',
   RECORDSEARCH: 'recordsearch',
+  SELF_SERVICE_PORTAL: 'self-service-portal',
 
   // declare
   RECORD_DECLARE_BIRTH: 'record.declare-birth',

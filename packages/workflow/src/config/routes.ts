@@ -95,7 +95,8 @@ export const getRoutes = () => {
           scope: [
             SCOPES.RECORD_DECLARE_BIRTH,
             SCOPES.RECORD_DECLARE_DEATH,
-            SCOPES.RECORD_DECLARE_MARRIAGE
+            SCOPES.RECORD_DECLARE_MARRIAGE,
+            SCOPES.SELF_SERVICE_PORTAL
           ]
         },
         tags: ['api'],

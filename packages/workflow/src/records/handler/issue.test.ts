@@ -22,6 +22,10 @@ import {
 } from '@opencrvs/commons/types'
 import { CERTIFIED_BIRTH_RECORD } from '@test/mocks/records/certify'
 import { SCOPES } from '@opencrvs/commons/authentication'
+import { invokeWebhooks } from '@workflow/records/webhooks'
+import { getEventType } from '@workflow/features/registration/utils'
+
+jest.mock('@workflow/records/webhooks')
 
 describe('Issue record endpoint', () => {
   let server: Awaited<ReturnType<typeof createServer>>
@@ -125,6 +129,14 @@ describe('Issue record endpoint', () => {
       headers: {
         Authorization: `Bearer ${token}`
       }
+    })
+
+    expect(invokeWebhooks).toHaveBeenCalledWith({
+      bundle: CERTIFIED_BIRTH_RECORD,
+      token,
+      event: getEventType(CERTIFIED_BIRTH_RECORD),
+      isNotRegistered: true,
+      statusType: 'issued'
     })
 
     const issuedRecord = JSON.parse(response.payload) as IssuedRecord

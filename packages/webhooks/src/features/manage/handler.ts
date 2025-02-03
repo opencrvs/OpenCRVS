@@ -40,17 +40,16 @@ export async function subscribeWebhooksHandler(
   h: Hapi.ResponseToolkit
 ) {
   const { hub } = request.payload as ISubscribePayload
-  // if (!(hub.topic in TRIGGERS)) {
-  //   return h
-  //     .response({
-  //       hub: {
-  //         mode: 'denied',
-  //         topic: hub.topic,
-  //         reason: `Unsupported topic: ${hub.topic}`
-  //       }
-  //     })
-  //     .code(400)
-  // }
+  if (hub.topic === undefined) {
+    return h
+      .response({
+        hub: {
+          mode: 'denied',
+          reason: 'hub.topic is required'
+        }
+      })
+      .code(400)
+  }
   const token: ITokenPayload = getTokenPayload(
     request.headers.authorization.split(' ')[1]
   )

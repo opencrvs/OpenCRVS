@@ -78,7 +78,13 @@ const systemSchema = new Schema({
   creationDate: { type: Number, default: Date.now },
   type: {
     type: String,
-    enum: [types.HEALTH, types.NATIONAL_ID, types.RECORD_SEARCH, types.WEBHOOK]
+    enum: [
+      types.HEALTH,
+      types.NATIONAL_ID,
+      types.RECORD_SEARCH,
+      types.WEBHOOK,
+      types.SELF_SERVICE_PORTAL
+    ]
   },
   integratingSystemType: {
     type: String,

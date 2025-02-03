@@ -136,14 +136,14 @@ export async function withPractitionerDetails<T extends Task>(
         type
       })
     })
-    return [
-      newTask,
-      {
-        type: 'document',
-        resourceType: 'Bundle',
-        entry: []
-      }
-    ]
+    // return [
+    //   newTask,
+    //   {
+    //     type: 'document',
+    //     resourceType: 'Bundle',
+    //     entry: []
+    //   }
+    // ]
   }
   const user = userOrSystem
   const practitioner = await getLoggedInPractitionerResource(token)

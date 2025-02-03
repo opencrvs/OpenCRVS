@@ -81,6 +81,30 @@ export async function getUser(
   return await res.json()
 }
 
+export async function getSystem(
+  systemId: string,
+  authHeader: { Authorization: string }
+) {
+  const res = await fetch(`${USER_MANAGEMENT_URL}/getSystem`, {
+    method: 'POST',
+    body: JSON.stringify({ systemId }),
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeader
+    }
+  })
+
+  if (!res.ok) {
+    throw new Error(
+      `Unable to retrieve user mobile number. Error: ${
+        res.status
+      } status received. ${await res.text()}`
+    )
+  }
+
+  return await res.json()
+}
+
 export async function getUserAuditsHandler(request: Hapi.Request) {
   const practitionerId = request.query[PRACTITIONER_ID]
   const skip = request.query['skip'] || 0

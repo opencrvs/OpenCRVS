@@ -127,6 +127,12 @@ const messagesToDefine = {
     description: 'Label for event notification'
   },
 
+  selfServicePortal: {
+    id: 'integrations.type.selfServicePortal',
+    defaultMessage: 'Self Service Portal',
+    description: 'Label for Self Service Portal'
+  },
+
   childDetails: {
     id: 'integrations.childDetails',
     defaultMessage: `Child's details`,

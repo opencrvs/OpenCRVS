@@ -513,7 +513,10 @@ export const resolvers: GQLResolver = {
     },
     markBirthAsCertified: requireAssignment(
       async (_, { id, details }, { headers: authHeader }) => {
-        if (!hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES)) {
+        if (
+          !hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES) &&
+          !hasScope(authHeader, SCOPES.SELF_SERVICE_PORTAL)
+        ) {
           throw new Error('User does not have enough scope')
         }
         return markEventAsCertified(id, details, authHeader, EVENT_TYPE.BIRTH)
@@ -521,14 +524,20 @@ export const resolvers: GQLResolver = {
     ),
     // @todo: add new query for certify and issue later where require assignment wrapper will be used
     markBirthAsIssued: (_, { id, details }, { headers: authHeader }) => {
-      if (!hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES)) {
+      if (
+        !hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES) &&
+        !hasScope(authHeader, SCOPES.SELF_SERVICE_PORTAL)
+      ) {
         throw new Error('User does not have enough scope')
       }
       return markEventAsIssued(id, details, authHeader, EVENT_TYPE.BIRTH)
     },
     markDeathAsCertified: requireAssignment(
       (_, { id, details }, { headers: authHeader }) => {
-        if (!hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES)) {
+        if (
+          !hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES) &&
+          !hasScope(authHeader, SCOPES.SELF_SERVICE_PORTAL)
+        ) {
           throw new Error('User does not have enough scope')
         }
         return markEventAsCertified(id, details, authHeader, EVENT_TYPE.DEATH)
@@ -536,7 +545,10 @@ export const resolvers: GQLResolver = {
     ),
     // @todo: add new query for certify and issue later where require assignment wrapper will be used
     markDeathAsIssued: (_, { id, details }, { headers: authHeader }) => {
-      if (!hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES)) {
+      if (
+        !hasScope(authHeader, SCOPES.RECORD_PRINT_ISSUE_CERTIFIED_COPIES) &&
+        !hasScope(authHeader, SCOPES.SELF_SERVICE_PORTAL)
+      ) {
         throw new Error('User does not have enough scope')
       }
       return markEventAsIssued(id, details, authHeader, EVENT_TYPE.DEATH)

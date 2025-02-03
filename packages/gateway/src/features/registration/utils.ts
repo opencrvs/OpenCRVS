@@ -40,6 +40,9 @@ export async function setCollectorForPrintInAdvance(
   authHeader: IAuthHeader
 ) {
   const tokenPayload = getTokenPayload(authHeader.Authorization.split(' ')[1])
+  if (tokenPayload.scope.indexOf('self-service-portal') > -1) {
+    return details
+  }
   const userId = tokenPayload.sub
   const userDetails = await getUser({ userId }, authHeader)
   const name = userDetails.name.map((nameItem) => ({

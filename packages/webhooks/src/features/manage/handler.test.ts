@@ -150,7 +150,7 @@ describe('subscribeWebhooksHandler handler', () => {
     expect(res.statusCode).toBe(400)
   })
 
-  it('return an error if a topic is unsupported', async () => {
+  it('return an error if a topic is undefined', async () => {
     fetch.mockResponses(
       [JSON.stringify(mockActiveSystem), { status: 200 }],
       [JSON.stringify({ challenge: '123' }), { status: 200 }]
@@ -167,14 +167,14 @@ describe('subscribeWebhooksHandler handler', () => {
           callback: 'https://www.your-great-domain.com/webhooks',
           mode: 'subscribe',
           secret: '123',
-          topic: 'XXX'
+          topic: undefined
         }
       },
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    expect(res.result.hub.reason).toEqual('Unsupported topic: XXX')
+    expect(res.result.hub.reason).toEqual('hub.topic is required')
     expect(res.statusCode).toBe(400)
   })
 

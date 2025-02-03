@@ -118,7 +118,6 @@ export async function sentNotificationForReviewHandler(
   h: Hapi.ResponseToolkit
 ) {
   const points = []
-
   await createUserAuditPointFromFHIR('DECLARED', request)
 
   try {

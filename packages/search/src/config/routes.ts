@@ -251,7 +251,8 @@ export const getRoutes = () => {
             SCOPES.SEARCH_MARRIAGE,
             SCOPES.SEARCH_BIRTH_MY_JURISDICTION,
             SCOPES.SEARCH_DEATH_MY_JURISDICTION,
-            SCOPES.SEARCH_MARRIAGE_MY_JURISDICTION
+            SCOPES.SEARCH_MARRIAGE_MY_JURISDICTION,
+            SCOPES.SELF_SERVICE_PORTAL
           ]
         },
         description: 'Handles searching from declarations'
@@ -270,7 +271,8 @@ export const getRoutes = () => {
             SCOPES.SEARCH_MARRIAGE,
             SCOPES.SEARCH_BIRTH_MY_JURISDICTION,
             SCOPES.SEARCH_DEATH_MY_JURISDICTION,
-            SCOPES.SEARCH_MARRIAGE_MY_JURISDICTION
+            SCOPES.SEARCH_MARRIAGE_MY_JURISDICTION,
+            SCOPES.SELF_SERVICE_PORTAL
           ]
         },
         description: 'Handle searching from death declarations'

@@ -25,6 +25,7 @@ enum SystemType {
   HEALTH
   RECORD_SEARCH
   WEBHOOK
+  SELF_SERVICE_PORTAL
 }
 
 enum IntegratingSystemType {

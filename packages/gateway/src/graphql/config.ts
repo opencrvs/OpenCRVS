@@ -199,7 +199,9 @@ export function authSchemaTransformer(schema: GraphQLSchema) {
         try {
           const userId = credentials.sub
           let user: IUserModelData | ISystemModelData
-          const isSystemUser = credentials.scope.indexOf('recordsearch') > -1
+          const isSystemUser =
+            credentials.scope.indexOf('recordsearch') > -1 ||
+            credentials.scope.indexOf('self-service-portal') > -1
           if (isSystemUser) {
             user = await getSystem(
               { systemId: userId },

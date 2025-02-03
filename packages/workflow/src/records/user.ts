@@ -77,8 +77,15 @@ export async function getUserOrSystem(
   const tokenPayload = getTokenPayload(token)
   const isNotificationAPIUser = tokenPayload.scope.includes('notification-api')
   const isRecordSearchAPIUser = tokenPayload.scope.includes('recordsearch')
+  const isSelfServicePortalAPIUser = tokenPayload.scope.includes(
+    'self-service-portal'
+  )
 
-  if (isNotificationAPIUser || isRecordSearchAPIUser) {
+  if (
+    isNotificationAPIUser ||
+    isRecordSearchAPIUser ||
+    isSelfServicePortalAPIUser
+  ) {
     return await getSystem(tokenPayload.sub, {
       Authorization: `Bearer ${token}`
     })

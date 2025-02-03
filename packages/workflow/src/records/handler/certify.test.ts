@@ -22,6 +22,10 @@ import {
 } from '@opencrvs/commons/types'
 import { REGISTERED_BIRTH_RECORD } from '@test/mocks/records/register'
 import { SCOPES } from '@opencrvs/commons/authentication'
+import { invokeWebhooks } from '@workflow/records/webhooks'
+import { getEventType } from '@workflow/features/registration/utils'
+
+jest.mock('@workflow/records/webhooks')
 
 describe('Certify record endpoint', () => {
   let server: Awaited<ReturnType<typeof createServer>>
@@ -239,6 +243,14 @@ describe('Certify record endpoint', () => {
       headers: {
         Authorization: `Bearer ${token}`
       }
+    })
+
+    expect(invokeWebhooks).toHaveBeenCalledWith({
+      bundle: REGISTERED_BIRTH_RECORD,
+      token,
+      event: getEventType(REGISTERED_BIRTH_RECORD),
+      isNotRegistered: true,
+      statusType: 'certified'
     })
 
     const certifiedRecord = JSON.parse(response.payload) as CertifiedRecord
