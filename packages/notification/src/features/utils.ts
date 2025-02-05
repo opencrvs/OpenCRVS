@@ -93,7 +93,7 @@ export function getInformantName(
     record,
     resourceIdentifierToUUID(informantRelation.patient.reference)
   )
-  const name = informant.name.find(({ use }) => use === 'en')
+  const name = informant.name.find(({ use }: { use: string }) => use === 'en')
   if (!name) {
     error(record, 'name not found in informant patient resource')
   }
@@ -117,7 +117,7 @@ export function getPersonName(
     record,
     resourceIdentifierToUUID(patientSection.entry[0].reference)
   )
-  const name = person.name.find(({ use }) => use === 'en')
+  const name = person.name.find(({ use }: { use: string }) => use === 'en')
   if (!name) {
     error(record, `name not found in patient resource for ${compositionCode}`)
   }
@@ -158,5 +158,7 @@ export async function getUserDetails(request: Hapi.Request) {
   })
 
   const userDetails = await res.json()
+
+  console.log('userDetails :>> ', userDetails)
   return userDetails
 }

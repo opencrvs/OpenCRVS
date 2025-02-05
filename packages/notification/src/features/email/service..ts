@@ -30,15 +30,24 @@ let isLoopInprogress = false
 
 export async function sendAllUserEmails(request: Hapi.Request) {
   // get user details from user management
+
   const userDetails = await getUserDetails(request)
+
+  // console.log('userDetails :>> ', userDetails)
   const recipientEmail = userDetails?.emailForNotification
 
   const payload = request.payload as AllUsersEmailPayloadSchema
 
+  console.log('before preprocessing the request')
   await preProcessRequest(request)
-  await NotificationQueue.create(payload)
+  console.log('after preprocessing the request | before creating the record')
+
+  const createNQ = await NotificationQueue.create(payload)
+
+  console.log('createNQ :>> ', createNQ)
   if (!isLoopInprogress) {
-    loopNotificationQueue(recipientEmail, request.server)
+    const loopNQ = loopNotificationQueue(recipientEmail, request.server)
+    console.log('loopNQ :>> ', loopNQ)
   }
   return {
     success: true
