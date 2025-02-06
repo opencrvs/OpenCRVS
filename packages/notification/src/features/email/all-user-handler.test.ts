@@ -11,19 +11,10 @@
 import { readFileSync } from 'fs'
 import * as jwt from 'jsonwebtoken'
 import { createServer } from '@notification/server'
-// import {
-//   createServerWithEnvironment,
-//   emailUserMock
-// } from '@notification/tests/util'
-import * as fetchAny from 'jest-fetch-mock'
 import { SCOPES } from '@opencrvs/commons/authentication'
 import * as mockingoose from 'mockingoose'
-// import NotificationQueue, {
-//   NotificationQueueRecord
-// } from '@notification/model/notificationQueue'
 import NotificationQueue from '@notification/model/notificationQueue'
-
-const fetch = fetchAny as any
+import * as utils from '@notification/features/utils'
 
 describe('Email all users handler', () => {
   let server: any
@@ -46,21 +37,11 @@ describe('Email all users handler', () => {
   }
 
   beforeEach(async () => {
-    // mockingoose.resetAll()
-    fetch.resetMocks()
-
     server = await createServer()
 
-    fetch.mockResponse(JSON.stringify(mockUserResponse))
+    jest.spyOn(utils, 'getUserDetails').mockResolvedValueOnce(mockUserResponse)
     mockingoose(NotificationQueue).toReturn(mockNotificationRecord, 'create')
-
-    console.log(
-      'Mocked Create Response:',
-      await NotificationQueue.create(validPayload)
-    )
   })
-
-  console.log('Payload:', validPayload)
 
   const generateToken = () => {
     return jwt.sign(
@@ -79,9 +60,6 @@ describe('Email all users handler', () => {
       // Arrange
       const token = generateToken()
 
-      console.log('token :>> ', token)
-      console.log('Decoded Token:', jwt.decode(token))
-
       // Act
       const response = await server.server.inject({
         method: 'POST',
@@ -91,11 +69,6 @@ describe('Email all users handler', () => {
           Authorization: `Bearer ${token}`
         }
       })
-
-      // console.log(server.server.table())
-
-      console.log('response :>> ', response.statusCode)
-      console.log('Response Body:', response.result)
 
       // Assert
       expect(response.statusCode).toBe(200)

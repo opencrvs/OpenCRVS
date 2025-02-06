@@ -159,6 +159,5 @@ export async function getUserDetails(request?: Hapi.Request) {
 
   const userDetails = await res.json()
 
-  console.log('userDetails :>> ', userDetails)
   return userDetails
 }

@@ -6,20 +6,26 @@
     },
     "target": "es6",
     "module": "node16",
-    "rootDir": ".",
+    "outDir": "build/dist",
     "sourceMap": true,
     "moduleResolution": "node16",
-    "outDir": "build/dist",
-    "lib": ["esnext.asynciterable", "es6", "es2017", "dom"],
+    "rootDir": ".",
+    "lib": ["esnext.asynciterable", "es6", "es2019"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    "types": ["fhir", "jest"],
-    "esModuleInterop": true
+    "types": ["fhir", "jest"]
   },
   "include": ["src/**/*.ts", "typings"],
-  "exclude": ["node_modules", "build", "scripts", "acceptance-tests"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "src/**/*.test.ts",
+    "src/setupTests.ts"
+  ]
 }
