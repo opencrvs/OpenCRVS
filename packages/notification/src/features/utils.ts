@@ -137,7 +137,7 @@ export function getRegistrationLocation(
   return location.name || ''
 }
 
-export async function getUserDetails(request: Hapi.Request) {
+export async function getUserDetails(request?: Hapi.Request) {
   // get the logged user details
   const token = request?.headers['authorization']?.split(' ')[1]
 
