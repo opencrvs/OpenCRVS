@@ -21,17 +21,17 @@ const messagesToDefine: INavigationMessages = {
   CREATED: {
     defaultMessage: 'In progress',
     description: 'In progress label in navigation',
-    id: 'navigation.CREATED'
+    id: 'v2.navigation.CREATED'
   },
   DECLARED: {
     defaultMessage: 'Ready for review',
     description: 'Ready for review label in navigation',
-    id: 'navigation.DECLARED'
+    id: 'v2.navigation.DECLARED'
   },
   REGISTERED: {
     defaultMessage: 'Ready to print',
     description: 'Ready to print label in navigation',
-    id: 'navigation.REGISTERED'
+    id: 'v2.navigation.REGISTERED'
   }
 }
 

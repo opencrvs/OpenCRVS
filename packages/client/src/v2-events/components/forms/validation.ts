@@ -12,6 +12,7 @@ import { MessageDescriptor } from 'react-intl'
 import { formatISO } from 'date-fns'
 import {
   ConditionalParameters,
+  defineConditional,
   FieldConfig,
   validate
 } from '@opencrvs/commons/client'
@@ -72,9 +73,9 @@ function getValidationErrors(
       message: {
         defaultMessage: 'Required for registration',
         description: 'This is the error message for required fields',
-        id: 'error.required'
+        id: 'v2.error.required'
       },
-      validator: {
+      validator: defineConditional({
         type: 'object',
         properties: {
           $form: {
@@ -89,7 +90,7 @@ function getValidationErrors(
           }
         },
         required: ['$form']
-      }
+      })
     })
   }
   //  else if (isFieldButton(field)) {

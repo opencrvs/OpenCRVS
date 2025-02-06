@@ -64,6 +64,12 @@ export async function getEventById(id: string) {
   return event
 }
 
+export async function getEventTypeId(id: string) {
+  const event = await getEventById(id)
+
+  return event.type
+}
+
 export async function deleteEvent(
   eventId: string,
   { token }: { token: string }

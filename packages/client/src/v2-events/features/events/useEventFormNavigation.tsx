@@ -20,29 +20,29 @@ import { useEvents } from './useEvents/useEvents'
 
 const modalMessages = defineMessages({
   cancel: {
-    id: 'exitModal.cancel',
+    id: 'v2.exitModal.cancel',
     defaultMessage: 'Cancel'
   },
   confirm: {
-    id: 'buttons.confirm',
+    id: 'v2.buttons.confirm',
     defaultMessage: 'Confirm'
   },
   exitWithoutSavingTitle: {
-    id: 'exitModal.exitWithoutSaving',
+    id: 'v2.exitModal.exitWithoutSaving',
     defaultMessage: 'Exit without saving changes?'
   },
   exitWithoutSavingDescription: {
-    id: 'exitModal.exitWithoutSavingDescription',
+    id: 'v2.exitModal.exitWithoutSavingDescription',
     defaultMessage:
       'You have unsaved changes on your declaration form. Are you sure you want to exit without saving?'
   },
   deleteDeclarationTitle: {
-    id: 'register.form.modal.title.deleteDeclarationConfirm',
+    id: 'v2.register.form.modal.title.deleteDeclarationConfirm',
     defaultMessage: 'Delete draft?',
     description: 'Title for delete declaration confirmation modal'
   },
   deleteDeclarationDescription: {
-    id: 'register.form.modal.desc.deleteDeclarationConfirm',
+    id: 'v2.register.form.modal.desc.deleteDeclarationConfirm',
     defaultMessage: `Are you certain you want to delete this draft declaration form? Please note, this action can't be undone.`,
     description: 'Description for delete declaration confirmation modal'
   }

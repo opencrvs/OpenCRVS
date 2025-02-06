@@ -32,7 +32,7 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-docs'
   ],
-  staticDirs: ['../public'],
+  staticDirs: ['../public', '../static'],
   framework: {
     name: '@storybook/react-vite',
     options: {}

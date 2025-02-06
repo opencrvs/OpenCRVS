@@ -50,55 +50,55 @@ const CertificateContainer = styled.div`
 
 const messages = defineMessages({
   printTitle: {
-    id: 'printAction.title',
+    id: 'v2.printAction.title',
     defaultMessage: 'Print certificate',
     description: 'The title for print action'
   },
   printDescription: {
-    id: 'printAction.description',
+    id: 'v2.printAction.description',
     defaultMessage:
       'Please confirm that the informant has reviewed that the information on the certificate is correct and that it is ready to print.',
     description: 'The description for print action'
   },
   printModalTitle: {
-    id: 'print.certificate.review.printModalTitle',
+    id: 'v2.print.certificate.review.printModalTitle',
     defaultMessage: 'Print certificate?',
     description: 'Print certificate modal title text'
   },
   printAndIssueModalTitle: {
-    id: 'print.certificate.review.printAndIssueModalTitle',
+    id: 'v2.print.certificate.review.printAndIssueModalTitle',
     defaultMessage: 'Print and issue certificate?',
     description: 'Print and issue certificate modal title text'
   },
   printModalBody: {
-    id: 'print.certificate.review.modal.body.print',
+    id: 'v2.print.certificate.review.modal.body.print',
     defaultMessage:
       'A Pdf of the certificate will open in a new tab for printing. The record will move to the ready-to-issue queue.',
     description: 'Print certificate modal body text'
   },
   printAndIssueModalBody: {
-    id: 'print.certificate.review.modal.body.printAndIssue',
+    id: 'v2.print.certificate.review.modal.body.printAndIssue',
     defaultMessage:
       'A Pdf of the certificate will open in a new tab for printing and issuing.',
     description: 'Print certificate modal body text'
   },
   makeCorrection: {
-    id: 'print.certificate.button.makeCorrection',
+    id: 'v2.print.certificate.button.makeCorrection',
     defaultMessage: 'No, make correction',
     description: 'The label for correction button of print action'
   },
   confirmPrint: {
-    id: 'print.certificate.button.confirmPrint',
+    id: 'v2.print.certificate.button.confirmPrint',
     defaultMessage: 'Yes, print certificate',
     description: 'The text for print button'
   },
   cancel: {
-    id: 'buttons.cancel',
+    id: 'v2.buttons.cancel',
     defaultMessage: 'Cancel',
     description: 'Cancel button text in the modal'
   },
   print: {
-    id: 'buttons.print',
+    id: 'v2.buttons.print',
     defaultMessage: 'Print',
     description: 'Print button text'
   }

@@ -16,6 +16,73 @@ import {
   getUUID
 } from '@opencrvs/commons'
 import { createTestClient, setupTestCase } from '@events/tests/utils'
+import { generateActionInput } from '@events/tests/generators'
+import { tennisClubMembershipEvent } from '@opencrvs/commons/fixtures'
+
+test('a correction request can be added to a created event', async () => {
+  const { user, generator } = await setupTestCase()
+  const client = createTestClient(user)
+
+  const originalEvent = await client.event.create(generator.event.create())
+
+  const declareInput = generator.event.actions.declare(originalEvent.id)
+
+  await client.event.actions.declare(declareInput)
+  const registeredEvent = await client.event.actions.register(
+    generator.event.actions.register(originalEvent.id)
+  )
+
+  const withCorrectionRequest = await client.event.actions.correction.request(
+    generator.event.actions.correction.request(registeredEvent.id)
+  )
+
+  expect(
+    withCorrectionRequest.actions[withCorrectionRequest.actions.length - 1].type
+  ).toBe(ActionType.REQUEST_CORRECTION)
+})
+
+test(`${ActionType.REQUEST_CORRECTION} validation error message contains all the offending fields`, async () => {
+  const { user, generator } = await setupTestCase()
+  const client = createTestClient(user)
+
+  const event = await client.event.create(generator.event.create())
+  event.id
+
+  const data = generator.event.actions.correction.request(event.id, {
+    data: {
+      'applicant.dob': '02-02'
+    }
+  })
+
+  await expect(
+    client.event.actions.correction.request(data)
+  ).rejects.matchSnapshot()
+})
+
+test(`${ActionType.APPROVE_CORRECTION} validation error message contains all the offending fields`, async () => {
+  const { user, generator } = await setupTestCase()
+  const client = createTestClient(user)
+
+  const event = await client.event.create(generator.event.create())
+
+  const withCorrectionRequest = await client.event.actions.correction.request(
+    generator.event.actions.correction.request(event.id)
+  )
+
+  const data = generator.event.actions.correction.approve(
+    event.id,
+    withCorrectionRequest.id,
+    {
+      data: {
+        'applicant.dob': '02-02'
+      }
+    }
+  )
+
+  await expect(
+    client.event.actions.correction.approve(data)
+  ).rejects.matchSnapshot()
+})
 
 test('a correction request can be added to a created event', async () => {
   const { user, generator } = await setupTestCase()
@@ -24,22 +91,14 @@ test('a correction request can be added to a created event', async () => {
   const originalEvent = await client.event.create(generator.event.create())
 
   await client.event.actions.declare(
-    generator.event.actions.declare(originalEvent.id, {
-      data: {
-        name: 'John Doe'
-      }
-    })
+    generator.event.actions.declare(originalEvent.id)
   )
   const registeredEvent = await client.event.actions.register(
     generator.event.actions.register(originalEvent.id)
   )
 
-  const withCorrectionRequest = await client.event.actions.correct.request(
-    generator.event.actions.correct.request(registeredEvent.id, {
-      data: {
-        name: 'Doe John'
-      }
-    })
+  const withCorrectionRequest = await client.event.actions.correction.request(
+    generator.event.actions.correction.request(registeredEvent.id)
   )
 
   expect(
@@ -57,21 +116,22 @@ describe('when a correction request exists', () => {
 
     const originalEvent = await client.event.create(generator.event.create())
 
-    await client.event.actions.declare(
-      generator.event.actions.declare(originalEvent.id, {
-        data: {
-          name: 'John Doe'
-        }
-      })
-    )
+    const declareInput = generator.event.actions.declare(originalEvent.id)
+
+    await client.event.actions.declare(declareInput)
+
     const registeredEvent = await client.event.actions.register(
       generator.event.actions.register(originalEvent.id)
     )
 
-    withCorrectionRequest = await client.event.actions.correct.request(
-      generator.event.actions.correct.request(registeredEvent.id, {
+    withCorrectionRequest = await client.event.actions.correction.request(
+      generator.event.actions.correction.request(registeredEvent.id, {
         data: {
-          name: 'Doe John'
+          ...generateActionInput(
+            tennisClubMembershipEvent,
+            ActionType.REQUEST_CORRECTION
+          ),
+          'applicant.firstName': 'Johnny'
         }
       })
     )
@@ -84,11 +144,10 @@ describe('when a correction request exists', () => {
       withCorrectionRequest.actions[withCorrectionRequest.actions.length - 1].id
 
     const withApprovedCorrectionRequest =
-      await client.event.actions.correct.approve(
-        generator.event.actions.correct.approve(
+      await client.event.actions.correction.approve(
+        generator.event.actions.correction.approve(
           withCorrectionRequest.id,
-          requestId,
-          {}
+          requestId
         )
       )
 
@@ -106,11 +165,10 @@ describe('when a correction request exists', () => {
 
     const incorrectRequestId = getUUID()
 
-    const request = client.event.actions.correct.approve(
-      generator.event.actions.correct.approve(
+    const request = client.event.actions.correction.approve(
+      generator.event.actions.correction.approve(
         withCorrectionRequest.id,
-        incorrectRequestId,
-        {}
+        incorrectRequestId
       )
     )
     await expect(request).rejects.toThrow()

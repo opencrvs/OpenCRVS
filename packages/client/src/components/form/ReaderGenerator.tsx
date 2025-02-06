@@ -30,6 +30,7 @@ import {
   tutorialMessages
 } from '@client/i18n/messages/views/qr-reader'
 import { useIntl } from 'react-intl'
+import { JSONSchema, validate } from '@opencrvs/commons/client'
 
 interface ReaderGeneratorProps {
   readers: ReaderType[]
@@ -53,6 +54,13 @@ export const ReaderGenerator = ({
       {readers.map((reader) => {
         const { type } = reader
         if (isReaderQR(reader)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const validator = (data: any) => {
+            const result = validate(reader.validation.rule as JSONSchema, data)
+            if (!result) {
+              return intl.formatMessage(reader.validation.errorMessage)
+            }
+          }
           return (
             <QRReader
               key={type}
@@ -71,12 +79,10 @@ export const ReaderGenerator = ({
                   )
                 }
               }}
+              validator={validator}
               onScan={(data) => {
                 setFieldValue(field.name, data)
               }}
-              // Error handling to be handled in OCRVS-8330
-              // eslint-disable-next-line no-console
-              onError={(error) => console.error(error)}
             />
           )
         } else if (isReaderLinkButton(reader)) {

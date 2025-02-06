@@ -53,9 +53,9 @@ type Mutation =
   | typeof api.event.actions.register
   | typeof api.event.actions.validate
   | typeof api.event.actions.printCertificate
-  | typeof api.event.actions.correct.request
-  | typeof api.event.actions.correct.approve
-  | typeof api.event.actions.correct.reject
+  | typeof api.event.actions.correction.request
+  | typeof api.event.actions.correction.approve
+  | typeof api.event.actions.correction.reject
 
 type Procedure =
   | typeof utils.event.actions.declare
@@ -63,9 +63,9 @@ type Procedure =
   | typeof utils.event.actions.register
   | typeof utils.event.actions.validate
   | typeof utils.event.actions.printCertificate
-  | typeof utils.event.actions.correct.request
-  | typeof utils.event.actions.correct.approve
-  | typeof utils.event.actions.correct.reject
+  | typeof utils.event.actions.correction.request
+  | typeof utils.event.actions.correction.approve
+  | typeof utils.event.actions.correction.reject
 
 /*
  * This makes sure that if you are offline and do
@@ -183,7 +183,7 @@ utils.event.actions.printCertificate.setMutationDefaults(
   })
 )
 
-utils.event.actions.correct.request.setMutationDefaults(
+utils.event.actions.correction.request.setMutationDefaults(
   ({ canonicalMutationFn }) => ({
     retry: true,
     retryDelay: 10000,
@@ -192,7 +192,7 @@ utils.event.actions.correct.request.setMutationDefaults(
   })
 )
 
-utils.event.actions.correct.approve.setMutationDefaults(
+utils.event.actions.correction.approve.setMutationDefaults(
   ({ canonicalMutationFn }) => ({
     retry: true,
     retryDelay: 10000,
@@ -201,7 +201,7 @@ utils.event.actions.correct.approve.setMutationDefaults(
   })
 )
 
-utils.event.actions.correct.reject.setMutationDefaults(
+utils.event.actions.correction.reject.setMutationDefaults(
   ({ canonicalMutationFn }) => ({
     retry: true,
     retryDelay: 10000,

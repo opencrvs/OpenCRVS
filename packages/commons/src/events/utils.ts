@@ -140,3 +140,14 @@ export function validateWorkqueueConfig(workqueueConfigs: WorkqueueConfig[]) {
       )
   })
 }
+
+export const findActiveActionFields = (
+  configuration: EventConfig,
+  action: ActionType
+) => {
+  const actionConfig = configuration.actions.find((a) => a.type === action)
+  const form = actionConfig?.forms.find((f) => f.active)
+
+  /** Let caller decide whether to throw or default to empty array */
+  return form?.pages.flatMap((p) => p.fields)
+}

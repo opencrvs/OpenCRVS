@@ -9,9 +9,18 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import { JSONSchemaType } from 'ajv'
 import { z } from 'zod'
 import { ActionFormData, EventDocument } from '../events'
+import { ITokenPayload } from '../authentication'
+
+/** @knipignore */
+export type JSONSchema = {
+  readonly __nominal__type: 'JSONSchema'
+}
+
+export function defineConditional(schema: any) {
+  return schema as JSONSchema
+}
 
 export function Conditional() {
   /*
@@ -19,8 +28,38 @@ export function Conditional() {
    * "The inferred type of this node exceeds the maximum length the compiler will serialize."
    * error, so I've copied the type here
    */
-  return z.any()
+  return z.custom<JSONSchema>((val) => typeof val === 'object' && val !== null)
 }
+
+export const ConditionalTypes = {
+  SHOW: 'SHOW',
+  HIDE: 'HIDE',
+  ENABLE: 'ENABLE'
+} as const
+
+export const ShowConditional = z.object({
+  type: z.literal(ConditionalTypes.SHOW),
+  conditional: Conditional()
+})
+
+export const HideConditional = z.object({
+  type: z.literal(ConditionalTypes.HIDE),
+  conditional: Conditional()
+})
+
+export const EnableConditional = z.object({
+  type: z.literal(ConditionalTypes.ENABLE),
+  conditional: Conditional()
+})
+
+export const ConditionalOperation = z.discriminatedUnion('type', [
+  ShowConditional,
+  HideConditional,
+  EnableConditional
+])
+
+export type ConditionalTypes =
+  (typeof ConditionalTypes)[keyof typeof ConditionalTypes]
 
 export type ConditionalParameters = { $now: string } & (
   | {
@@ -29,14 +68,9 @@ export type ConditionalParameters = { $now: string } & (
   | {
       $event: EventDocument
       $form: ActionFormData
+      $user: ITokenPayload
     }
   | {
       $form: ActionFormData
     }
 )
-
-/** @knipignore */
-export type JSONSchema = Omit<
-  JSONSchemaType<ConditionalParameters>,
-  'properties'
->

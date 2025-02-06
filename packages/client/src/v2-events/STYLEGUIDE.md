@@ -50,14 +50,51 @@ interface IApplicationConfig {
 }
 ```
 
-# Coding conventions, definition of done
+## Naming functions
 
-- When introducing a new `MessageDescriptor` create a new row in `client.csv`
-- They should all have `v2.`-prefix
+- Use find\* when you might return undefined
+
+good:
+
+```
+async function findEventConfigurationById({
+  token,
+  eventType
+}: {
+  token: string
+  eventType: string
+}) {
+  const configurations = await getEventConfigurations(token)
+
+  return configurations.find((config) => config.id === eventType)
+}
+```
+
+- Use get\* when you can guarantee the result
+
+good:
+
+```
+
+async function getEventConfigurationById({
+token,
+eventType
+}: {
+token: string
+eventType: string
+}) {
+const configurations = await getEventConfigurations(token)
+
+const configuration = configurations.find((config) => config.id === eventType)
+
+return getOrThrow(configuration), `No configuration found for event type: ${eventType}`)
+}
+
+```
 
 ## Naming, abbreviation
 
-When naming things with known abbreviations use camel case format despite of it.
+When naming things with known abbreviations use camelCase format
 
 good:
 
@@ -93,3 +130,8 @@ export function printPDF(template: PDFTemplate, declarationId: string) {
   }
 }
 ```
+
+# Coding conventions, definition of done
+
+- When introducing a new `MessageDescriptor` create a new row in `client.csv`
+- Each message used under events should have `v2.`-prefix

@@ -42,16 +42,16 @@ const DEFAULT_HISTORY_RECORD_PAGE_SIZE = 10
 const messages = defineMessages({
   'event.history.timeFormat': {
     defaultMessage: 'MMMM dd, yyyy · hh.mm a',
-    id: 'event.history.timeFormat',
+    id: 'v2.event.history.timeFormat',
     description: 'Time format for timestamps in event history'
   },
   'events.history.status': {
-    id: `events.history.status`,
+    id: `v2.events.history.status`,
     defaultMessage:
       '{status, select, CREATE {Draft} VALIDATE {Validated} DRAFT {Draft} DECLARE {Declared} REGISTER {Registered} PRINT_CERTIFICATE {Print certificate} other {Unknown}}'
   },
   'event.history.role': {
-    id: 'event.history.role',
+    id: 'v2.event.history.role',
     defaultMessage:
       '{role, select, LOCAL_REGISTRAR{Local Registrar} other{Unknown}}',
     description: 'Role of the user in the event history'

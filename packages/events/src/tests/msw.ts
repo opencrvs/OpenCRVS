@@ -11,6 +11,7 @@
 import { http, HttpResponse, PathParams } from 'msw'
 import { env } from '@events/environment'
 import { setupServer } from 'msw/node'
+import { tennisClubMembershipEvent } from '@opencrvs/commons/fixtures'
 
 const handlers = [
   http.post<PathParams<never>, { filenames: string[] }>(
@@ -19,7 +20,13 @@ const handlers = [
       const request = await info.request.json()
       return HttpResponse.json(request.filenames)
     }
-  )
+  ),
+  http.get(`${env.COUNTRY_CONFIG_URL}/events`, (info) => {
+    return HttpResponse.json([
+      tennisClubMembershipEvent,
+      { ...tennisClubMembershipEvent, id: 'TENNIS_CLUB_MEMBERSHIP_PREMIUM' }
+    ])
+  })
 ]
 
 export const mswServer = setupServer(...handlers)

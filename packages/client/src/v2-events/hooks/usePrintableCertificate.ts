@@ -32,7 +32,6 @@ import { fetchImageAsBase64 } from '@client/utils/imageUtils'
 async function replaceMinioUrlWithBase64(template: Record<string, any>) {
   async function recursiveTransform(obj: any) {
     if (typeof obj !== 'object' || obj === null) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return obj
     }
 
@@ -49,7 +48,6 @@ async function replaceMinioUrlWithBase64(template: Record<string, any>) {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return transformedObject
   }
   return recursiveTransform(template)

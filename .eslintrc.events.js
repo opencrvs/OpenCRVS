@@ -21,8 +21,6 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 2,
     '@typescript-eslint/no-non-null-assertion': 2,
     '@typescript-eslint/no-unnecessary-condition': 1,
-    '@typescript-eslint/no-unsafe-argument': 1,
-    '@typescript-eslint/no-unsafe-return': 1,
     '@typescript-eslint/prefer-includes': 1,
     '@typescript-eslint/promise-function-async': 2,
     '@typescript-eslint/require-await': 2,

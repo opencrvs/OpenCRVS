@@ -1,6 +1,6 @@
 {
   "name": "@opencrvs/toolkit",
-  "version": "0.0.32-jr",
+  "version": "0.0.34-rr",
   "description": "OpenCRVS toolkit for building country configurations",
   "license": "MPL-2.0",
   "exports": {

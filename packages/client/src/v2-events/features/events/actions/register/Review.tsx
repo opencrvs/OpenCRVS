@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { defineMessages } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
@@ -26,18 +26,18 @@ import { FormLayout } from '@client/v2-events/layouts/form'
 
 const messages = defineMessages({
   registerActionTitle: {
-    id: 'registerAction.title',
+    id: 'v2.registerAction.title',
     defaultMessage: 'Register member',
     description: 'The title for register action'
   },
   registerActionDescription: {
-    id: 'registerAction.description',
+    id: 'v2.registerAction.description',
     defaultMessage:
       'By clicking register, you confirm that the information entered is correct and the member can be registered.',
     description: 'The description for register action'
   },
   registerActionDeclare: {
-    id: 'registerAction.Declare',
+    id: 'v2.registerAction.Declare',
     defaultMessage: 'Register',
     description: 'The label for declare button of register action'
   }

@@ -9,7 +9,7 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 import { IFormData, IFormSectionGroup, ISelectOption } from '@client/forms'
-import { Event, EventType } from '@client/utils/gateway'
+import { EventType } from '@client/utils/gateway'
 import { dynamicMessages } from '@client/i18n/messages/views/certificate'
 import { getAvailableLanguages } from '@client/i18n/utils'
 import { ILanguageState } from '@client/i18n/reducer'

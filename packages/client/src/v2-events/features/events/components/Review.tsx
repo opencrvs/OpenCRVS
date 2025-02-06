@@ -123,49 +123,49 @@ const DeclarationDataContainer = styled.div``
 
 const reviewMessages = defineMessages({
   changeButton: {
-    id: 'buttons.change',
+    id: 'v2.buttons.change',
     defaultMessage: 'Change',
     description: 'The label for the change button'
   },
   actionModalCancel: {
-    id: 'actionModal.cancel',
+    id: 'v2.actionModal.cancel',
     defaultMessage: 'Cancel',
     description: 'The label for cancel button of action modal'
   },
   actionModalPrimaryAction: {
-    id: 'actionModal.PrimaryAction',
+    id: 'v2.actionModal.PrimaryAction',
     defaultMessage: '{action, select, declare{Declare} other{{action}}}',
     description: 'The label for primary action button of action modal'
   },
   actionModalTitle: {
-    id: 'actionModal.title',
+    id: 'v2.actionModal.title',
     defaultMessage:
       '{action, select, declare{Declare} other{{action}}} the member?',
     description: 'The title for action modal'
   },
   actionModalDescription: {
-    id: 'actionModal.description',
+    id: 'v2.actionModal.description',
     defaultMessage:
       'The declarant will be notified of this action and a record of this decision will be recorded',
     description: 'The description for action modal'
   },
   changeModalCancel: {
-    id: 'changeModal.cancel',
+    id: 'v2.changeModal.cancel',
     defaultMessage: 'Cancel',
     description: 'The label for cancel button of change modal'
   },
   changeModalContinue: {
-    id: 'changeModal.continue',
+    id: 'v2.changeModal.continue',
     defaultMessage: 'Continue',
     description: 'The label for continue button of change modal'
   },
   changeModalTitle: {
-    id: 'changeModal.title',
+    id: 'v2.changeModal.title',
     defaultMessage: 'Edit declaration?',
     description: 'The title for change modal'
   },
   changeModalDescription: {
-    id: 'changeModal.description',
+    id: 'v2.changeModal.description',
     defaultMessage: 'A record will be created of any changes you make',
     description: 'The description for change modal'
   }

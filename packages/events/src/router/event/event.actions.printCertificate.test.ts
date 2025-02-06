@@ -12,29 +12,41 @@
 import { ActionType } from '@opencrvs/commons'
 import { createTestClient, setupTestCase } from '@events/tests/utils'
 
-test('a correction request can be added to a created event', async () => {
+test('Validation error message contains all the offending fields', async () => {
+  const { user, generator } = await setupTestCase()
+  const client = createTestClient(user)
+
+  const event = await client.event.create(generator.event.create())
+
+  await expect(
+    client.event.actions.printCertificate(
+      generator.event.actions.printCertificate(event.id, {
+        data: {
+          'applicant.dob': '02-02'
+        }
+      })
+    )
+  ).rejects.matchSnapshot()
+})
+
+test('print certificate action can be added to a created event', async () => {
   const { user, generator } = await setupTestCase()
   const client = createTestClient(user)
 
   const originalEvent = await client.event.create(generator.event.create())
 
   await client.event.actions.declare(
-    generator.event.actions.declare(originalEvent.id, {
-      data: {
-        name: 'John Doe'
-      }
-    })
+    generator.event.actions.declare(originalEvent.id)
   )
   const registeredEvent = await client.event.actions.register(
     generator.event.actions.register(originalEvent.id)
   )
 
   const printCertificate = await client.event.actions.printCertificate(
-    generator.event.actions.printCertificate(registeredEvent.id, {
-      data: {
-        selectedTemplateId: 'certified-certificate-template'
-      }
-    })
+    generator.event.actions.printCertificate(
+      registeredEvent.id,
+      generator.event.actions.printCertificate(registeredEvent.id)
+    )
   )
 
   expect(

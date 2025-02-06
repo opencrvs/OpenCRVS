@@ -10,7 +10,7 @@
  */
 
 import { router, publicProcedure } from '@events/router/trpc'
-import { middleware } from '@events/router/middleware/middleware'
+import * as middleware from '@events/router/middleware'
 import {
   getLocations,
   Location,

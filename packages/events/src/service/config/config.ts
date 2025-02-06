@@ -12,8 +12,12 @@
 import { env } from '@events/environment'
 import {
   ActionInput,
+  ActionType,
   EventConfig,
   EventDocument,
+  FieldConfig,
+  findActiveActionFields,
+  getOrThrow,
   logger
 } from '@opencrvs/commons'
 import fetch from 'node-fetch'
@@ -32,6 +36,41 @@ export async function getEventConfigurations(token: string) {
   }
 
   return array(EventConfig).parse(await res.json())
+}
+
+async function findEventConfigurationById({
+  token,
+  eventType
+}: {
+  token: string
+  eventType: string
+}) {
+  const configurations = await getEventConfigurations(token)
+
+  return configurations.find((config) => config.id === eventType)
+}
+
+export async function getActionFormFields({
+  token,
+  eventType,
+  action
+}: {
+  token: string
+  eventType: string
+  action: ActionType
+}): Promise<FieldConfig[]> {
+  const configuration = getOrThrow(
+    await findEventConfigurationById({
+      token,
+      eventType
+    }),
+    `No configuration found for event type: ${eventType}`
+  )
+
+  return getOrThrow(
+    findActiveActionFields(configuration, action),
+    `No fields found for action: ${action}`
+  )
 }
 
 export async function notifyOnAction(

@@ -30,29 +30,29 @@ import { useEvents } from './useEvents/useEvents'
 
 const messages = defineMessages({
   registerNewEventTitle: {
-    id: 'register.selectVitalEvent.registerNewEventTitle',
+    id: 'v2.register.selectVitalEvent.registerNewEventTitle',
     defaultMessage: 'New declaration',
     description: 'The title that appears on the select vital event page'
   },
   registerNewEventHeading: {
-    id: 'register.selectVitalEvent.registerNewEventHeading',
+    id: 'v2.register.selectVitalEvent.registerNewEventHeading',
     defaultMessage: 'What type of event do you want to declare?',
     description: 'The section heading on the page'
   },
   continueButton: {
     defaultMessage: 'Continue',
     description: 'Continue Button Text',
-    id: 'buttons.continue'
+    id: 'v2.buttons.continue'
   },
   errorMessage: {
-    id: 'register.selectVitalEvent.errorMessage',
+    id: 'v2.register.selectVitalEvent.errorMessage',
     defaultMessage: 'Please select the type of event',
     description: 'Error Message to show when no event is being selected'
   },
   exitButton: {
     defaultMessage: 'EXIT',
     description: 'Label for Exit button on EventTopBar',
-    id: 'buttons.exit'
+    id: 'v2.buttons.exit'
   }
 })
 
@@ -61,7 +61,7 @@ const constantsMessages = defineMessages({
     defaultMessage: 'Skip to main content',
     description:
       'Label for a keyboard accessibility link which skips to the main content',
-    id: 'constants.skipToMainContent'
+    id: 'v2.constants.skipToMainContent'
   }
 })
 

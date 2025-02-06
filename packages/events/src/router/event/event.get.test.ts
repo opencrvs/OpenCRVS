@@ -10,6 +10,7 @@
  */
 
 import { createTestClient, setupTestCase } from '@events/tests/utils'
+import { tennisClubMembershipEvent } from '@opencrvs/commons/fixtures'
 
 test('Returns 404 when not found', async () => {
   const { user } = await setupTestCase()
@@ -37,17 +38,33 @@ test('Returns event with all actions', async () => {
 
   const event = await client.event.create(generator.event.create())
 
-  await client.event.actions.declare(
-    generator.event.actions.declare(event.id, { data: { name: 'John Doe' } })
+  await client.event.actions.declare(generator.event.actions.declare(event.id))
+
+  await client.event.actions.register(
+    generator.event.actions.register(event.id)
   )
 
+  await client.event.actions.printCertificate(
+    generator.event.actions.printCertificate(event.id)
+  )
+  const correctionRequest = await client.event.actions.correction.request(
+    generator.event.actions.correction.request(event.id)
+  )
+
+  await client.event.actions.correction.approve(
+    generator.event.actions.correction.approve(
+      correctionRequest.id,
+      correctionRequest.actions[correctionRequest.actions.length - 1].id
+    )
+  )
   await client.event.actions.validate(
-    generator.event.actions.validate(event.id, {
-      data: { favouritePlayer: 'Elena Rybakina' }
-    })
+    generator.event.actions.validate(event.id)
   )
 
   const fetchedEvent = await client.event.get(event.id)
 
-  expect(fetchedEvent.actions).toHaveLength(3)
+  // should throw when test is not updated after updating fixture or something breaks.
+  expect(fetchedEvent.actions).toHaveLength(
+    tennisClubMembershipEvent.actions.length + 1 // CREATE EVENT
+  )
 })

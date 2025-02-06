@@ -61,7 +61,7 @@ export const DateField = ({
   const { dd, mm, yyyy } = date
 
   useEffect(() => {
-    if (initialValue && typeof initialValue === 'string') {
+    if (typeof initialValue === 'string') {
       const dateSegmentVals = initialValue?.split('-') || []
       setDate({
         yyyy: dateSegmentVals[0] || '',

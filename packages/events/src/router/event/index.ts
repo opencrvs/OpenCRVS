@@ -32,6 +32,7 @@ import {
   logger
 } from '@opencrvs/commons'
 import {
+  ActionType,
   PrintCertificateActionInput,
   DeclareActionInput,
   EventIndex,
@@ -44,6 +45,7 @@ import {
 import { router, publicProcedure } from '@events/router/trpc'
 import { approveCorrection } from '@events/service/events/actions/approve-correction'
 import { rejectCorrection } from '@events/service/events/actions/reject-correction'
+import * as middleware from '@events/router/middleware'
 
 function validateEventType({
   eventTypes,
@@ -114,6 +116,7 @@ export const eventRouter = router({
   actions: router({
     notify: publicProcedure
       .input(NotifyActionInput)
+      .use(middleware.validateAction(ActionType.NOTIFY))
       .mutation(async (options) => {
         return addAction(options.input, {
           eventId: options.input.eventId,
@@ -125,6 +128,7 @@ export const eventRouter = router({
       }),
     declare: publicProcedure
       .input(DeclareActionInput)
+      .use(middleware.validateAction(ActionType.DECLARE))
       .mutation(async (options) => {
         return addAction(options.input, {
           eventId: options.input.eventId,
@@ -136,6 +140,7 @@ export const eventRouter = router({
       }),
     validate: publicProcedure
       .input(ValidateActionInput)
+      .use(middleware.validateAction(ActionType.VALIDATE))
       .mutation(async (options) => {
         return addAction(options.input, {
           eventId: options.input.eventId,
@@ -146,7 +151,10 @@ export const eventRouter = router({
         })
       }),
     register: publicProcedure
+      // @TODO: Find out a way to dynamically modify the MiddlewareOptions type
       .input(RegisterActionInput.omit({ identifiers: true }))
+      // @ts-expect-error
+      .use(middleware.validateAction(ActionType.REGISTER))
       .mutation(async (options) => {
         return addAction(
           {
@@ -167,6 +175,7 @@ export const eventRouter = router({
       }),
     printCertificate: publicProcedure
       .input(PrintCertificateActionInput)
+      .use(middleware.validateAction(ActionType.PRINT_CERTIFICATE))
       .mutation(async (options) => {
         return addAction(options.input, {
           eventId: options.input.eventId,
@@ -176,9 +185,10 @@ export const eventRouter = router({
           transactionId: options.input.transactionId
         })
       }),
-    correct: router({
+    correction: router({
       request: publicProcedure
         .input(RequestCorrectionActionInput)
+        .use(middleware.validateAction(ActionType.REQUEST_CORRECTION))
         .mutation(async (options) => {
           return addAction(options.input, {
             eventId: options.input.eventId,
@@ -190,6 +200,7 @@ export const eventRouter = router({
         }),
       approve: publicProcedure
         .input(ApproveCorrectionActionInput)
+        .use(middleware.validateAction(ActionType.APPROVE_CORRECTION))
         .mutation(async (options) => {
           return approveCorrection(options.input, {
             eventId: options.input.eventId,

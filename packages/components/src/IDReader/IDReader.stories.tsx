@@ -12,6 +12,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { IDReader } from '.'
 import React from 'react'
 import { QRReader } from './readers/QRReader/QRReader'
+import { Stack } from '../Stack'
+import { Text } from '../Text'
+import { ScannableQRReader } from './types'
 
 const meta: Meta<typeof IDReader> = {
   title: 'Controls/IDReader',
@@ -22,12 +25,13 @@ export default meta
 
 type Story = StoryObj<typeof IDReader>
 
-const IDReaderWithAlertFeedback = (args: any) => (
+const IDReaderComponent = (qrReaderProps: Partial<ScannableQRReader>) => (
   <IDReader
     dividerLabel="Or"
     manualInputInstructionLabel="Complete fields below"
   >
     <QRReader
+      {...qrReaderProps}
       labels={{
         button: 'Scan ID QR code',
         scannerDialogSupportingCopy:
@@ -41,11 +45,86 @@ const IDReaderWithAlertFeedback = (args: any) => (
         }
       }}
       onScan={(data) => alert(JSON.stringify(data))}
-      onError={(error) => console.error(error)}
+      onError={(type, error) =>
+        // eslint-disable-next-line no-console
+        console.error(`Error: ${type} - ${error.message}`)
+      }
     />
   </IDReader>
 )
 
-export const IDReaderWithAlertFeedbackStory: Story = {
-  render: (args) => <IDReaderWithAlertFeedback {...args} />
+export const IDReaderWithAlertFeedback: Story = {
+  render: () => <IDReaderComponent />
+}
+
+export const IDReaderWithValidator: Story = {
+  render: () => (
+    <Stack direction="column" gap={4} alignItems="stretch">
+      <IDReaderComponent
+        validator={(data: unknown) => {
+          if (
+            typeof data === 'object' &&
+            data !== null &&
+            'firstName' in data &&
+            'lastName' in data &&
+            !!data['firstName'] &&
+            !!data['lastName']
+          ) {
+            return undefined
+          } else return 'Invalid QR code'
+        }}
+      />
+      <Text element="h5" variant="h4">
+        This reader is provided with a validator function having such rule that
+        it will show alert only if the QR code has the below structure:
+      </Text>
+      <code
+        style={{
+          whiteSpace: 'pre-wrap',
+          padding: '16px',
+          background: '#f5f5f5'
+        }}
+      >
+        {JSON.stringify({ firstName: 'John', lastName: 'Doe' }, null, 2)}
+      </code>
+      <Text element="h5" variant="h4">
+        Otherwise it will show an error message in the scanner dialog
+      </Text>
+      <Text element="h2" variant="h2">
+        Example
+      </Text>
+      <Text element="p" variant="reg16">
+        Scan the below QR code with the scanner above and you should see an
+        alert as the data of the QR code is valid
+      </Text>
+      <Stack>
+        <img src="./static/valid_qr.png" alt="valid_qr" />
+        <code
+          style={{
+            whiteSpace: 'pre-wrap',
+            padding: '16px',
+            background: '#f5f5f5'
+          }}
+        >
+          {JSON.stringify({ firstName: 'John', lastName: 'Doe' }, null, 2)}
+        </code>
+      </Stack>
+      <Text element="p" variant="reg16">
+        You will see an error message in the scanner dialog if you scan the
+        below QR code as the data of the QR code is invalid
+      </Text>
+      <Stack>
+        <img src="./static/invalid_qr.png" alt="invalid_qr" />
+        <code
+          style={{
+            whiteSpace: 'pre-wrap',
+            padding: '16px',
+            background: '#f5f5f5'
+          }}
+        >
+          {JSON.stringify({ firstName: 'John', lastName: '' }, null, 2)}
+        </code>
+      </Stack>
+    </Stack>
+  )
 }

@@ -20,7 +20,7 @@ import { getUsersFullName, joinValues } from '@client/v2-events/utils'
 const messages = defineMessages({
   'event.history.modal.timeFormat': {
     defaultMessage: 'MMMM dd, yyyy · hh.mm a',
-    id: 'event.history.timeFormat',
+    id: 'v2.event.history.timeFormat',
     description: 'Time format for timestamps in event history'
   }
 })

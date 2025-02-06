@@ -8,13 +8,16 @@
  *
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import QRScanner from 'qr-scanner'
 import styled from 'styled-components'
+import { ErrorHandler, Validator } from '../../../IDReader/types'
+import { throttle } from 'lodash'
 
 interface ScannerProps {
-  onError: (error: 'mount' | 'parse') => void
+  onError: ErrorHandler
   onScan: (data: Record<string, unknown>) => void
+  validator?: Validator
 }
 
 const QRReader = styled.div`
@@ -37,34 +40,55 @@ const Scanner = (props: ScannerProps) => {
   const scanner = useRef<QRScanner>()
   const videoElement = useRef<HTMLVideoElement>(null)
   const [qrOn, setQrOn] = useState(true)
-  const { onError, onScan } = props
+  const { onError, onScan, validator } = props
+  const onScanSuccess = useCallback(
+    (result: QRScanner.ScanResult) => {
+      if (result.data) {
+        try {
+          const data = JSON.parse(result.data)
+          const validationError = validator && validator(data)
+          if (validationError) {
+            onError('invalid', new Error(validationError))
+            return
+          }
+          onScan(data)
+        } catch (error) {
+          // log detailed error message to console for debugging
+          // eslint-disable-next-line no-console
+          console.error(error)
+          onError('parse', new Error('Invalid JSON format'))
+        }
+      }
+    },
+    [onScan, onError, validator]
+  )
+  const onScanError = useCallback(
+    (error: Error) => {
+      onError('parse', error)
+    },
+    [onError]
+  )
 
   useEffect(() => {
     const currentVideoElement = videoElement?.current
     if (currentVideoElement && !scanner.current) {
-      scanner.current = new QRScanner(
-        currentVideoElement,
-        (result) => {
-          if (result.data) {
-            // TODO: handle parse error
-            onScan(JSON.parse(result.data))
-          }
-        },
-        {
-          // TODO: improve error handling
-          onDecodeError: () => onError('parse'),
-          preferredCamera: 'environment',
-          highlightCodeOutline: true,
-          highlightScanRegion: false
-        }
-      )
+      // implementation does not support the deprecated constructor overloads
+      // but supports the current signature. TS is throwing error. Need to have a closer
+      // look why TS is not able to detect the correct signature
+      // @ts-ignore
+      scanner.current = new QRScanner(currentVideoElement, onScanSuccess, {
+        onDecodeError: throttle(onScanError, 5000),
+        preferredCamera: 'environment',
+        highlightCodeOutline: true,
+        highlightScanRegion: false
+      })
 
       scanner?.current
         ?.start()
         .then(() => setQrOn(true))
-        .catch((err) => {
-          if (err) {
-            onError('mount')
+        .catch((error) => {
+          if (error) {
+            setQrOn(false)
           }
         })
     }
@@ -76,16 +100,17 @@ const Scanner = (props: ScannerProps) => {
       } else {
         scanner?.current?.stop()
       }
+      scanner.current?.destroy()
     }
-  }, [onScan, onError])
+  }, [onScan, onError, validator, onScanSuccess, onScanError])
 
   useEffect(() => {
-    if (!qrOn) alert('Could not scan')
+    if (!qrOn) alert('Please allow camera access to scan QR code')
   }, [qrOn])
 
   return (
     <QRReader>
-      <Video ref={videoElement}></Video>
+      <Video ref={videoElement} />
     </QRReader>
   )
 }

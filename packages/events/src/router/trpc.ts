@@ -10,7 +10,7 @@
  */
 
 import { initTRPC } from '@trpc/server'
-import { Context } from './middleware/middleware'
+import { Context } from './middleware'
 import superjson from 'superjson'
 
 export const t = initTRPC.context<Context>().create({

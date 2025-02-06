@@ -38,7 +38,15 @@ test('Returns aggregated event with updated status and values', async () => {
   const { user, generator } = await setupTestCase()
   const client = createTestClient(user)
 
-  const initialData = { name: 'John Doe', favouriteFruit: 'Banana' }
+  const initialData = {
+    'applicant.firstname': 'John',
+    'applicant.surname': 'Doe',
+    'applicant.dob': '2000-01-01',
+    'recommender.firstname': 'Jane',
+    'recommender.surname': 'Doer',
+    'recommender.id': '123-124'
+  }
+
   const event = await client.event.create(generator.event.create())
   await client.event.actions.declare(
     generator.event.actions.declare(event.id, {
@@ -52,7 +60,7 @@ test('Returns aggregated event with updated status and values', async () => {
   expect(initialEvents[0].status).toBe(EventStatus.DECLARED)
   expect(initialEvents[0].data).toEqual(initialData)
 
-  const updatedData = { name: 'John Doe', favouriteFruit: 'Strawberry' }
+  const updatedData = { ...initialData, 'recommender.firstname': 'Yane' }
   await client.event.actions.declare(
     generator.event.actions.declare(event.id, {
       data: updatedData

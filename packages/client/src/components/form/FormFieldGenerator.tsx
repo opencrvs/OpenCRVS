@@ -144,7 +144,7 @@ import { ButtonField } from '@client/components/form/Button'
 import { getListOfLocations } from '@client/utils/validate'
 import { LinkButtonField } from '@client/components/form/LinkButton'
 import { ReaderGenerator } from './ReaderGenerator'
-import { IDVerificationBanner } from './IDVerificationBanner'
+import { IDVerificationBanner } from './IDVerification/Banner'
 
 const SignatureField = styled(Stack)`
   margin-top: 8px;
@@ -276,21 +276,23 @@ const GeneratedInputField = React.memo<GeneratedInputFieldProps>(
 
     if (fieldDefinition.type === ID_READER) {
       return (
-        <IDReader
-          dividerLabel={fieldDefinition.dividerLabel}
-          manualInputInstructionLabel={
-            fieldDefinition.manualInputInstructionLabel
-          }
-        >
-          <ReaderGenerator
-            readers={fieldDefinition.readers}
-            form={values}
-            field={fieldDefinition}
-            draft={draftData}
-            fields={fields}
-            setFieldValue={setFieldValue}
-          />
-        </IDReader>
+        <InputField {...inputFieldProps}>
+          <IDReader
+            dividerLabel={fieldDefinition.dividerLabel}
+            manualInputInstructionLabel={
+              fieldDefinition.manualInputInstructionLabel
+            }
+          >
+            <ReaderGenerator
+              readers={fieldDefinition.readers}
+              form={values}
+              field={fieldDefinition}
+              draft={draftData}
+              fields={fields}
+              setFieldValue={setFieldValue}
+            />
+          </IDReader>
+        </InputField>
       )
     }
     if (fieldDefinition.type === ID_VERIFICATION_BANNER) {

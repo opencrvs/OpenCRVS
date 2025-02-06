@@ -16,10 +16,53 @@ import {
   ActionType,
   ValidateActionInput,
   RegisterActionInput,
-  RequestCorrectionActionInput
+  RequestCorrectionActionInput,
+  findActiveActionFields,
+  EventConfig,
+  FieldConfig
 } from '@opencrvs/commons'
 import { Location } from '@events/service/locations/locations'
 import { Db } from 'mongodb'
+import { tennisClubMembershipEvent } from '@opencrvs/commons/fixtures'
+
+/**
+ * Quick-and-dirty mock data generator for event actions.
+ */
+function mapTypeToMockValue(field: FieldConfig, i: number) {
+  switch (field.type) {
+    case 'DIVIDER':
+    case 'TEXT':
+    case 'BULLET_LIST':
+    case 'PAGE_HEADER':
+    case 'LOCATION':
+    case 'SELECT':
+    case 'COUNTRY':
+    case 'RADIO_GROUP':
+    case 'PARAGRAPH':
+      return `${field.id}-${field.type}-${i}`
+    case 'DATE':
+      return '2021-01-01'
+    case 'CHECKBOX':
+      return true
+    case 'FILE':
+      return null
+  }
+}
+
+export function generateActionInput(
+  configuration: EventConfig,
+  action: ActionType
+) {
+  const fields = findActiveActionFields(configuration, action) ?? []
+
+  return fields.reduce(
+    (acc, field, i) => ({
+      ...acc,
+      [field.id]: mapTypeToMockValue(field, i)
+    }),
+    {}
+  )
+}
 
 interface Name {
   use: string
@@ -39,6 +82,7 @@ interface CreateUser {
   role?: string
   name?: Array<Name>
 }
+
 /**
  * @returns a payload generator for creating events and actions with sensible defaults.
  */
@@ -60,7 +104,9 @@ export function payloadGenerator() {
       ) => ({
         type: ActionType.DECLARE,
         transactionId: input.transactionId ?? getUUID(),
-        data: input.data ?? {},
+        data:
+          input.data ??
+          generateActionInput(tennisClubMembershipEvent, ActionType.DECLARE),
         eventId
       }),
       validate: (
@@ -69,7 +115,9 @@ export function payloadGenerator() {
       ) => ({
         type: ActionType.VALIDATE,
         transactionId: input.transactionId ?? getUUID(),
-        data: input.data ?? {},
+        data:
+          input.data ??
+          generateActionInput(tennisClubMembershipEvent, ActionType.VALIDATE),
         duplicates: [],
         eventId
       }),
@@ -79,7 +127,9 @@ export function payloadGenerator() {
       ) => ({
         type: ActionType.REGISTER,
         transactionId: input.transactionId ?? getUUID(),
-        data: input.data ?? {},
+        data:
+          input.data ??
+          generateActionInput(tennisClubMembershipEvent, ActionType.REGISTER),
         eventId
       }),
       printCertificate: (
@@ -88,10 +138,15 @@ export function payloadGenerator() {
       ) => ({
         type: ActionType.PRINT_CERTIFICATE,
         transactionId: input.transactionId ?? getUUID(),
-        data: input.data ?? {},
+        data:
+          input.data ??
+          generateActionInput(
+            tennisClubMembershipEvent,
+            ActionType.PRINT_CERTIFICATE
+          ),
         eventId
       }),
-      correct: {
+      correction: {
         request: (
           eventId: string,
           input: Partial<
@@ -100,7 +155,12 @@ export function payloadGenerator() {
         ) => ({
           type: ActionType.REQUEST_CORRECTION,
           transactionId: input.transactionId ?? getUUID(),
-          data: input.data ?? {},
+          data:
+            input.data ??
+            generateActionInput(
+              tennisClubMembershipEvent,
+              ActionType.REQUEST_CORRECTION
+            ),
           metadata: {},
           eventId
         }),
@@ -113,7 +173,12 @@ export function payloadGenerator() {
         ) => ({
           type: ActionType.APPROVE_CORRECTION,
           transactionId: input.transactionId ?? getUUID(),
-          data: input.data ?? {},
+          data:
+            input.data ??
+            generateActionInput(
+              tennisClubMembershipEvent,
+              ActionType.APPROVE_CORRECTION
+            ),
           eventId,
           requestId
         }),
@@ -126,7 +191,12 @@ export function payloadGenerator() {
         ) => ({
           type: ActionType.REJECT_CORRECTION,
           transactionId: input.transactionId ?? getUUID(),
-          data: input.data ?? {},
+          data:
+            input.data ??
+            generateActionInput(
+              tennisClubMembershipEvent,
+              ActionType.REJECT_CORRECTION
+            ),
           eventId,
           requestId
         })

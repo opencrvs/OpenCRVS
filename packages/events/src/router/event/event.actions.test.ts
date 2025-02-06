@@ -34,12 +34,8 @@ test('Action data can be retrieved', async () => {
 
   const originalEvent = await client.event.create(generator.event.create())
 
-  const data = { name: 'John Doe', favouriteFruit: 'Banana' }
-  await client.event.actions.declare(
-    generator.event.actions.declare(originalEvent.id, {
-      data
-    })
-  )
+  const generatedDeclaration = generator.event.actions.declare(originalEvent.id)
+  await client.event.actions.declare(generatedDeclaration)
 
   const updatedEvent = await client.event.get(originalEvent.id)
 
@@ -47,7 +43,7 @@ test('Action data can be retrieved', async () => {
     expect.objectContaining({ type: ActionType.CREATE }),
     expect.objectContaining({
       type: ActionType.DECLARE,
-      data
+      data: generatedDeclaration.data
     })
   ])
 })
