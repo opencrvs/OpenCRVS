@@ -1,6 +1,6 @@
 {
   "name": "@opencrvs/auth",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "OpenCRVS authentication service",
   "license": "MPL-2.0",
   "private": true,

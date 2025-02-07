@@ -1,6 +1,6 @@
 {
   "name": "@opencrvs/webhooks",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "OpenCRVS webhooks service",
   "license": "MPL-2.0",
   "private": true,

@@ -55,7 +55,8 @@ import {
   BUTTON,
   Ii18nButtonFormField,
   IRedirectFormField,
-  REDIRECT
+  REDIRECT,
+  SELECT_WITH_DYNAMIC_OPTIONS
 } from '@client/forms'
 import { IntlShape, MessageDescriptor } from 'react-intl'
 import {
@@ -83,6 +84,7 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { Conditional } from './conditionals'
 import { UserDetails } from '@client/utils/userUtils'
 import * as SupportedIcons from '@opencrvs/components/lib/Icon/all-icons'
+import { memoize } from 'lodash'
 
 export const VIEW_TYPE = {
   FORM: 'form',
@@ -365,7 +367,8 @@ export function getNextSectionIds(
 export const getVisibleGroupFields = (group: IFormSectionGroup) => {
   return group.fields.filter((field) => !field.hidden)
 }
-export const getFieldOptions = (
+export const getFieldOptionsSlow = (
+  _sectionName: string,
   field:
     | ISelectFormFieldWithOptions
     | ISelectFormFieldWithDynamicOptions
@@ -442,6 +445,46 @@ export const getFieldOptions = (
     return options
   }
 }
+
+export const getFieldOptions = (
+  _sectionName: string,
+  field:
+    | ISelectFormFieldWithOptions
+    | ISelectFormFieldWithDynamicOptions
+    | IDocumentUploaderWithOptionsFormField,
+  values: IFormSectionData,
+  offlineCountryConfig: IOfflineData,
+  declaration?: IFormData
+) => {
+  if (field.type === SELECT_WITH_DYNAMIC_OPTIONS) {
+    return getMemoisedFieldOptions(
+      _sectionName,
+      field,
+      values,
+      offlineCountryConfig
+    )
+  }
+
+  return getFieldOptionsSlow(
+    _sectionName,
+    field,
+    values,
+    offlineCountryConfig,
+    declaration
+  )
+}
+
+/** Due to the large location trees with dependencies, generating options for them can be slow. We fix this by memoizing the options */
+const getMemoisedFieldOptions = memoize(
+  getFieldOptionsSlow,
+  (sectionName, field, values) => {
+    const dynamicField = field as ISelectFormFieldWithDynamicOptions
+    const dependencyVal = values[
+      dynamicField.dynamicOptions.dependency!
+    ] as string
+    return `field:${sectionName}.${field.name},dependency:${dynamicField.dynamicOptions.dependency},dependencyValue:${dependencyVal}`
+  }
+)
 
 interface INested {
   [key: string]: any

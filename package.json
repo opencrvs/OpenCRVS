@@ -1,7 +1,7 @@
 {
   "description": "OpenCRVS core workspace",
   "license": "MPL-2.0",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "private": true,
   "os": [
     "darwin",
