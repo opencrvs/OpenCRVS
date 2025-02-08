@@ -32,13 +32,13 @@ spec:
         - name: documents
           env:
             - name: COUNTRY_CONFIG_URL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME harcoded
+              value: {{ .Values.countryconfigUrl }} # FIXME harcoded
             - name: NODE_ENV
               value: development
             - name: CERT_PUBLIC_KEY_PATH
               value: /secrets/public-key.pem
             - name: MINIO_HOST
-              value: "minio-0.minio.opencrvs-deps-dev.svc.cluster.local"
+              value: "{{ .Values.minioUrl }}"
             - name: MINIO_PORT
               value: "3535"
             - name: DOCUMENTS_PORT

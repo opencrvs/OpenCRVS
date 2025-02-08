@@ -4,6 +4,140 @@ image:
 hostname: opencrvs.localhost
 dev_mode: false
 
+image:
+  tag: local
+
+#the mongo URL is made a top level since various services connects to it. Then the specific database associated for each services
+#is appended to the URL in the env section of the service.
+mongoUrl: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local
+
+#user management is also used by more than one
+userManagementUrl: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030/
+
+#auth is used by more than one service
+authUrl: http://auth.opencrvs-services-dev.svc.cluster.local:4040
+
+#country config used by multiple services
+applicationConfigUrl: http://config.opencrvs-services-dev.svc.cluster.local:2021
+
+countryconfigUrl: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 
+
+documentsUrl: http://documents.opencrvs-services-dev.svc.cluster.local:9050
+
+fhirUrl: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir
+
+gatewayUrl: http://gateway.opencrvs-services-dev.svc.cluster.local:7070/
+
+metricsUrl: http://metrics.opencrvs-services-dev.svc.cluster.local:1050
+
+notificationServiceUrl: http://notification.opencrvs-services-dev.svc.cluster.local:2020/
+
+redisHost: redis.opencrvs-deps-dev.svc.cluster.local
+
+searchUrl: http://search.opencrvs-deps-dev.svc.cluster.local:9090/
+
+minioUrl: minio-0.minio.opencrvs-deps-dev.svc.cluster.local
+
+minioPort: 3535
+
+webhooksUrl: http://webhooks.opencrvs-services-dev.svc.cluster.local:2525/
+
+workflowUrl: http://workflow.opencrvs-services-dev.svc.cluster.local:5050/
+
+influxHost: influxdb.opencrvs-deps-dev.svc.cluster.local
+
+elasticHost: elasticsearch.opencrvs-deps-dev.svc.cluster.local:9200
+
+
+
+#changing the client service variables
+client:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-client
+    tag:
+  port: "80"
+
+#changing auth service variables
+auth:
+  replicas: 1
+  servicePort: 4040
+  targetPort: 4040
+  image:
+    repository: "opencrvs/ocrvs-auth"
+    tag: 
+  certPrivateKeyPath: "/secrets/private-key.pem"
+  certPublicKeyPath: "/secrets/public-key.pem"
+  configSmsCodeExpiry: '600'
+  configTokenExpiry: '604800'
+  port: 4040
+
+
+components:
+  replicas: 1
+config:
+  replicas: 1
+
 countryconfig:
   image:
-    tag: v1.6.0
+    name: opencrvs/ocrvs-farajaland
+    tag: latest
+  replicas: 1
+
+dashboards:
+  image:
+    repository: opencrvs/ocrvs-dashboards
+    tag: 
+  replicas: 1
+  openMetabaseSiteUrl: http://metabase.opencrvs.mosipcmuafrica.me
+
+documents:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-documents
+
+gateway:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-gateway
+
+login:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-login
+
+metrics:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-metrics
+
+migration:
+  image:
+    repository: opencrvs/ocrvs-migration
+
+notification:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-notification
+
+search:
+  replicas: 1
+
+scheduler:
+  image:
+    repository: opencrvs/ocrvs-scheduler
+
+userMgnt:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-user-mgnt
+
+webhooks:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-webhooks
+
+workflow:
+  replicas: 1
+  image:
+    repository: opencrvs/ocrvs-workflow

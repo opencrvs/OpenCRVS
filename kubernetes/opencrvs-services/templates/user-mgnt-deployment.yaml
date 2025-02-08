@@ -33,19 +33,19 @@ spec:
           image: "opencrvs/ocrvs-user-mgnt:{{ .Values.image.tag }}"
           env:
             - name: APPLICATION_CONFIG_URL
-              value: http://config.opencrvs-services-dev.svc.cluster.local:2021 # FIXME: harcoded/
+              value: {{ .Values.applicationConfigUrl }} # FIXME: harcoded/
             - name: CERT_PUBLIC_KEY_PATH
               value: /secrets/public-key.pem
             - name: FHIR_URL
-              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+              value: {{ .Values.fhirUrl }} # FIXME: harcoded
             - name: HOST
               value: 0.0.0.0
             - name: METRICS_URL
-              value: http://metrics.opencrvs-services-dev.svc.cluster.local:1050 # FIXME: harcoded
+              value: {{ .Values.metricsUrl }} # FIXME: harcoded
             - name: MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/user-mgnt
+              value: {{ .Values.mongoUrl }}/user-mgnt
             - name: NOTIFICATION_SERVICE_URL
-              value: http://notification.opencrvs-services-dev.svc.cluster.local:2020/
+              value: {{ .Values.notificationServiceUrl }}
             - name: DOCUMENTS_URL
               value: http://documents.opencrvs-services-dev.svc.cluster.local:9050
           ports:

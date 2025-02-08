@@ -37,27 +37,27 @@ spec:
             - name: CERT_PUBLIC_KEY_PATH
               value: /secrets/public-key.pem
             - name: CONFIG_API_URL
-              value: http://config.opencrvs-services-dev.svc.cluster.local:2021 # FIXME: harcoded
+              value: {{ .Values.applicationConfigUrl }} # FIXME: harcoded
             - name: COUNTRY_CONFIG_URL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded/
+              value: {{ .Values.countryconfigUrl }} # FIXME: harcoded/
             - name: DOCUMENTS_URL
-              value: http://documents.opencrvs-services-dev.svc.cluster.local:9050 # FIXME: harcoded
+              value: {{ .Values.documentsUrl }} # FIXME: harcoded
             - name: FHIR_URL
-              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+              value: {{ .Values.fhirUrl }} # FIXME: harcoded
             - name: SEARCH_URL
-              value: http://search.opencrvs-deps-dev.svc.cluster.local:9090/ # FIXME: harcoded
+              value: {{ .Values.searchUrl }} # FIXME: harcoded
             - name: USER_MANAGEMENT_URL
-              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030 # FIXME: harcoded
+              value: {{ .Values.userManagementUrl }} # FIXME: harcoded
             - name: DASHBOARD_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/performance
+              value: {{ .Values.mongoUrl }}/performance
             - name: HEARTH_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/hearth-dev
+              value: {{ .Values.mongoUrl }}/hearth-dev
             - name: MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/metrics
+              value: {{ .Values.mongoUrl }}/metrics
             - name: INFLUX_DB
               value: ocrvs
             - name: INFLUX_HOST
-              value: influxdb-0.influxdb.opencrvs-deps-dev.svc.cluster.local
+              value: {{ .Values.influxHost }}
             - name: INFLUX_PORT
               value: "8086"
             - name: METRICS_PORT

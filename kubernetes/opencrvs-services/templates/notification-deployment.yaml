@@ -37,9 +37,9 @@ spec:
             - name: COUNTRY
               value: bgd
             - name: COUNTRY_CONFIG_URL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+              value: {{ .Values.countryconfigUrl }} # FIXME: harcoded
             - name: MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/notification
+              value: {{ .Values.mongoUrl }}/notification
             - name: HOST
               value: 0.0.0.0
           ports:

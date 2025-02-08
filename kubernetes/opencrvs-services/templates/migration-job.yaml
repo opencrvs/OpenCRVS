@@ -17,27 +17,27 @@ spec:
           image: "opencrvs/ocrvs-migration:{{ .Values.image.tag }}"
           env:
             - name: APPLICATION_CONFIG_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/application-config
+              value: {{ .Values.mongoUrl }}/application-config
             - name: PERFORMANCE_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/performance
+              value: {{ .Values.mongoUrl }}/performance
             - name: ES_HOST
               value: elasticsearch.opencrvs-deps-dev.svc.cluster.local:9200
             - name: SEARCH_URL
               value: http://search.opencrvs-services-dev.svc.cluster.local:9090/ # FIXME: harcoded
             - name: HEARTH_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/hearth-dev
+              value: {{ .Values.mongoUrl }}/hearth-dev
             - name: INFLUX_DB
               value: ocrvs
             - name: INFLUX_HOST
-              value: influxdb.opencrvs-deps-dev.svc.cluster.local
+              value: {{ .Values.influxHost }}
             - name: INFLUX_PORT
               value: "8086"
             - name: MINIO_HOST
               value: "minio-0.minio.opencrvs-deps-dev.svc.cluster.local"
             - name: OPENHIM_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/openhim-dev
+              value: {{ .Values.mongoUrl }}/openhim-dev
             - name: USER_MGNT_MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/user-mgnt
+              value: {{ .Values.mongoUrl }}/user-mgnt
             - name: WAIT_HOSTS
               value: mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local:27017,influxdb.opencrvs-deps-dev.svc.cluster.local:8086,minio-0.minio.opencrvs-deps-dev.svc.cluster.local:3535,elasticsearch.opencrvs-deps-dev.svc.cluster.local:9200
       completions: 1 # Run the job once

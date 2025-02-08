@@ -33,29 +33,29 @@ spec:
           image: "opencrvs/ocrvs-workflow:{{ .Values.image.tag }}"
           env:
             - name: APPLICATION_CONFIG_URL
-              value: http://config.opencrvs-services-dev.svc.cluster.local:2021 # FIXME: harcoded/
+              value: {{ .Values.applicationConfigUrl }} # FIXME: harcoded/
             - name: CERT_PUBLIC_KEY_PATH
               value: /secrets/public-key.pem
             - name: COUNTRY
               value: bgd
             - name: COUNTRY_CONFIG_URL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+              value: {{ .Values.countryconfigUrl }} # FIXME: harcoded
             - name: DOCUMENTS_URL
-              value: http://documents.opencrvs-services-dev.svc.cluster.local:9050 # FIXME: harcoded
+              value: {{ .Values.documentsUrl }} # FIXME: harcoded
             - name: FHIR_URL
-              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+              value: {{ .Values.fhirUrl }} # FIXME: harcoded
             - name: METRICS_URL
-              value: http://metrics.opencrvs-services-dev.svc.cluster.local:1050 # FIXME: harcoded
+              value: {{ .Values.metricsUrl }} # FIXME: harcoded
             - name: NODE_ENV
               value: development
             - name: NOTIFICATION_SERVICE_URL
-              value: http://notification.opencrvs-services-dev.svc.cluster.local:2020/
+              value: {{ .Values.notificationServiceUrl }}
             - name: SEARCH_URL
-              value: http://search.opencrvs-services-dev.svc.cluster.local:9090/ # FIXME: harcoded
+              value: {{ .Values.searchUrl }} # FIXME: harcoded
             - name: USER_MANAGEMENT_URL
-              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030/ # FIXME: hardcoded
+              value: {{ .Values.userManagementUrl }} # FIXME: hardcoded
             - name: WEBHOOKS_URL
-              value: http://webhooks.opencrvs-services-dev.svc.cluster.local:2525/
+              value: {{ .Values.webhooksUrl }}
           ports:
             - containerPort: 5050
               protocol: TCP

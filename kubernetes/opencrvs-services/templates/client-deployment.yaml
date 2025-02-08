@@ -50,7 +50,7 @@ spec:
         - image: "opencrvs/ocrvs-client:{{ .Values.image.tag }}"
           env:
             - name: COUNTRY_CONFIG_URL_INTERNAL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+              value: {{ .Values.countryconfigUrl }} # FIXME: harcoded
           name: client
           ports:
             - containerPort: 80

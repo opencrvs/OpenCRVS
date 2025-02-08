@@ -77,7 +77,7 @@ spec:
           image: "{{ .Values.countryconfig.image.name }}:{{ .Values.countryconfig.image.tag }}"
           env:
             - name: AUTH_URL
-              value: http://auth.opencrvs-services-dev.svc.cluster.local:4040 # FIXME: harcoded
+              value: {{ .Values.authUrl }} # FIXME: harcoded
             - name: CERT_PUBLIC_KEY_PATH
               value: /secrets/public-key.pem
             - name: CHECK_INVALID_TOKEN
@@ -85,9 +85,9 @@ spec:
             - name: CONFIRM_REGISTRATION_URL
               value: http://workflow.opencrvs-services-dev.svc.cluster.local:5050/confirm/registration
             - name: FHIR_URL
-              value: http://hearth-1.hearth.opencrvs-deps-dev.svc.cluster.local:3447/fhir # FIXME: harcoded
+              value: {{ .Values.fhirUrl }} # FIXME: harcoded
             - name: MONGO_URL
-              value: mongodb://mongodb-0.mongodb.opencrvs-deps-dev.svc.cluster.local/user-mgnt
+              value: {{ .Values.mongoUrl }}/user-mgnt
             - name: NODE_ENV
               value: production
             - name: DOMAIN

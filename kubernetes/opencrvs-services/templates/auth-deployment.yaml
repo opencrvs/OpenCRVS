@@ -58,17 +58,17 @@ spec:
             - name: CONFIG_TOKEN_EXPIRY_SECONDS
               value: '604800'
             - name: METRICS_URL
-              value: http://metrics.opencrvs-services-dev.svc.cluster.local:1050 # FIXME: harcoded
+              value: {{ .Values.metricsUrl }} # FIXME: harcoded
             - name: NOTIFICATION_SERVICE_URL
-              value: http://notification.opencrvs-services-dev.svc.cluster.local:2020/
+              value: {{ .Values.notificationServiceUrl }}
             - name: REDIS_HOST
-              value: redis.opencrvs-deps-dev.svc.cluster.local # FIXME: harcoded
+              value: {{ .Values.redisHost }} # FIXME: harcoded
             - name: USER_MANAGEMENT_URL
-              value: http://user-mgnt.opencrvs-services-dev.svc.cluster.local:3030/ # FIXME: hardcoded
+              value: {{ .Values.userManagementUrl}} # FIXME: hardcoded
             - name: AUTH_PORT
               value: "4040"
             - name: COUNTRY_CONFIG_URL
-              value: http://countryconfig.opencrvs-services-dev.svc.cluster.local:3040 # FIXME: harcoded
+              value: {{ .Values.countryconfigUrl }} # FIXME: harcoded
             - name: DOMAIN
               value: "opencrvs-services-dev.svc.cluster.local"
             - name: CLIENT_APP_URL    
