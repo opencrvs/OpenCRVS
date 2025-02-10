@@ -62,6 +62,8 @@ interface Window {
     STATISTICS_DASHBOARD_URL: string
     LEADERBOARDS_DASHBOARD_URL: string
     SIGNATURE_REQUIRED_FOR_ROLES: string[]
+    INFORMANT_MINIMUM_AGE: number
+    INFORMANT_MAXIMUM_AGE: number
   }
   __localeId__: string
   __WB_MANIFEST: Array<{ url: string; revision: string }>
