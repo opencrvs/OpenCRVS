@@ -365,14 +365,16 @@ export const userFormReducer: LoopReducer<IUserFormState, UserFormAction> = (
       return loop({ ...state, submitting: false, submissionError: false }, list)
 
     case SUBMIT_USER_FORM_DATA_FAIL:
-      const { errorData } = (action as ISubmitFailedAction).payload
+      const { errorData } = action.payload
       const duplicateErrorFromGQL = errorData?.graphQLErrors?.find(
-        (gqlErr) => gqlErr.extensions.duplicateNotificationMethodError
+        (gqlErr) =>
+          gqlErr.extensions.invalidArgs.duplicateNotificationMethodError
       )
 
       if (duplicateErrorFromGQL) {
         const duplicateError =
-          duplicateErrorFromGQL.extensions.duplicateNotificationMethodError
+          duplicateErrorFromGQL.extensions.invalidArgs
+            .duplicateNotificationMethodError
 
         if (duplicateError.field && duplicateError.field === 'email') {
           return loop(
