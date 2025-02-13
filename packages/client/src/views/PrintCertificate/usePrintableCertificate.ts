@@ -126,7 +126,23 @@ export const usePrintableCertificate = (declarationId: string) => {
     const certificateTemplate =
       declaration &&
       offlineData.templates.certificates?.[declaration.event].definition
-    if (certificateTemplate)
+    if (certificateTemplate) {
+      declaration.data.template = {
+        ...declaration.data.template,
+        fatherFirstName: !declaration?.data?.father?.detailsExist
+          ? ''
+          : declaration.data.template?.fatherFirstName,
+        fatherFamilyName: !declaration?.data?.father?.detailsExist
+          ? ''
+          : declaration.data.template?.fatherFamilyName,
+
+        motherFirstName: !declaration?.data?.mother?.detailsExist
+          ? ''
+          : declaration.data.template?.motherFirstName,
+        motherFamilyName: !declaration?.data?.mother?.detailsExist
+          ? ''
+          : declaration.data.template?.motherFamilyName
+      }
       compileSvg(
         certificateTemplate,
         { ...declaration.data.template, preview: true },
@@ -136,8 +152,10 @@ export const usePrintableCertificate = (declarationId: string) => {
           svg,
           offlineData.templates.fonts ?? {}
         )
+
         setSvg(svgWithFonts)
       })
+    }
   }, [offlineData, declaration, state])
 
   const handleCertify = async () => {
