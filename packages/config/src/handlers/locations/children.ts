@@ -11,18 +11,24 @@
 import { UUID } from '@opencrvs/commons'
 import { ServerRoute } from '@hapi/hapi'
 import { resolveLocationChildren } from './locationTreeSolver'
-import { fetchLocations } from '@config/services/hearth'
-import { find } from 'lodash'
-import { notFound } from '@hapi/boom'
+import { fetchFromHearth, fetchLocations } from '@config/services/hearth'
+import { SavedLocation } from '@opencrvs/commons/types'
 
 export const resolveChildren: ServerRoute['handler'] = async (req) => {
   const { locationId } = req.params as { locationId: UUID }
-  const locations = await fetchLocations()
-  const location = find(locations, { id: locationId })
 
-  if (!location) {
-    return notFound()
+  const location = await fetchFromHearth<SavedLocation>(
+    `Location/${locationId}`
+  )
+  if (isTypeOf(location, 'CRVS_OFFICE')) {
+    return [location]
   }
 
+  const locations = await fetchLocations()
+
   return [location, ...resolveLocationChildren(location, locations)]
+}
+
+function isTypeOf(location: SavedLocation, type: string) {
+  return location.type?.coding?.some((x) => x.code === type)
 }
