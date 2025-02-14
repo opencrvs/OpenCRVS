@@ -123,7 +123,7 @@ export function useEvents() {
         utils.event.actions.printCertificate,
         api.event.actions.printCertificate
       ),
-      correct: {
+      correction: {
         request: useEventAction(
           utils.event.actions.correction.request,
           api.event.actions.correction.request

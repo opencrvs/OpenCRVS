@@ -69,6 +69,13 @@ export function isFieldDisabled(
   return !isEnabled
 }
 
+export function isFieldHiddenOrDisabled(
+  field: FieldConfig,
+  params: ConditionalParameters
+) {
+  return isFieldHidden(field, params) || isFieldDisabled(field, params)
+}
+
 /**
  * Form error message definitions for Zod validation errors.
  * Overrides zod internal type error messages (string) to match the OpenCRVS error messages (TranslationConfig).
@@ -133,7 +140,15 @@ export function getFieldValidationErrors({
     isFieldDisabled(field, conditionalParameters)
   ) {
     return {
-      errors: []
+      errors: [
+        {
+          message: {
+            id: 'v2.error.hidden',
+            defaultMessage: 'Field is hidden or disabled',
+            description: 'Error message when field is hidden or disabled'
+          }
+        }
+      ]
     }
   }
 

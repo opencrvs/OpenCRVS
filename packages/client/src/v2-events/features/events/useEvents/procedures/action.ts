@@ -14,11 +14,16 @@ import { useMutation } from '@tanstack/react-query'
 import { getMutationKey } from '@trpc/react-query'
 import {
   ActionInput,
+  ActionType,
   EventDocument,
-  getCurrentEventState
+  findActiveActionFields,
+  getCurrentEventState,
+  isFieldHiddenOrDisabled
 } from '@opencrvs/commons/client'
 import { api, queryClient, utils } from '@client/v2-events/trpc'
 import { createTemporaryId, isTemporaryId } from './create'
+import { useEventConfiguration } from '../../useEventConfiguration'
+import _ from 'lodash'
 
 async function updateLocalEvent(updatedEvent: EventDocument) {
   utils.event.get.setData(updatedEvent.id, updatedEvent)
@@ -214,6 +219,9 @@ export function useEventAction<P extends Procedure, M extends Mutation>(
   procedure: P,
   mutation: M
 ) {
+  // TODO CIHAN tää kaivetaa jostai?
+  const { eventConfiguration } = useEventConfiguration('tennis-club-membership')
+
   const mutationDefaults = procedure.getMutationDefaults()
 
   if (!mutationDefaults?.mutationFn) {
@@ -222,11 +230,43 @@ export function useEventAction<P extends Procedure, M extends Mutation>(
     )
   }
 
+  const mutationFn = waitUntilEventIsCreated<any, any>(
+    mutationDefaults.mutationFn
+  )
+
+  function stripForm(params: any) {
+    console.log('strip form here?')
+
+    // TODO CIHAN kaiva action type jostai?
+    const fields =
+      findActiveActionFields(eventConfiguration, ActionType.DECLARE) ?? []
+
+    console.log(fields)
+    console.log(params.data)
+
+    const strippedData = _.omitBy(params.data, (_, key) => {
+      const field = fields.find((f) => f.id === key)
+
+      if (!field) {
+        return true
+      }
+
+      return isFieldHiddenOrDisabled(field, params.data)
+    })
+
+    console.log(strippedData)
+
+    return mutationFn({
+      ...params,
+      data: { ...params.data, form: strippedData }
+    })
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return useMutation<any, any, any, any>({
     ...mutationDefaults,
     mutationKey: getMutationKey(mutation),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mutationFn: waitUntilEventIsCreated<any, any>(mutationDefaults.mutationFn)
+    mutationFn: stripForm
   }) as ReturnType<M['useMutation']>
 }

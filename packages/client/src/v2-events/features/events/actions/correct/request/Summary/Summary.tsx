@@ -189,7 +189,7 @@ export function Summary() {
 
     const nullifiedHiddenValues = setEmptyValuesForFields(valuesThatGotHidden)
 
-    events.actions.correct.request.mutate({
+    events.actions.correction.request.mutate({
       eventId,
       // @TODO:
       // @ts-ignore
@@ -204,7 +204,7 @@ export function Summary() {
   }, [
     form,
     fields,
-    events.actions.correct.request,
+    events.actions.correction.request,
     eventId,
     correctionRequestData,
     eventFormNavigation,
