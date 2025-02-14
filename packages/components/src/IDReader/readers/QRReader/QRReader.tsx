@@ -48,7 +48,7 @@ export const QRReader = (props: ScannableQRReader) => {
   )
   const handleScanError: ErrorHandler = useCallback(
     (type, error) => {
-      if (type === 'invalid' || type === 'parse') {
+      if (type === 'invalid') {
         setError(error.message)
       }
       if (onError) {
