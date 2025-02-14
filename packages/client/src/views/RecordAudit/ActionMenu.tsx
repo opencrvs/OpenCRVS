@@ -74,6 +74,7 @@ import { useNavigate } from 'react-router-dom'
 import * as routes from '@client/navigation/routes'
 import { useDeclaration } from '@client/declarations/selectors'
 import { FETCH_DECLARATION_SHORT_INFO } from './queries'
+import { useOnlineStatus } from '@client/utils'
 
 export const ActionMenu: React.FC<{
   declaration: IDeclarationData
@@ -534,6 +535,7 @@ const UnassignAction: React.FC<{
 }> = ({ handleUnassign, assignedOther, assignedSelf, declarationStatus }) => {
   const { hasScope } = usePermissions()
   const intl = useIntl()
+  const online = useOnlineStatus()
 
   if (
     declarationStatus === SUBMISSION_STATUS.DRAFT ||
@@ -543,7 +545,7 @@ const UnassignAction: React.FC<{
     return null
 
   return (
-    <DropdownMenu.Item onClick={handleUnassign}>
+    <DropdownMenu.Item onClick={handleUnassign} disabled={!online}>
       <Icon name="ArrowCircleDown" color="currentColor" size="large" />
       {intl.formatMessage(buttonMessages.unassign)}
     </DropdownMenu.Item>
