@@ -20,10 +20,13 @@ import { evalExpressionInFieldDefinition } from '@client/forms/utils'
 import { getOfflineData } from '@client/offline/selectors'
 import { getUserDetails } from '@client/profile/profileSelectors'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHttp } from './http'
 import { Button, getTheme, Icon } from '@opencrvs/components'
 import { useWindowSize } from '@opencrvs/components/src/hooks'
+import { useParams } from 'react-router-dom'
+import { useDeclaration } from '@client/declarations/selectors'
+import { writeDeclaration } from '@client/declarations'
 
 export const LinkButtonField = ({
   fields,
@@ -57,6 +60,9 @@ export const LinkButtonField = ({
     setFieldValue(trigger.name, { loading, data, error } as IFormFieldValue)
   const [hasCallbackRequestBeenMade, setCallbackRequestBeenMade] =
     useState(false)
+  const { declarationId = '' } = useParams()
+  const declaration = useDeclaration(declarationId)
+  const dispatch = useDispatch()
 
   const { call } = useHttp<string>(
     trigger as IHttpFormField,
@@ -93,13 +99,19 @@ export const LinkButtonField = ({
       fullWidth
       disabled={isDisabled}
       onClick={() => {
-        window.location.href = evalExpressionInFieldDefinition(
-          '`' + decodeURIComponent(to) + '`',
-          form,
-          config,
-          draft,
-          user
-        )
+        if (declaration) {
+          dispatch(writeDeclaration(declaration))
+        }
+        // to make the redireciton happen after the saving is done
+        setTimeout(() => {
+          window.location.href = evalExpressionInFieldDefinition(
+            '`' + decodeURIComponent(to) + '`',
+            form,
+            config,
+            draft,
+            user
+          )
+        })
       }}
     >
       {fieldDefinition.icon &&
