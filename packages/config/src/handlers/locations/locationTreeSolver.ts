@@ -14,7 +14,7 @@ import {
   SavedLocation
 } from '@opencrvs/commons/types'
 import { UUID } from '@opencrvs/commons'
-import { find } from 'lodash'
+import { fetchFromHearth } from '@config/services/hearth'
 
 /**
  * Creates a new Map<SavedLocation.partOf, SavedLocation[]>
@@ -59,18 +59,25 @@ export const resolveLocationChildren = (
 }
 
 /** Resolves any given location's parents multi-level up to the root node */
-export const resolveLocationParents = (
-  location: SavedLocation,
-  locations: SavedLocation[]
-): SavedLocation[] => {
-  const parent =
-    location.partOf &&
-    find(locations, {
-      id: resourceIdentifierToUUID(location.partOf.reference)
-    })
+export const resolveLocationParents = async (
+  locationId: UUID
+): Promise<SavedLocation[]> => {
+  const current = await fetchFromHearth<SavedLocation>(`Location/${locationId}`)
 
-  if (!parent) {
+  if (!current) {
     return []
   }
-  return [...resolveLocationParents(parent, locations), parent]
+
+  const id = current.partOf?.reference
+    ? resourceIdentifierToUUID(current.partOf.reference)
+    : null
+
+  // Handle case where top level location is Location/0
+  if (!id || id === '0') {
+    return [current]
+  }
+
+  const parents = await resolveLocationParents(id)
+
+  return [...parents, current]
 }
