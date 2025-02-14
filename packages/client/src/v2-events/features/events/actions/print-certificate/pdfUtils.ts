@@ -56,16 +56,14 @@ export const certificateBaseTemplate = {
   fonts: {}
 }
 
-function isMessageDescriptor(
-  obj: unknown
-): obj is MessageDescriptor & Record<string, string> {
+function isMessageDescriptor(obj: unknown): obj is MessageDescriptor {
   return (
     typeof obj === 'object' &&
     obj !== null &&
     'id' in obj &&
     'defaultMessage' in obj &&
-    typeof (obj as { id: unknown }).id === 'string' &&
-    typeof (obj as { defaultMessage: unknown }).defaultMessage === 'string'
+    typeof (obj as MessageDescriptor).id === 'string' &&
+    typeof (obj as MessageDescriptor).defaultMessage === 'string'
   )
 }
 

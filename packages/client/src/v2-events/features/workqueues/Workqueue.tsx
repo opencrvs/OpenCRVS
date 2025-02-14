@@ -92,7 +92,7 @@ export function WorkqueueIndex({ workqueueId }: { workqueueId: string }) {
   const { getEvents } = useEvents()
   const [searchParams] = useTypedSearchParams(ROUTES.V2.WORKQUEUES.WORKQUEUE)
 
-  const events = (getEvents.useQuery().data ?? []) satisfies EventIndex[]
+  const [events] = getEvents.useSuspenseQuery()
   const eventConfigs = useEventConfigurations()
 
   const workqueueConfig =

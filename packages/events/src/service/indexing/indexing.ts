@@ -172,6 +172,16 @@ function mapFieldTypeToElasticsearch(field: FieldConfig) {
           type: { type: 'keyword' }
         }
       }
+    case FieldType.FILE_WITH_OPTIONS:
+      return {
+        type: 'nested',
+        properties: {
+          filename: { type: 'keyword' },
+          originalFilename: { type: 'keyword' },
+          type: { type: 'keyword' },
+          option: { type: 'keyword' }
+        }
+      }
     default:
       const _exhaustiveCheck: never = field
       throw new Error(

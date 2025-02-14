@@ -20,6 +20,7 @@ import {
   EmailField,
   FieldConfig,
   File,
+  FileUploadWithOptions,
   Location,
   PageHeader,
   Paragraph,
@@ -38,6 +39,7 @@ import {
   FieldValue,
   FieldValueSchema,
   FileFieldValue,
+  FileFieldWithOptionValue,
   OptionalFieldValueSchema,
   TextValue
 } from './FieldValue'
@@ -81,6 +83,10 @@ export function mapFieldTypeToZod(type: FieldType, required?: boolean) {
       break
     case FieldType.FILE:
       schema = FileFieldValue
+
+      break
+    case FieldType.FILE_WITH_OPTIONS:
+      schema = FileFieldWithOptionValue
 
       break
     case FieldType.ADDRESS:
@@ -139,6 +145,7 @@ export function mapFieldTypeToMockValue(field: FieldConfig, i: number) {
     case FieldType.CHECKBOX:
       return true
     case FieldType.FILE:
+    case FieldType.FILE_WITH_OPTIONS:
       return null
   }
 }
@@ -198,6 +205,17 @@ export const isFileFieldType = (field: {
 }): field is { value: FileFieldValue; config: File } => {
   // @TODO?
   return field.config.type === FieldType.FILE
+}
+
+export const isFileFieldWithOptionType = (field: {
+  config: FieldConfig
+  value: FieldValue
+}): field is {
+  value: FileFieldWithOptionValue
+  config: FileUploadWithOptions
+} => {
+  // @TODO? (same as FILE?)
+  return field.config.type === FieldType.FILE_WITH_OPTIONS
 }
 
 export const isBulletListFieldType = (field: {

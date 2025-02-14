@@ -13,6 +13,7 @@ import { env } from '@events/environment'
 
 let client: elasticsearch.Client | undefined
 
+/** @knipignore */
 export const getOrCreateClient = () => {
   if (!client) {
     client = new elasticsearch.Client({

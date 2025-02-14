@@ -25,9 +25,18 @@ function convertDotToTripleUnderscore(obj: ActionFormData, parentKey = '') {
     const newKey =
       (parentKey ? parentKey + INTERNAL_SEPARATOR : '') +
       key.replace(/\./g, INTERNAL_SEPARATOR)
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (typeof value === 'object' && value !== null) {
+    if (Array.isArray(value)) {
+      value.forEach((val, id) =>
+        Object.assign(
+          result,
+          convertDotToTripleUnderscore(
+            val,
+            (newKey ? newKey + INTERNAL_SEPARATOR : '') + id
+          )
+        )
+      )
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    } else if (typeof value === 'object' && value !== null) {
       Object.assign(result, convertDotToTripleUnderscore(value, newKey))
     } else {
       result[newKey] = value

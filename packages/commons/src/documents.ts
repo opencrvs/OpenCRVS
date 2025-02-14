@@ -9,7 +9,8 @@
  * Copyright (C) The OpenCRVS Authors located at https://github.com/opencrvs/opencrvs-core/blob/master/AUTHORS.
  */
 
-export const MINIO_REGEX = /\/[^\/?]+\.(jpg|png|jpeg|svg)(?=\?|$)/i
+export const MINIO_REGEX =
+  /^https?:\/\/[^\/]+(.*)?\/[^\/?]+\.(jpg|png|jpeg|svg)(?=\?|$)/i
 
 export function isBase64FileString(str: string) {
   if (str === '' || str.trim() === '') {

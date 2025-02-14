@@ -21,6 +21,7 @@ import {
   tennisClubMembershipEventIndex
 } from '../src/v2-events/features/events/fixtures'
 import { tennisClubMembershipCertifiedCertificateTemplate } from './tennisClubMembershipCertifiedCertificateTemplate'
+import { birthEvent } from '@client/v2-events/components/forms/inputs/FileInput/fixtures'
 
 const tRPCMsw = createTRPCMsw<AppRouter>({
   links: [
@@ -34,10 +35,37 @@ const tRPCMsw = createTRPCMsw<AppRouter>({
 export const handlers = {
   events: [
     tRPCMsw.event.config.get.query(() => {
-      return [tennisClubMembershipEvent]
+      return [tennisClubMembershipEvent, birthEvent]
     }),
     tRPCMsw.event.list.query(() => {
       return [tennisClubMembershipEventIndex]
+    })
+  ],
+  files: [
+    http.post('/api/upload', async (req) => {
+      const formData = await req.request.formData()
+
+      return HttpResponse.text(
+        `event-attachments/${formData.get('transactionId')}.jpg`
+      )
+    }),
+    http.get('http://localhost:3535/ocrvs/:id', async ({ params }) => {
+      const { id } = params
+
+      const svgImage = `
+        <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 6C3 4.34315 4.34315 3 6 3H14C15.6569 3 17 4.34315 17 6V14C17 15.6569 15.6569 17 14 17H6C4.34315 17 3 15.6569 3 14V6Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 7V18C21 19.6569 19.6569 21 18 21H7" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3 12.375L6.66789 8.70711C7.05842 8.31658 7.69158 8.31658 8.08211 8.70711L10.875 11.5M10.875 11.5L13.2304 9.1446C13.6209 8.75408 14.2541 8.75408 14.6446 9.14461L17 11.5M10.875 11.5L12.8438 13.4688" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `
+
+      return new HttpResponse(svgImage, {
+        headers: {
+          'Content-Type': 'image/svg+xml',
+          'Cache-Control': 'no-cache'
+        }
+      })
     })
   ],
   registrationHome: [

@@ -13,6 +13,7 @@ import { hashKey } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { EventDocument, EventIndex } from '@opencrvs/commons/client'
 import { api, queryClient, utils } from '@client/v2-events/trpc'
+import { cacheFiles } from '@client/v2-events/features/files/cache'
 import { useEventAction } from './procedures/action'
 import { createEvent } from './procedures/create'
 import { useDeleteEventMutation } from './procedures/delete'
@@ -95,10 +96,93 @@ export function useEvents() {
       )
   }
 
+  const getEvent = {
+    useQuery: (id: string) => {
+      const event = api.event.get.useQuery(id).data
+      if (event) {
+        const config = api.event.config.get.useQuery().data
+        const eventConfiguration =
+          config && config.find((e) => e.id === event.type)
+        if (!eventConfiguration) {
+          throw new Error('Event configuration not found')
+        }
+        cacheFiles({
+          eventDocument: event,
+          eventConfig: eventConfiguration
+        }).catch((error) => {
+          throw new Error('failed to precache documents' + error)
+        })
+      }
+
+      return event
+    },
+    useSuspenseQuery: (id: string) => {
+      const [event] = api.event.get.useSuspenseQuery(id)
+
+      const [config] = api.event.config.get.useSuspenseQuery()
+      const eventConfiguration = config.find((e) => e.id === event.type)
+      if (!eventConfiguration) {
+        throw new Error('Event configuration not found')
+      }
+      cacheFiles({
+        eventDocument: event,
+        eventConfig: eventConfiguration
+      }).catch((error) => {
+        throw new Error('failed to precache documents' + error)
+      })
+
+      return [event]
+    }
+  }
+
+  const getEvents = {
+    useQuery: () => {
+      const events = api.event.list.useQuery().data
+      const config = api.event.config.get.useQuery().data
+      events &&
+        events.forEach((event) => {
+          const eventConfiguration =
+            config && config.find((e) => e.id === event.type)
+
+          if (!eventConfiguration) {
+            throw new Error('Event configuration not found')
+          }
+          cacheFiles({
+            eventIndex: event,
+            eventConfig: eventConfiguration
+          }).catch((error) => {
+            throw new Error('failed to precache documents' + error)
+          })
+        })
+
+      return events
+    },
+    useSuspenseQuery: () => {
+      const [events] = api.event.list.useSuspenseQuery()
+
+      const [config] = api.event.config.get.useSuspenseQuery()
+
+      events.forEach((event) => {
+        const eventConfiguration = config.find((e) => e.id === event.type)
+        if (!eventConfiguration) {
+          throw new Error('Event configuration not found')
+        }
+        cacheFiles({
+          eventIndex: event,
+          eventConfig: eventConfiguration
+        }).catch((error) => {
+          throw new Error('failed to precache documents' + error)
+        })
+      })
+
+      return [events]
+    }
+  }
+
   return {
     createEvent,
-    getEvent: api.event.get,
-    getEvents: api.event.list,
+    getEvent,
+    getEvents,
     deleteEvent: useDeleteEventMutation(),
     getOutbox,
     getDrafts,
