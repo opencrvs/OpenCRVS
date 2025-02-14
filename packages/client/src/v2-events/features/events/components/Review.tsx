@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,11 +14,20 @@ import React from 'react'
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
-import { ActionFormData, FormConfig } from '@opencrvs/commons/client'
+import {
+  ActionFormData,
+  FieldConfig,
+  FormConfig,
+  isFileFieldType,
+  isFileFieldWithOptionType,
+  SCOPES
+} from '@opencrvs/commons/client'
 import {
   Accordion,
   Button,
+  DocumentViewer,
   Icon,
+  IDocumentViewerOptions,
   Link,
   ListReview,
   ResponsiveModal,
@@ -30,6 +40,9 @@ import { CountryLogo } from '@opencrvs/components/lib/icons'
 import { isFormFieldVisible } from '@client/v2-events/components/forms/utils'
 import { FormFieldGenerator } from '@client/v2-events/components/forms/FormFieldGenerator'
 import { getCountryLogoFile } from '@client/offline/selectors'
+// eslint-disable-next-line no-restricted-imports
+import { getScope } from '@client/profile/profileSelectors'
+import { getFullURL } from '@client/v2-events/features/files/useFileUpload'
 import { Output } from './Output'
 
 const Row = styled.div<{
@@ -73,11 +86,35 @@ const SubjectContainer = styled.div`
   ${({ theme }) => theme.fonts.h2}
   overflow-wrap: anywhere;
 `
-
+const RightColumn = styled.div`
+  width: 40%;
+  border-radius: 4px;
+  @media (max-width: ${({ theme }) => theme.grid.breakpoints.lg}px) {
+    display: none;
+  }
+`
 const LeftColumn = styled.div`
   flex-grow: 1;
   max-width: 840px;
   overflow: hidden;
+`
+const ResponsiveDocumentViewer = styled.div<{ isRegisterScope: boolean }>`
+  position: fixed;
+  width: calc(40% - 24px);
+  @media (max-width: ${({ theme }) => theme.grid.breakpoints.lg}px) {
+    display: ${({ isRegisterScope }) => (isRegisterScope ? 'block' : 'none')};
+    margin-bottom: 11px;
+  }
+`
+
+export const ZeroDocument = styled.div`
+  ${({ theme }) => theme.fonts.bold16};
+  height: 700px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const Card = styled.div`
@@ -163,6 +200,16 @@ const reviewMessages = defineMessages({
     id: 'review.header.title.govtName',
     defaultMessage: 'Government',
     description: 'Header title that shows govt name'
+  },
+  zeroDocumentsTextForAnySection: {
+    defaultMessage: 'No supporting documents',
+    description: 'Zero documents text',
+    id: 'review.documents.zeroDocumentsTextForAnySection'
+  },
+  editDocuments: {
+    defaultMessage: 'Add attachement',
+    description: 'Edit documents text',
+    id: 'review.documents.editDocuments'
   }
 })
 
@@ -179,6 +226,7 @@ function ReviewComponent({
   onEdit,
   children,
   title,
+  isUploadButtonVisible,
   onMetadataChange
 }: {
   children: React.ReactNode
@@ -186,15 +234,123 @@ function ReviewComponent({
   formConfig: FormConfig
   form: ActionFormData
   previousFormValues?: EventIndex['data']
-  onEdit: ({ pageId, fieldId }: { pageId: string; fieldId?: string }) => void
+  onEdit: ({
+    pageId,
+    fieldId,
+    skipConfirmation
+  }: {
+    pageId: string
+    fieldId?: string
+    skipConfirmation?: boolean
+  }) => void
   title: string
+  isUploadButtonVisible?: boolean
   metadata?: ActionFormData
   onMetadataChange?: (values: ActionFormData) => void
 }) {
+  const scopes = useSelector(getScope)
   const intl = useIntl()
   const countryLogoFile = useSelector(getCountryLogoFile)
   const showPreviouslyMissingValuesAsChanged = previousFormValues !== undefined
   const previousForm = previousFormValues ?? {}
+
+  const pagesWithFile = formConfig.pages
+    .filter(({ fields }) =>
+      fields.some(({ type }) => type === 'FILE' || type === 'FILE_WITH_OPTIONS')
+    )
+    .map(({ id }) => id)
+
+  function getOptions(fieldConfig: FieldConfig): IDocumentViewerOptions {
+    const value = form[fieldConfig.id]
+    if (!value) {
+      return {
+        selectOptions: [],
+        documentOptions: []
+      }
+    }
+
+    const fieldObj = {
+      config: fieldConfig,
+      value
+    }
+    if (isFileFieldType(fieldObj)) {
+      return {
+        selectOptions: [
+          {
+            value: fieldObj.config.id,
+            label: intl.formatMessage(fieldObj.config.label)
+          }
+        ],
+        documentOptions: [
+          {
+            value: getFullURL(fieldObj.value.filename),
+            label: fieldObj.config.id
+          }
+        ]
+      }
+    }
+
+    if (isFileFieldWithOptionType(fieldObj)) {
+      const labelPrefix = intl.formatMessage(fieldObj.config.label)
+
+      return fieldObj.config.options.reduce<IDocumentViewerOptions>(
+        (acc, { value: val, label }) => {
+          const specificValue = fieldObj.value.find(
+            ({ option }) => val === option
+          )
+          if (specificValue) {
+            return {
+              documentOptions: [
+                ...acc.documentOptions,
+                { value: getFullURL(specificValue.filename), label: val }
+              ],
+              selectOptions: [
+                ...acc.selectOptions,
+                {
+                  value: val,
+                  label: `${labelPrefix} (${intl.formatMessage(label)})`
+                }
+              ]
+            }
+          }
+          return acc
+        },
+        {
+          selectOptions: [],
+          documentOptions: []
+        }
+      )
+    }
+
+    return {
+      selectOptions: [],
+      documentOptions: []
+    }
+  }
+
+  function reduceFields(fieldConfigs: FieldConfig[]): IDocumentViewerOptions {
+    return fieldConfigs.reduce<IDocumentViewerOptions>(
+      (acc, fieldConfig) => {
+        const { selectOptions, documentOptions } = getOptions(fieldConfig)
+        return {
+          documentOptions: [...acc.documentOptions, ...documentOptions],
+          selectOptions: [...acc.selectOptions, ...selectOptions]
+        }
+      },
+      { selectOptions: [], documentOptions: [] }
+    )
+  }
+
+  const fileOptions = formConfig.pages.reduce<IDocumentViewerOptions>(
+    (acc, page) => {
+      const { selectOptions, documentOptions } = reduceFields(page.fields)
+      return {
+        documentOptions: [...acc.documentOptions, ...documentOptions],
+        selectOptions: [...acc.selectOptions, ...selectOptions]
+      }
+    },
+    { selectOptions: [], documentOptions: [] }
+  )
 
   return (
     <Row>
@@ -315,6 +471,39 @@ function ReviewComponent({
         </Card>
         {children}
       </LeftColumn>
+      {pagesWithFile.length > 0 && (
+        <RightColumn>
+          <ResponsiveDocumentViewer
+            isRegisterScope={
+              scopes?.includes(SCOPES.RECORD_REGISTRATION_CORRECT) ?? false
+            }
+          >
+            <DocumentViewer id="document_section" options={fileOptions}>
+              {fileOptions.documentOptions.length === 0 && (
+                <ZeroDocument id={`zero_document`}>
+                  {intl.formatMessage(
+                    reviewMessages.zeroDocumentsTextForAnySection
+                  )}
+                  {isUploadButtonVisible && (
+                    <Link
+                      id="edit-document"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onEdit({
+                          pageId: pagesWithFile[0],
+                          skipConfirmation: true
+                        })
+                      }}
+                    >
+                      {intl.formatMessage(reviewMessages.editDocuments)}
+                    </Link>
+                  )}
+                </ZeroDocument>
+              )}
+            </DocumentViewer>
+          </ResponsiveDocumentViewer>
+        </RightColumn>
+      )}
     </Row>
   )
 }

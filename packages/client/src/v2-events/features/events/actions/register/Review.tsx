@@ -81,14 +81,18 @@ export function Review() {
 
   async function handleEdit({
     pageId,
-    fieldId
+    fieldId,
+    skipConfirmation
   }: {
     pageId: string
     fieldId?: string
+    skipConfirmation?: boolean
   }) {
-    const confirmedEdit = await openModal<boolean | null>((close) => (
-      <ReviewComponent.EditModal close={close} />
-    ))
+    const confirmedEdit =
+      skipConfirmation ||
+      (await openModal<boolean | null>((close) => (
+        <ReviewComponent.EditModal close={close} />
+      )))
 
     if (confirmedEdit) {
       navigate(
@@ -138,6 +142,7 @@ export function Review() {
         eventConfig={config}
         form={form}
         formConfig={formConfigs[0]}
+        isUploadButtonVisible={true}
         metadata={metadata}
         previousFormValues={previousFormValues}
         title=""

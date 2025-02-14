@@ -122,14 +122,18 @@ export function Review() {
 
   async function handleEdit({
     pageId,
-    fieldId
+    fieldId,
+    skipConfirmation
   }: {
     pageId: string
     fieldId?: string
+    skipConfirmation?: boolean
   }) {
-    const confirmedEdit = await openModal<boolean | null>((close) => (
-      <ReviewComponent.EditModal close={close}></ReviewComponent.EditModal>
-    ))
+    const confirmedEdit =
+      skipConfirmation ||
+      (await openModal<boolean | null>((close) => (
+        <ReviewComponent.EditModal close={close}></ReviewComponent.EditModal>
+      )))
 
     if (confirmedEdit) {
       navigate(
@@ -201,6 +205,7 @@ export function Review() {
         // eslint-disable-next-line
         onEdit={handleEdit} // will be fixed on eslint-plugin-react, 7.19.0. Update separately.
         form={form}
+        isUploadButtonVisible={true}
         // @todo: Update to use dynamic title
         title={intl.formatMessage(formConfigs[0].review.title, {
           firstname: form['applicant.firstname'] as string,
